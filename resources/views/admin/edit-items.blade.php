@@ -93,113 +93,111 @@
                                     <hr class="my-0" /> --}}
                                     <hr class="my-0" />
                                     <div class="card-body">
-                                        <form action="{{ route('editItems', ['id'=>$collection->id]) }}" method="POST"
-                                            enctype="multipart/form-data">
+                                        <form action="{{ route('editItems', ['id'=>$collection->id]) }}" method="POST" enctype="multipart/form-data">
                                             @csrf
                                             @method('PUT')
+
                                             <div class="row">
                                                 <div class="mb-3 col-md-6">
-                                                    <label for="namabarang" class="form-label">
-                                                        Nama Barang
-                                                    </label>
-                                                    <input class="form-control" type="text" id="namabarang"
-                                                        name="namabarang" value="{{ $collection->namabarang }}" />
+                                                    <label for="namabarang" class="form-label">Nama Barang</label>
+                                                    <input class="form-control" type="text" id="namabarang" name="namabarang" value="{{ $collection->namabarang }}" />
                                                 </div>
+
                                                 <div class="mb-3 col-md-6">
                                                     <label for="kategori_id" class="form-label">Kategori</label>
-                                                    <select class="form-select" name="kategori_id" id="kategori_id"
-                                                        aria-label="kategori_id">
+                                                    <select class="form-select" name="kategori_id" id="kategori_id">
                                                         <option disabled>Pilih Kategori Barang</option>
-
-                                                        @foreach ($kategoris as $kategori )
-                                                        {{ $kategori->id }}
-                                                        <option value="{{ $kategori->id }}" {{ ( $kategori->id ==
-                                                            $collection->kategori_id) ? 'selected' : '' }}>{{
-                                                            $kategori->nama
-                                                            }}
+                                                        @foreach ($kategoris as $kategori)
+                                                        <option value="{{ $kategori->id }}" {{ ($kategori->id == $collection->kategori_id) ? 'selected' : '' }}>
+                                                            {{ $kategori->nama }}
                                                         </option>
                                                         @endforeach
-
                                                     </select>
                                                 </div>
 
                                                 <div class="mb-3 col-md-12">
-                                                    <label class="form-label" for="deskripsi">
-                                                        Deskripsi Barang
-                                                    </label>
-                                                    <textarea class="form-control" name="deskripsi" id="deskripsi"
-                                                        rows="1">{{ $collection->deskripsi }}</textarea>
+                                                    <label class="form-label" for="deskripsi">Deskripsi Barang</label>
+                                                    <textarea class="form-control" name="deskripsi" id="deskripsi" rows="1">{{ $collection->deskripsi }}</textarea>
                                                 </div>
+
                                                 <div class="mb-3 col-md-3">
-                                                    <label for="tglditemukan" class="form-label">
-                                                        Tanggal ditemukan
-                                                    </label>
-                                                    <input class="form-control" value="{{ $collection->tglditemukan }}"
-                                                        name="tglditemukan" type="date" id="tglditemukan">
+                                                    <label for="tglditemukan" class="form-label">Tanggal ditemukan</label>
+                                                    <input class="form-control" value="{{ $collection->tglditemukan }}" name="tglditemukan" type="date" id="tglditemukan">
                                                 </div>
 
                                                 <div class="mb-3 col-md-4">
-                                                    <label for="area" class="form-label">
-                                                        Stasiun
-                                                    </label>
-                                                    <select class="form-select" name="stasiun_id" id="area"
-                                                        aria-label="area">
-                                                        <option disabled>Pilih Stasiun </option>
-                                                        @foreach ($stasiuns as $stasiun )
-                                                        <option value="{{ $stasiun->id }}" {{ ( $stasiun->id ==
-                                                            $collection->stasiun_id) ? 'selected' : '' }}>{{
-                                                            $stasiun->nama }}
+                                                    <label for="stasiun_id" class="form-label">Stasiun</label>
+                                                    <select class="form-select" name="stasiun_id" id="stasiun_id">
+                                                        <option disabled>Pilih Stasiun</option>
+                                                        @foreach ($stasiuns as $stasiun)
+                                                        <option value="{{ $stasiun->id }}" {{ ($stasiun->id == $collection->stasiun_id) ? 'selected' : '' }}>
+                                                            {{ $stasiun->nama }}
                                                         </option>
                                                         @endforeach
-
                                                     </select>
                                                 </div>
+
                                                 <div class="mb-3 col-md-3">
-                                                    <label for="area_id" class="form-label">
-                                                        Area ditemukan
-                                                    </label>
-                                                    <select class="form-select" name="area_id" id="area_id"
-                                                        aria-label="area">
-                                                        <option disabled>Pilih Area </option>
-                                                        @foreach ($areas as $area )
-                                                        <option value="{{ $area->id }}" {{ ( $area->id ==
-                                                            $collection->area_id) ? 'selected' : '' }}>{{ $area->nama
-                                                            }}
+                                                    <label for="area_id" class="form-label">Area ditemukan</label>
+                                                    <select class="form-select" name="area_id" id="area_id">
+                                                        <option disabled>Pilih Area</option>
+                                                        @foreach ($areas as $area)
+                                                        <option value="{{ $area->id }}" {{ ($area->id == $collection->area_id) ? 'selected' : '' }}>
+                                                            {{ $area->nama }}
                                                         </option>
                                                         @endforeach
-
                                                     </select>
                                                 </div>
+
+                                                {{-- Upload Gambar --}}
                                                 <div class="d-flex align-items-start align-items-sm-center gap-4">
-                                                    <img src="{{ Storage::url('public/assets/img/items/').$collection->foto }}"
-                                                        alt="foto-barang" class="d-block rounded" height="100"
-                                                        width="100" id="uploadedAvatar" />
                                                     <div class="button-wrapper">
-                                                        <label for="upload" class="btn btn-primary me-2 mb-4"
-                                                            tabindex="0">
-                                                            <span class="d-none d-sm-block">
-                                                                Tambahkan Foto
-                                                            </span>
+                                                        <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                                                            <span class="d-none d-sm-block">Edit Foto</span>
                                                             <i class="bx bx-upload d-block d-sm-none"></i>
-                                                            <input type="file" name="foto" id="upload"
-                                                                class="account-file-input" hidden
-                                                                accept="image/png, image/jpeg" />
+                                                            <input type="file" name="foto" id="upload" class="account-file-input" hidden accept="image/png, image/jpeg" />
                                                         </label>
-                                                        <button type="button"
-                                                            class="btn btn-outline-secondary account-image-reset mb-4">
+
+                                                        <button type="button" class="btn btn-outline-secondary account-image-reset mb-4" id="resetImage">
                                                             <i class="bx bx-reset d-block d-sm-none"></i>
                                                             <span class="d-none d-sm-block">Reset</span>
                                                         </button>
 
+                                                        <p class="text-muted mb-0">Unggah foto baru untuk mengganti gambar barang.</p>
                                                     </div>
+
+                                                    {{-- Preview Thumbnail --}}
+                                                    <img
+                                                        id="previewImage"
+                                                        src="{{ Storage::url('public/assets/img/items/').$collection->foto }}"
+                                                        alt="foto-barang"
+                                                        class="d-block rounded border"
+                                                        height="180"
+                                                        width="180"
+                                                        style="object-fit: cover; cursor: pointer;"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#imagePreviewModal" />
                                                 </div>
                                             </div>
 
-                                            <button type="submit" class="btn btn-danger deactivate-account mt-4">
-                                                Simpan Perubahan
-                                            </button>
-
+                                            <button type="submit" class="btn btn-danger mt-4">Simpan Perubahan</button>
                                         </form>
+
+                                        {{-- Modal Zoom Preview --}}
+                                        <div class="modal fade" id="imagePreviewModal" tabindex="-1" aria-labelledby="imagePreviewLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                <div class="modal-content bg-transparent border-0 shadow-none">
+                                                    <div class="modal-body text-center p-0">
+                                                        <img
+                                                            id="modalImage"
+                                                            src="{{ Storage::url('public/assets/img/items/').$collection->foto }}"
+                                                            alt="Preview"
+                                                            class="img-fluid rounded"
+                                                            style="max-height: 90vh;">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <!-- /Account -->
                                 </div>
@@ -242,7 +240,34 @@
 
     <!-- Page JS -->
     <script src="{{ asset('assets') }}/js/pages-account-settings-account.js"></script>
+    {{-- SCRIPT PREVIEW + RESET --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const uploadInput = document.getElementById('upload');
+            const previewImage = document.getElementById('previewImage');
+            const modalImage = document.getElementById('modalImage');
+            const resetButton = document.getElementById('resetImage');
 
+            const oldImageUrl = "{{ Storage::url('public/assets/img/items/').$collection->foto }}";
+
+            // Saat pilih gambar baru
+            uploadInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const imageUrl = URL.createObjectURL(file);
+                    previewImage.src = imageUrl;
+                    modalImage.src = imageUrl;
+                }
+            });
+
+            // Tombol Reset -> Kembalikan ke gambar lama
+            resetButton.addEventListener('click', function() {
+                uploadInput.value = "";
+                previewImage.src = oldImageUrl;
+                modalImage.src = oldImageUrl;
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -202,32 +202,39 @@
                                                             id="keteranganlain" rows="2"></textarea>
                                                     </div>
 
-
-
                                                     <div class="d-flex align-items-start align-items-sm-center gap-4">
-                                                        <img src="" alt="" class="d-block rounded" height="100"
-                                                            width="100" id="uploadedAvatar" />
                                                         <div class="button-wrapper">
-                                                            <label for="upload" class="btn btn-primary me-2 mb-4"
-                                                                tabindex="0">
-                                                                <span class="d-none d-sm-block">
-                                                                    Tambahkan Bukti Foto
-                                                                </span>
+                                                            <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                                                                <span class="d-none d-sm-block">Tambahkan Bukti Foto</span>
                                                                 <i class="bx bx-upload d-block d-sm-none"></i>
-                                                                <input type="file" name="foto" id="upload"
-                                                                    class="account-file-input" hidden
+                                                                <input type="file" name="foto" id="upload" class="account-file-input" hidden
                                                                     accept="image/png, image/jpeg" required />
                                                             </label>
-                                                            <button type="button"
-                                                                class="btn btn-outline-secondary account-image-reset mb-4">
+
+                                                            <button type="button" class="btn btn-outline-secondary account-image-reset mb-4" id="resetImage">
                                                                 <i class="bx bx-reset d-block d-sm-none"></i>
                                                                 <span class="d-none d-sm-block">Reset</span>
                                                             </button>
 
                                                             <p class="text-muted mb-0">
-                                                                Sertakan bukti kehilangan (seperti : tiket perjalanan
-                                                                ataupun foto barang)
+                                                                Sertakan bukti kehilangan (seperti tiket perjalanan atau foto barang)
                                                             </p>
+                                                        </div>
+                                                        <!-- Preview Gambar -->
+                                                        <div style="width: 150px; height: 150px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid #ccc; border-radius: 8px;">
+                                                            <img src="" alt="Foto Barang" id="uploadedAvatar"
+                                                                style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;"
+                                                                data-bs-toggle="modal" data-bs-target="#imageModal" />
+                                                        </div>
+
+                                                    </div>
+
+                                                    <!-- Modal Bootstrap -->
+                                                    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                            <div class="modal-content bg-transparent border-0 shadow-none d-flex justify-content-center align-items-center">
+                                                                <img id="modalImage" src="" class="img-fluid rounded shadow" alt="Preview Foto" style="max-height: 80vh; object-fit: contain;" />
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -297,6 +304,33 @@
             document.addEventListener('DOMContentLoaded', function() {
                 const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
                 [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+            });
+        </script>
+        <!-- Script Preview + Reset + Pop-up -->
+        <script>
+            const uploadInput = document.getElementById('upload');
+            const previewImg = document.getElementById('uploadedAvatar');
+            const modalImage = document.getElementById('modalImage');
+            const resetBtn = document.getElementById('resetImage');
+
+            // Preview gambar saat upload
+            uploadInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        previewImg.src = event.target.result;
+                        modalImage.src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Reset gambar
+            resetBtn.addEventListener('click', function() {
+                uploadInput.value = '';
+                previewImg.src = '';
+                modalImage.src = '';
             });
         </script>
 

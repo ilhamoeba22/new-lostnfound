@@ -86,11 +86,11 @@
                                     <hr class="my-0" />
                                     <div class="card-body">
                                         <form id="formAccountSettings" method="POST" onsubmit="return false">
-                                        <h3>Data Barang</h3>
+                                            <h3>Data Barang</h3>
                                             <div class="row">
                                                 <div class="mb-3 col-md-6">
                                                     <label for="namabarang" class="form-label">
-                                                       Nama Barang
+                                                        Nama Barang
                                                     </label>
                                                     <input class="form-control" type="text" id="namabarang" name="namabarang" value="John" autofocus />
                                                 </div>
@@ -147,7 +147,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="mb-3 col-12 mb-0">
+                                            <!-- <div class="mb-3 col-12 mb-0">
                                                 <div class="alert alert-warning">
                                                     <h6 class="alert-heading fw-bold mb-1">
                                                         Are you sure you want to delete your account?
@@ -157,7 +157,7 @@
                                                         back. Please be certain.
                                                     </p>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <div class="form-check mb-3">
                                                 <input class="form-check-input" type="checkbox" name="accountActivation" id="accountActivation" />
                                                 <label class="form-check-label" for="accountActivation">

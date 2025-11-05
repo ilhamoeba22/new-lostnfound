@@ -88,119 +88,118 @@
                                 <div class="card">
                                     <div class="card-body">
 
-                                        @if ($collection->status =='1' )
+                                        {{-- STATUS --}}
+                                        @if ($collection->status == '1')
                                         <div class="alert alert-success mt-3">
-                                            <h6 class="alert-heading fw-bold ">
-                                                STATUS DITERIMA
-                                            </h6>
+                                            <h6 class="alert-heading fw-bold">STATUS DITERIMA</h6>
                                         </div>
-                                        @elseif ($collection->status =='2' )
-                                        <div class="alert alert-danger">
-                                            <h6 class="alert-heading fw-bold ">
-                                                STATUS DITOLAK
-                                            </h6>
+                                        @elseif ($collection->status == '2')
+                                        <div class="alert alert-danger mt-3">
+                                            <h6 class="alert-heading fw-bold">STATUS DITOLAK</h6>
                                         </div>
                                         @else
-                                        <div class="alert alert-warning">
-                                            <h6 class="alert-heading fw-bold ">
-                                                Menunggu Kofirmasi
-                                            </h6>
+                                        <div class="alert alert-warning mt-3">
+                                            <h6 class="alert-heading fw-bold">MENUNGGU KONFIRMASI</h6>
                                         </div>
                                         @endif
 
+                                        {{-- DETAIL DATA --}}
                                         <div class="row">
                                             <div class="mb-3 col-md-6">
-                                                <label for="namabarang" class="form-label">
-                                                    Nama Barang
-                                                </label>
-                                                <input class="form-control" type="text" id="namabarang" readonly
-                                                    name="namabarang" value="{{ $collection->namabarang }}" />
+                                                <label for="namabarang" class="form-label">Nama Barang</label>
+                                                <input class="form-control" type="text" readonly value="{{ $collection->namabarang }}">
                                             </div>
+
                                             <div class="mb-3 col-md-6">
-                                                <label for="kategori" class="form-label">Katagori</label>
-                                                <input class="form-control" type="text" id="namabarang" readonly
-                                                    name="namabarang" value="{{ $collection->kategori->nama }}" />
+                                                <label for="kategori" class="form-label">Kategori</label>
+                                                <input class="form-control" type="text" readonly value="{{ $collection->kategori->nama }}">
                                             </div>
 
                                             <div class="mb-3 col-md-12">
-                                                <label class="form-label" for="phoneNumber">
-                                                    Deskripsi Barang
-                                                </label>
-                                                <textarea readonly class="form-control" name="deskripsi"
-                                                    id="exampleFormControlTextarea1"
-                                                    rows="3">{{ $collection->deskripsi }}</textarea>
-                                            </div>
-                                            <div class="mb-3 col-md-4">
-                                                <label for="tanggalkehilangan" class="form-label">
-                                                    Tanggal Kehilangan
-                                                </label>
-                                                <input class="form-control" value="{{ $collection->created_at }}"
-                                                    readonly name="tanggalkehilangan" type="date"
-                                                    id="tanggalkehilangan">
+                                                <label class="form-label">Deskripsi Barang</label>
+                                                <textarea readonly class="form-control" rows="3">{{ $collection->deskripsi }}</textarea>
                                             </div>
 
                                             <div class="mb-3 col-md-4">
-                                                <label for="deskripsitempatkehilangan" class="form-label">
-                                                    Stasiun Kehilangan</label>
-                                                <input class="form-control" type="text" id="stasiun_id" readonly
-                                                    name="namabarang" value="{{ $collection->stasiun->nama }}" />
-                                            </div>
-                                            <div class="mb-3 col-md-3">
-                                                <label for="area_id" class="form-label">Deskipsi
-                                                    Area
-                                                    Kehilangan</label>
-                                                <input class="form-control" type="text" id="area_id" readonly
-                                                    name="namabarang" value="{{ $collection->area->nama }}" />
+                                                <label for="tanggalkehilangan" class="form-label">Tanggal Kehilangan</label>
+                                                <input class="form-control" readonly type="date"
+                                                    value="{{ \Carbon\Carbon::parse($collection->created_at)->format('Y-m-d') }}">
                                             </div>
 
-
-
-                                            <div class="d-flex align-items-start align-items-sm-center gap-4">
-                                                <a href="" data-bs-toggle="modal" data-bs-target="#modalToggle">
-                                                    <img src="{{ Storage::url('public/assets/img/aduan/').$collection->foto }}"
-                                                        alt="" class="d-block rounded" height="100" width="100"
-                                                        id="uploadedAvatar" />
-                                                </a>
+                                            <div class="mb-3 col-md-4">
+                                                <label class="form-label">Stasiun Kehilangan</label>
+                                                <input class="form-control" type="text" readonly value="{{ $collection->stasiun->nama }}">
                                             </div>
 
-                                            <div class="modal fade" id="modalToggle" aria-labelledby="modalToggleLabel"
-                                                tabindex="-1" style="display: none" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered">
-                                                    <div class="modal-content">
-                                                        <div class="modal-body">
-                                                            <img src="{{ Storage::url('public/assets/img/claim/').$collection->foto }}"
-                                                                alt="bukti-foto-barang" class="d-block rounded w-100"
-                                                                id="uploadedAvatar">
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <div class="mb-3 col-md-4">
+                                                <label class="form-label">Area Kehilangan</label>
+                                                <input class="form-control" type="text" readonly value="{{ $collection->area->nama }}">
                                             </div>
 
+                                            {{-- FOTO --}}
+                                            <div class="d-flex align-items-start align-items-sm-center gap-4 mt-3">
+                                                <img src="{{ Storage::url('public/assets/img/aduan/' . $collection->foto) }}"
+                                                    alt="Foto Barang"
+                                                    class="rounded shadow-sm"
+                                                    id="fotoBarang"
+                                                    style="max-width: 200px; height: auto; cursor: zoom-in; object-fit: contain;"
+                                                    onclick="openZoomModal(this.src)">
+                                            </div>
                                         </div>
 
-                                        @if ($collection->status ==0 ) <div
-                                            class="d-flex align-items-start align-items-sm-center gap-4 mt-5">
+                                        {{-- MODAL ZOOM GAMBAR (TRANSPARAN) --}}
+                                        <div class="modal fade" id="zoomModal" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-fullscreen">
+                                                <div class="modal-content border-0 shadow-none bg-transparent d-flex justify-content-center align-items-center"
+                                                    onclick="closeZoomModal(event)">
+                                                    <img id="zoomedImage" src="" alt="Zoomed Image"
+                                                        class="img-fluid rounded shadow"
+                                                        style="max-height: 95vh; object-fit: contain; cursor: zoom-out;">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <script>
+                                            function openZoomModal(src) {
+                                                const zoomedImage = document.getElementById('zoomedImage');
+                                                zoomedImage.src = src;
+                                                const zoomModal = new bootstrap.Modal(document.getElementById('zoomModal'), {
+                                                    backdrop: false // tidak pakai overlay gelap bawaan
+                                                });
+                                                zoomModal.show();
+                                            }
+
+                                            function closeZoomModal(event) {
+                                                if (event.target.id === 'zoomModal' || event.target.classList.contains('modal-content')) {
+                                                    const zoomModalEl = document.getElementById('zoomModal');
+                                                    const modalInstance = bootstrap.Modal.getInstance(zoomModalEl);
+                                                    modalInstance.hide();
+                                                }
+                                            }
+                                        </script>
+
+                                        {{-- TOMBOL KONFIRMASI / TOLAK --}}
+                                        @if ($collection->status == 0)
+                                        <div class="d-flex align-items-start align-items-sm-center gap-4 mt-5">
                                             <form method="POST" action="{{ route('konfirmasi-aduan') }}">
                                                 @csrf
                                                 @method('PUT')
                                                 <input type="hidden" name="id" value="{{ $collection->id }}">
-                                                <button type="submit" class="btn btn-success deactivate-account">
+                                                <button type="submit" class="btn btn-success">
                                                     Terima Aduan
                                                 </button>
                                             </form>
+
                                             <form method="POST" action="{{ route('tolak-aduan') }}">
                                                 @csrf
                                                 @method('PUT')
                                                 <input type="hidden" name="id" value="{{ $collection->id }}">
-                                                <button type="submit" class="btn btn-danger deactivate-account">
+                                                <button type="submit" class="btn btn-danger">
                                                     Tolak Aduan
                                                 </button>
                                             </form>
                                         </div>
                                         @endif
-
-
-
 
                                     </div>
                                 </div>

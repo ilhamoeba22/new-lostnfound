@@ -97,6 +97,7 @@
                                             enctype="multipart/form-data">
                                             @csrf
                                             <h3>Data Barang</h3>
+
                                             <div class="row">
                                                 <div class="mb-3 col-md-6">
                                                     <label for="namabarang" class="form-label">
@@ -106,7 +107,18 @@
                                                         name="namabarang" placeholder="masukan nama barang" autofocus />
                                                 </div>
                                                 <div class="mb-3 col-md-6">
-                                                    <label for="kategori_id" class="form-label">Katagori</label>
+                                                    <label for="kategori_id" class="form-label d-flex align-items-center">
+                                                        Kategori
+                                                        <!-- Ikon Info -->
+                                                        <button type="button"
+                                                            class="btn btn-sm btn-link text-primary p-0 ms-2"
+                                                            data-bs-toggle="popover"
+                                                            data-bs-trigger="focus"
+                                                            title="Informasi Kategori Barang"
+                                                            data-bs-content="Pilih kategori barang yang sesuai, karena data ini akan digunakan untuk mencocokkan laporan kehilangan dengan informasi dari pengguna PT KAI berdasarkan kategori barang yang sama.">
+                                                            <i class="bx bx-info-circle fs-5"></i>
+                                                        </button>
+                                                    </label>
                                                     <select class="form-select" name="kategori_id" id="kategori_id"
                                                         aria-label="kategori_id">
                                                         <option selected="">Pilih Kategori Barang</option>
@@ -163,49 +175,55 @@
                                                 </div>
 
 
-
-
                                                 <div class="d-flex align-items-start align-items-sm-center gap-4">
-                                                    <img src="" alt="foto-barang" class="d-block rounded" height="100"
-                                                        width="100" id="uploadedAvatar" />
+
+
+                                                    {{-- Tombol Upload --}}
                                                     <div class="button-wrapper">
-                                                        <label for="upload" class="btn btn-primary me-2 mb-4"
-                                                            tabindex="0">
-                                                            <span class="d-none d-sm-block">
-                                                                tambahkan Foto
-                                                            </span>
+                                                        <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                                                            <span class="d-none d-sm-block">Upload Bukti</span>
                                                             <i class="bx bx-upload d-block d-sm-none"></i>
                                                             <input type="file" name="foto" id="upload"
                                                                 class="account-file-input" hidden
                                                                 accept="image/png, image/jpeg" />
                                                         </label>
+
                                                         <button type="button"
-                                                            class="btn btn-outline-secondary account-image-reset mb-4">
+                                                            class="btn btn-outline-secondary account-image-reset mb-4"
+                                                            id="resetImage">
                                                             <i class="bx bx-reset d-block d-sm-none"></i>
                                                             <span class="d-none d-sm-block">Reset</span>
                                                         </button>
 
+                                                        <!-- <p class="text-muted mb-0">
+                                                            Sertakan bukti kehilangan (contoh: tiket perjalanan atau foto barang)
+                                                        </p> -->
+                                                    </div>
+                                                    {{-- Preview Gambar --}}
+                                                    <img id="previewImage"
+                                                        src="{{ asset('public/assets/img/default.png') }}"
+                                                        alt="foto-barang"
+                                                        class="d-block rounded border"
+                                                        height="180"
+                                                        width="180"
+                                                        style="object-fit: cover; cursor: pointer;"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#imagePreviewModal" />
+                                                </div>
+
+                                                {{-- Modal untuk zoom gambar --}}
+                                                <div class="modal fade" id="imagePreviewModal" tabindex="-1" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                        <div class="modal-content bg-transparent border-0 shadow-none">
+                                                            <div class="modal-body text-center p-0">
+                                                                <img id="zoomedImage"
+                                                                    src="{{ asset('assets/img/default.png') }}"
+                                                                    alt="Zoom Preview"
+                                                                    class="img-fluid rounded shadow" />
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-
-                                            <div class="mb-3 col-12 mb-0">
-                                                <div class="alert alert-warning">
-                                                    <h6 class="alert-heading fw-bold mb-1">
-                                                        Are you sure you want to delete your account?
-                                                    </h6>
-                                                    <p class="mb-0">
-                                                        Once you delete your account, there is no going
-                                                        back. Please be certain.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="form-check mb-3">
-                                                {{-- <input class="form-check-input" type="checkbox"
-                                                    name="accountActivation" id="accountActivation" />
-                                                <label class="form-check-label" for="accountActivation">
-                                                    Setuju
-                                                </label> --}}
                                             </div>
 
                                             <button type="submit" class="btn btn-danger deactivate-account">
@@ -248,15 +266,45 @@
     <script src="{{ asset('assets') }}/vendor/js/menu.js"></script>
     <!-- endbuild -->
 
-    <!-- Vendors JS -->
-
     <!-- Main JS -->
     <script src="{{ asset('assets') }}/js/main.js"></script>
 
-
-
     <!-- Page JS -->
     <script src="{{ asset('assets') }}/js/pages-account-settings-account.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+            [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+        });
+    </script>
+    @push('scripts')
+    <script>
+        const uploadInput = document.getElementById('upload');
+        const previewImage = document.getElementById('previewImage');
+        const zoomedImage = document.getElementById('zoomedImage');
+        const resetBtn = document.getElementById('resetImage');
+
+        // Saat file diupload
+        uploadInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    previewImage.src = e.target.result;
+                    zoomedImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Tombol reset gambar
+        resetBtn.addEventListener('click', () => {
+            uploadInput.value = '';
+            previewImage.src = "{{ asset('assets/img/default.png') }}";
+            zoomedImage.src = "{{ asset('assets/img/default.png') }}";
+        });
+    </script>
 
 </body>
 
