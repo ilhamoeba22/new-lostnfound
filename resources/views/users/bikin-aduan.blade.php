@@ -127,16 +127,27 @@
                                                             name="namabarang" placeholder="masukan nama barang"
                                                             autofocus />
                                                     </div>
+
                                                     <div class="mb-3 col-md-6">
-                                                        <label for="kategori_id" class="form-label">Katagori</label>
+                                                        <label for="kategori_id" class="form-label d-flex align-items-center">
+                                                            Kategori
+                                                            <!-- Ikon Info -->
+                                                            <button type="button"
+                                                                class="btn btn-sm btn-link text-primary p-0 ms-2"
+                                                                data-bs-toggle="popover"
+                                                                data-bs-trigger="focus"
+                                                                title="Informasi Kategori Barang"
+                                                                data-bs-content="Pilih kategori barang yang sesuai, karena data ini akan digunakan untuk mencocokkan laporan kehilangan dengan informasi dari pengguna PT KAI berdasarkan kategori barang yang sama.">
+                                                                <i class="bx bx-info-circle fs-5"></i>
+                                                            </button>
+                                                        </label>
+
                                                         <select required class="form-select" name="kategori_id"
                                                             id="kategori_id" aria-label="kategori_id">
-                                                            <option selected="">Pilih Kategori Barang</option>
-                                                            @foreach ($kategoris as $kategori )
-                                                            <option value="{{ $kategori->id }}">{{ $kategori->nama }}
-                                                            </option>
+                                                            <option selected disabled>Pilih Kategori Barang</option>
+                                                            @foreach ($kategoris as $kategori)
+                                                            <option value="{{ $kategori->id }}">{{ $kategori->nama }}</option>
                                                             @endforeach
-
                                                         </select>
                                                     </div>
 
@@ -171,7 +182,7 @@
                                                     </div>
                                                     <div class="mb-3 col-md-3">
                                                         <label for="area_id" class="form-label">
-                                                            Area ditemukan
+                                                            Area Kehilangan
                                                         </label>
                                                         <select required class="form-select" name="area_id" id="area_id"
                                                             aria-label="area_id">
@@ -221,19 +232,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="mb-3 col-12 mb-0">
-                                                    <div class="alert alert-warning">
-                                                        <h6 class="alert-heading fw-bold mb-1">
-                                                            Pastikan data kamu telah sesuai , agar adudan kamu dapat
-                                                            diterima
-                                                        </h6>
-                                                        <p class="mb-0">
-                                                            Once you delete your account, there is no going
-                                                            back. Please be certain.
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <div class="form-check mb-3">
+                                                <div class="form-check mb-3 mt-3">
                                                     <input class="form-check-input checked" type="checkbox"
                                                         name="checked" id="checked" />
                                                     <label class="form-check-label" for="checked">
@@ -294,21 +293,25 @@
         <!-- Page JS -->
         <script src="assets/js/pages-account-settings-account.js"></script>
 
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+                [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+            });
+        </script>
 
         <script>
-            $( document ).ready(function() {
+            $(document).ready(function() {
                 $('.buat-aduan').addClass('disabled')
-                $(".checked").change(function(){
+                $(".checked").change(function() {
 
-                if($(".checked").is(':checked')){
-                    $('.buat-aduan').removeClass('disabled')
+                    if ($(".checked").is(':checked')) {
+                        $('.buat-aduan').removeClass('disabled')
                     } else {
                         $('.buat-aduan').addClass('disabled')
                     }
                 })
-});
-            
-          
+            });
         </script>
 
 </body>

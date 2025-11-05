@@ -98,7 +98,8 @@
 
                                                 <span class="d-block mb-1">TOTAL BARANG DITEMUKAN</span>
                                                 <h3 class="card-title text-success  text-nowrap mb-2">
-                                                    {{$founditem->count()}}</h3>
+                                                    {{$founditem->count()}}
+                                                </h3>
 
                                             </div>
                                         </div>
@@ -153,7 +154,8 @@
                                                         <tr>
                                                             <th>ID Barang</th>
                                                             <th>Nama Barang</th>
-                                                            <th>Tanggal Ditemukan</th>
+                                                            <th>Tanggal</th>
+                                                            <th>Stasiun</th>
                                                             <th>Kategori</th>
                                                             <th>Actions</th>
                                                         </tr>
@@ -163,20 +165,21 @@
                                                         <tr>
                                                             <td>
                                                                 <i class="fab fa-angular fa-lg text-danger me-3"></i>
-                                                                <strong> {{$items->id}} </strong>
+                                                                <strong>{{ $items->id }}</strong>
                                                             </td>
-                                                            <td>{{$items->namabarang}}</td>
-                                                            <td>{{$items->created_at}}</td>
+                                                            <td>{{ $items->namabarang }}</td>
+                                                            <td>{{ $items->created_at }}</td>
+                                                            <td>{{ $items->stasiun ? $items->stasiun->nama : '-' }}</td>
                                                             <td>
                                                                 <span class="badge bg-label-success me-1">
-                                                                    {{$items->kategori->nama}}
+                                                                    {{ $items->kategori->nama }}
                                                                 </span>
                                                             </td>
                                                             <td>
                                                                 <a class="dropdown-item"
-                                                                    href="{{ route('detaillostitems',['id'=>'512656517']) }}">
+                                                                    href="{{ route('detaillostitems', ['id' => $items->id]) }}">
                                                                     <i class="bx bx-envelope-open me-1"></i>
-                                                                    Lihat Detial
+                                                                    Lihat Detail
                                                                 </a>
                                                             </td>
                                                         </tr>
@@ -201,22 +204,23 @@
                                                     <tbody class="table-border-bottom-0">
                                                         @foreach($founditem as $items)
                                                         <tr>
-                                                            <td>{{$items->namabarang}}</td>
-                                                            <td>{{$items->created_at}}</td>
+                                                            <td>{{ $items->namabarang }}</td>
+                                                            <td>{{ $items->created_at }}</td>
                                                             <td>
                                                                 <span class="badge bg-label-success me-1">
-                                                                    {{$items->kategori->nama}}
+                                                                    {{ $items->kategori->nama }}
                                                                 </span>
                                                             </td>
                                                             <td>
                                                                 <a class="dropdown-item"
-                                                                    href="{{ route('detaillostitems',['id'=>'512656517']) }}">
+                                                                    href="{{ route('detaillostitems', ['id' => $items->id]) }}">
                                                                     <i class="bx bx-envelope-open me-1"></i>
-                                                                    Lihat Detial
+                                                                    Lihat Detail
                                                                 </a>
                                                             </td>
                                                         </tr>
                                                         @endforeach
+
 
                                                     </tbody>
                                                 </table>

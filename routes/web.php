@@ -71,14 +71,13 @@ Route::get('admin/dashboard', function (Request $request) {
     $founditem = Barang::all();
     $totalitem =  Barang::all()->count();
     $aduan =  Aduan::where("status", 1)->get();
-    // dd(Auth::user()->role);
+
     return view('admin.dashboard', [
         'user' => $request->user(),
         'lostitem' => $lostitem,
         'founditem' => $founditem,
         'totalitem' => $totalitem,
         'aduan' => $aduan,
-
     ]);
 })->middleware(['auth', 'verified', 'checkRole:admin'])->name('dashboard');
 
