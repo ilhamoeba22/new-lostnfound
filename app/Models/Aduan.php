@@ -33,12 +33,12 @@ class Aduan extends Model
     {
         return $this->belongsTo(Kategori::class);
     }
-    public function stasiun()
-    {
-        return $this->belongsTo(Statiun::class);
-    }
     public function area()
     {
         return $this->belongsTo(Area::class);
+    }
+    public function stasiun()
+    {
+        return $this->belongsTo(Statiun::class, 'stasiun_id');
     }
 }

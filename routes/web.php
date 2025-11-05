@@ -1,16 +1,18 @@
 <?php
 
+use App\Models\Aduan;
+use App\Models\Barang;
+use App\Models\Statiun;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\User\AduanController;
 use App\Http\Controllers\Admin\ItemsController;
 use App\Http\Controllers\Admin\LostItemController;
 use App\Http\Controllers\Auth\SocialiteController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\User\AduanController;
-use App\Models\Aduan;
-use App\Models\Barang;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,27 +61,36 @@ Route::middleware(['auth', 'checkRole:user,admin'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->middleware(['auth', 'verified', 'checkRole:user,admin'])->name('profile.destroy');
 });
 
-
-
-// admin
-
-
-
-
 Route::get('admin/dashboard', function (Request $request) {
+    // Hitung total data
     $lostitem = Aduan::where("status", 1)->count();
     $founditem = Barang::all();
-    $totalitem =  Barang::all()->count();
-    $aduan =  Aduan::where("status", 1)->get();
+    $totalitem = Barang::count();
 
+    // Ambil data aduan dengan relasi
+    $aduan = Aduan::with(['kategori', 'stasiun'])
+        ->where("status", 1)
+        ->latest()
+        ->get();
+
+    // Ambil daftar stasiun unik yang muncul di aduan
+    $stasiuns = $aduan
+        ->pluck('stasiun')   // ambil relasi stasiun
+        ->filter()           // hapus null
+        ->unique('id')       // hanya ambil yang unik
+        ->values();          // reset index array
+
+    // Kembalikan ke view
     return view('admin.dashboard', [
         'user' => $request->user(),
         'lostitem' => $lostitem,
         'founditem' => $founditem,
         'totalitem' => $totalitem,
         'aduan' => $aduan,
+        'stasiuns' => $stasiuns, // ✅ tambahkan ini
     ]);
 })->middleware(['auth', 'verified', 'checkRole:admin'])->name('dashboard');
+
 
 
 Route::get('/admin/items', [itemsController::class, 'index'])->name('items');

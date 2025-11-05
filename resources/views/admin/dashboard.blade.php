@@ -128,29 +128,27 @@
                                 <h6 class="text-muted">Laporan</h6>
 
                                 <div class="nav-align-top mb-4">
-                                    <ul class="nav nav-tabs" role="tablist">
-                                        <li class="nav-item">
-                                            <button type="button" class="nav-link active " role="tab"
-                                                data-bs-toggle="tab" data-bs-target="#navs-top-items"
-                                                aria-controls="navs-top-items" aria-selected="true">
-                                                Aduan
+                                    <ul class="nav nav-tabs" id="dashboardTabs" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link active" id="tab-items" data-bs-toggle="tab" data-bs-target="#navs-top-items" type="button" role="tab">
+                                                Barang Hilang (Aduan)
                                             </button>
                                         </li>
-                                        <li class="nav-item">
-                                            <button type="button" class="nav-link " role="tab" data-bs-toggle="tab"
-                                                data-bs-target="#navs-top-lost" aria-controls="navs-top-lost"
-                                                aria-selected="true">
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="tab-lost" data-bs-toggle="tab" data-bs-target="#navs-top-lost" type="button" role="tab">
                                                 Barang Ditemukan
                                             </button>
                                         </li>
-
                                     </ul>
-                                    <div class="tab-content">
 
-                                        <div class="tab-pane fade active show" id="navs-top-items" role="tabpanel">
+                                    <!-- Tabs Content -->
+                                    <div class="tab-content mt-3" id="dashboardTabsContent">
+
+                                        <!-- ==================== TAB ITEMS ==================== -->
+                                        <div class="tab-pane fade show active" id="navs-top-items" role="tabpanel">
                                             <div class="table-responsive">
-                                                <table class="table">
-                                                    <thead>
+                                                <table id="itemsTable" class="table table-bordered table-striped align-middle">
+                                                    <thead class="table-light">
                                                         <tr>
                                                             <th>ID Barang</th>
                                                             <th>Nama Barang</th>
@@ -159,27 +157,35 @@
                                                             <th>Kategori</th>
                                                             <th>Actions</th>
                                                         </tr>
+                                                        <!-- Baris Filter -->
+                                                        <tr class="filters">
+                                                            <th><input type="text" class="form-control form-control-sm" placeholder="Cari ID" /></th>
+                                                            <th><input type="text" class="form-control form-control-sm" placeholder="Cari Nama" /></th>
+                                                            <th><input type="text" class="form-control form-control-sm" placeholder="Cari Tanggal" /></th>
+                                                            <th>
+                                                                <select class="form-select form-select-sm">
+                                                                    <option value="">Semua Stasiun</option>
+                                                                    @foreach($stasiuns as $stasiun)
+                                                                    <option value="{{ $stasiun->nama }}">{{ $stasiun->nama }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </th>
+                                                            <th><input type="text" class="form-control form-control-sm" placeholder="Cari Kategori" /></th>
+                                                            <th></th>
+                                                        </tr>
                                                     </thead>
+
                                                     <tbody class="table-border-bottom-0">
                                                         @foreach($aduan as $items)
                                                         <tr>
-                                                            <td>
-                                                                <i class="fab fa-angular fa-lg text-danger me-3"></i>
-                                                                <strong>{{ $items->id }}</strong>
-                                                            </td>
+                                                            <td><strong>{{ $items->id }}</strong></td>
                                                             <td>{{ $items->namabarang }}</td>
-                                                            <td>{{ $items->created_at }}</td>
+                                                            <td>{{ $items->created_at->format('Y-m-d') }}</td>
                                                             <td>{{ $items->stasiun ? $items->stasiun->nama : '-' }}</td>
+                                                            <td>{{ $items->kategori->nama }}</td>
                                                             <td>
-                                                                <span class="badge bg-label-success me-1">
-                                                                    {{ $items->kategori->nama }}
-                                                                </span>
-                                                            </td>
-                                                            <td>
-                                                                <a class="dropdown-item"
-                                                                    href="{{ route('detaillostitems', ['id' => $items->id]) }}">
-                                                                    <i class="bx bx-envelope-open me-1"></i>
-                                                                    Lihat Detail
+                                                                <a class="btn btn-sm btn-primary" href="{{ route('detaillostitems', ['id' => $items->id]) }}">
+                                                                    <i class="bx bx-envelope-open me-1"></i> Lihat Detail
                                                                 </a>
                                                             </td>
                                                         </tr>
@@ -189,15 +195,15 @@
                                             </div>
                                         </div>
 
-
-                                        <div class="tab-pane fade  " id="navs-top-lost" role="tabpanel">
+                                        <!-- ==================== TAB LOST ITEMS ==================== -->
+                                        <div class="tab-pane fade" id="navs-top-lost" role="tabpanel">
                                             <div class="table-responsive">
-                                                <table class="table">
-                                                    <thead>
+                                                <table class="table table-bordered table-striped align-middle">
+                                                    <thead class="table-light">
                                                         <tr>
                                                             <th>Nama Barang</th>
                                                             <th>Tanggal</th>
-                                                            <th>Status</th>
+                                                            <th>Kategori</th>
                                                             <th>Actions</th>
                                                         </tr>
                                                     </thead>
@@ -205,23 +211,17 @@
                                                         @foreach($founditem as $items)
                                                         <tr>
                                                             <td>{{ $items->namabarang }}</td>
-                                                            <td>{{ $items->created_at }}</td>
+                                                            <td>{{ $items->created_at->format('Y-m-d') }}</td>
                                                             <td>
-                                                                <span class="badge bg-label-success me-1">
-                                                                    {{ $items->kategori->nama }}
-                                                                </span>
+                                                                <span class="badge bg-success">{{ $items->kategori->nama }}</span>
                                                             </td>
                                                             <td>
-                                                                <a class="dropdown-item"
-                                                                    href="{{ route('detaillostitems', ['id' => $items->id]) }}">
-                                                                    <i class="bx bx-envelope-open me-1"></i>
-                                                                    Lihat Detail
+                                                                <a class="btn btn-sm btn-primary" href="{{ route('detaillostitems', ['id' => $items->id]) }}">
+                                                                    <i class="bx bx-envelope-open me-1"></i> Lihat Detail
                                                                 </a>
                                                             </td>
                                                         </tr>
                                                         @endforeach
-
-
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -230,24 +230,25 @@
                                     </div>
                                 </div>
                             </div>
-                            <!--/ Expense Overview -->
                         </div>
+                        <!--/ Expense Overview -->
                     </div>
-                    <!-- / Content -->
-
-                    <!-- Footer -->
-                    @include('layouts.footer')
-                    <!-- / Footer -->
-
-                    <div class="content-backdrop fade"></div>
                 </div>
-                <!-- Content wrapper -->
-            </div>
-            <!-- / Layout page -->
-        </div>
+                <!-- / Content -->
 
-        <!-- Overlay -->
-        <div class="layout-overlay layout-menu-toggle"></div>
+                <!-- Footer -->
+                @include('layouts.footer')
+                <!-- / Footer -->
+
+                <div class="content-backdrop fade"></div>
+            </div>
+            <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+    </div>
+
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
     </div>
     <!-- / Layout wrapper -->
 
@@ -271,6 +272,43 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- Tambahkan script di bawah (paling bawah halaman) -->
+    <!-- DataTables CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- ==================== SCRIPT FILTER ==================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const table = document.getElementById('itemsTable');
+            const filters = table.querySelectorAll('.filters input, .filters select');
+            const rows = table.querySelectorAll('tbody tr');
+
+            filters.forEach((filter, index) => {
+                filter.addEventListener('input', () => filterTable());
+                filter.addEventListener('change', () => filterTable());
+            });
+
+            function filterTable() {
+                const criteria = Array.from(filters).map(f => f.value.toLowerCase());
+
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    let visible = true;
+
+                    cells.forEach((cell, i) => {
+                        if (criteria[i] && !cell.textContent.toLowerCase().includes(criteria[i])) {
+                            visible = false;
+                        }
+                    });
+
+                    row.style.display = visible ? '' : 'none';
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

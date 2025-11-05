@@ -15,10 +15,21 @@ class LostItemController extends Controller
      */
     public function index()
     {
-        //
-        $collection = Aduan::latest()->paginate(5);
-        return view('admin.lostitems', compact('collection'));
+        // Ambil semua aduan dengan relasi kategori dan stasiun
+        $collection = Aduan::with(['kategori', 'stasiun'])
+            ->latest()
+            ->paginate(10);
+
+        // Ambil hanya stasiun yang muncul di data aduan
+        $stasiuns = $collection
+            ->pluck('stasiun')   // Ambil relasi stasiun dari setiap aduan
+            ->filter()           // Hapus null
+            ->unique('id')       // Ambil yang unik
+            ->values();          // Reset index
+
+        return view('admin.lostitems', compact('collection', 'stasiuns'));
     }
+
 
     /**
      * Show the form for creating a new resource.
