@@ -6,19 +6,22 @@
             <script>
                 document.write(new Date().getFullYear());
             </script>
-            manusiacoding -
+            Aqsal -
             <a href="#" target="_blank" class="footer-link fw-bolder">
                 Projectkai
             </a>
         </div>
-        <div>
-            <a href="#" class="footer-link me-4" target="_blank">
-                License
-
-                <a href="#" target="_blank" class="footer-link me-4">
-                    Support
-                </a>
-        </div>
     </div>
 </footer>
+@if(request()->is('users/*'))
+<a href="https://wa.me/6282140313894" class="whatsapp-float-button" target="_blank">
+    <i class="fa fa-whatsapp"></i>
+</a>
+@endif
+
+@if(!request()->is('admin/*'))
+<a href="https://wa.me/6282140313894" class="whatsapp-float-button" target="_blank">
+    <i class="fa fa-whatsapp"></i>
+</a>
+@endif
 <!-- / Footer -->
