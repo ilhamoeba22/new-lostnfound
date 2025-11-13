@@ -158,7 +158,6 @@
 
     <script>
         $(document).ready(function() {
-            // Opsi bahasa Indonesia untuk DataTables
             var indonesianLanguage = {
                 "search": "Cari:",
                 "lengthMenu": "Tampilkan _MENU_ entri",
@@ -175,22 +174,19 @@
                 }
             };
 
-            // Inisialisasi Tabel "Aduan"
             var table = $('#aduanTable').DataTable({
                 "language": indonesianLanguage,
             });
 
-            // Logika untuk menghubungkan filter kustom Anda ke API DataTables
             $('#aduanTable .filters th').each(function(i) {
-                var filterControl = $(this).find('input'); // Di tabel ini hanya ada 'input'
+                var filterControl = $(this).find('input');
 
                 if (filterControl.length > 0) {
-                    // Untuk input teks
                     filterControl.on('keyup change', function() {
                         if (table.column(i).search() !== this.value) {
                             table
                                 .column(i)
-                                .search(this.value) // Cari nilai yang 'mengandung'
+                                .search(this.value)
                                 .draw();
                         }
                     });

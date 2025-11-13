@@ -239,7 +239,6 @@
 
     <script>
         $(document).ready(function() {
-            // Opsi bahasa Indonesia untuk DataTables
             var indonesianLanguage = {
                 "search": "Cari:",
                 "lengthMenu": "Tampilkan _MENU_ entri",
@@ -256,48 +255,35 @@
                 }
             };
 
-            // 1. Inisialisasi Tabel "Barang Ditemukan" (Inisialisasi standar)
-            // Ini akan secara otomatis menambahkan search, pagination, dan sorting
             $('#foundItemsTable').DataTable({
                 "language": indonesianLanguage
             });
 
-            // 2. Inisialisasi Tabel "Barang Hilang (Aduan)" (Dengan filter kustom)
             var table = $('#itemsTable').DataTable({
                 "language": indonesianLanguage,
-                // 'orderCellsTop': true, // Opsional: jika Anda ingin filter di atas header
-                // 'fixedHeader': true   // Opsional: jika Anda ingin header tetap
             });
 
-            // Logika untuk menghubungkan filter kustom Anda ke API DataTables
             $('#itemsTable .filters th').each(function(i) {
                 var th = $(this);
-                // Hanya proses kolom yang punya input/select, lewati kolom 'Actions'
                 var filterControl = $(this).find('input, select');
 
                 if (filterControl.length > 0) {
                     if (filterControl.is('input')) {
-                        // Untuk input teks
                         filterControl.on('keyup change', function() {
                             if (table.column(i).search() !== this.value) {
                                 table
                                     .column(i)
-                                    .search(this.value) // Cari nilai yang 'mengandung'
+                                    .search(this.value)
                                     .draw();
                             }
                         });
                     } else if (filterControl.is('select')) {
-                        // Untuk dropdown/select
                         filterControl.on('change', function() {
                             var val = $(this).val();
-                            // Gunakan regex untuk mencocokkan nilai persis
-                            // '^' + val + '$' -> hanya cocok jika sama persis
-                            // Jika val = "", regex akan menjadi "^$" yang tidak akan cocok apa-apa
-                            // jadi kita perlu kondisi
-                            var searchVal = val ? '^' + val + '$' : ''; // Jika val kosong, cari string kosong (semua)
+                            var searchVal = val ? '^' + val + '$' : '';
                             table
                                 .column(i)
-                                .search(searchVal, true, false) // (value, regex, smart_search)
+                                .search(searchVal, true, false)
                                 .draw();
                         });
                     }
