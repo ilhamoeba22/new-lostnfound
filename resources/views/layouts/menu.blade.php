@@ -51,16 +51,6 @@
         </li>
     </ul>
 
-    <!-- Customer Service (selalu di bawah) -->
-    <div class="text-center border-top pt-3 pb-3 position-absolute w-100" style="bottom: 0; left: 0; background: #fff;">
-        <div class="small text-muted mb-1">
-            <i class="bx bx-phone text-danger"></i> Customer Service
-        </div>
-        <a href="tel:021121" class="d-block text-primary fw-semibold mb-1">021-121</a>
-        <a href="https://wa.me/628111211121" target="_blank" class="d-block text-success fw-semibold">
-        </a>
-    </div>
-
 
 </aside>
 <!-- / Menu -->

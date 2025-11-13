@@ -196,7 +196,7 @@
                                                             </td>
                                                             <td>
                                                                 <a class="btn btn-sm btn-primary"
-                                                                    href="{{ route('detaillostitems', ['id' => $items->id]) }}">
+                                                                    href="{{ route('edit-item',$items->id) }}">
                                                                     <i class="bx bx-envelope-open me-1"></i> Lihat
                                                                     Detail
                                                                 </a>

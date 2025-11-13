@@ -87,7 +87,7 @@ Route::get('admin/dashboard', function (Request $request) {
         'founditem' => $founditem,
         'totalitem' => $totalitem,
         'aduan' => $aduan,
-        'stasiuns' => $stasiuns, // ✅ tambahkan ini
+        'stasiuns' => $stasiuns,
     ]);
 })->middleware(['auth', 'verified', 'checkRole:admin'])->name('dashboard');
 
