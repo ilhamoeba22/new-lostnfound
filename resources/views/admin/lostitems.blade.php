@@ -15,40 +15,30 @@
 
     <meta name="description" content="" />
 
-    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('assets') }}/img/favicon/favicon.ico" />
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
         href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
         rel="stylesheet" />
 
-    <!-- Icons. Uncomment required icon fonts -->
     <link rel="stylesheet" href="{{ asset('assets') }}/vendor/fonts/boxicons.css" />
 
-    <!-- Core CSS -->
     <link rel="stylesheet" href="{{ asset('assets') }}/vendor/css/core.css" class="template-customizer-core-css" />
     <link rel="stylesheet" href="{{ asset('assets') }}/vendor/css/theme-default.css"
         class="template-customizer-theme-css" />
     <link rel="stylesheet" href="{{ asset('assets') }}/css/demo.css" />
 
-    <!-- Vendors CSS -->
     <link rel="stylesheet" href="{{ asset('assets') }}/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
-    <!-- Page CSS -->
-
-    <!-- Helpers -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
     <script src="{{ asset('assets') }}/vendor/js/helpers.js"></script>
 
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="{{ asset('assets') }}/js/config.js"></script>
 </head>
 
 <body>
-    <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
 
@@ -57,10 +47,7 @@
             @include('layouts.menu-admin')
             {{-- end menu --}}
 
-            <!-- Layout container -->
             <div class="layout-page">
-                <!-- Navbar -->
-
                 <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
                     id="layout-navbar">
                     <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
@@ -72,12 +59,7 @@
                     @include ('layouts.navbar')
                 </nav>
 
-                <!-- / Navbar -->
-
-                <!-- Content wrapper -->
                 <div class="content-wrapper">
-                    <!-- Content -->
-
                     <div class="container-xxl flex-grow-1 container-p-y">
                         <h4 class="fw-bold py-3 mb-4">
                             <span class="text-muted fw-light">Data /</span>
@@ -87,11 +69,11 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="card mb-4">
-                                    <!-- Account -->
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="table">
-                                                <thead>
+
+                                            <table id="aduanTable" class="table table-striped table-bordered align-middle">
+                                                <thead class="table-light">
                                                     <tr>
                                                         <th>ADUAN ID</th>
                                                         <th>Nama User</th>
@@ -100,6 +82,15 @@
                                                         <th>Stasiun</th>
                                                         <th>Tanggal Aduan</th>
                                                         <th>Actions</th>
+                                                    </tr>
+                                                    <tr class="filters">
+                                                        <th><input type="text" class="form-control form-control-sm" placeholder="Cari ID" /></th>
+                                                        <th><input type="text" class="form-control form-control-sm" placeholder="Cari User" /></th>
+                                                        <th><input type="text" class="form-control form-control-sm" placeholder="Cari Barang" /></th>
+                                                        <th><input type="text" class="form-control form-control-sm" placeholder="Cari Kategori" /></th>
+                                                        <th><input type="text" class="form-control form-control-sm" placeholder="Cari Stasiun" /></th>
+                                                        <th><input type="text" class="form-control form-control-sm" placeholder="Cari Tanggal" /></th>
+                                                        <th></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="table-border-bottom-0">
@@ -115,78 +106,98 @@
                                                         <td>{{ $aduan->kategori->nama }}</td>
                                                         <td>{{ $aduan->stasiun->nama}}</td>
                                                         <td>{{ $aduan->created_at }}</td>
-
                                                         <td>
-
-                                                            <a class="dropdown-item"
+                                                            <a class="btn btn-sm btn-primary"
                                                                 href="{{ route('detaillostitems',['id'=>$aduan->id]) }}">
                                                                 <i class="bx bx-envelope-open me-1"></i>
-                                                                Lihat Detial
+                                                                Lihat Detail
                                                             </a>
                                                         </td>
                                                     </tr>
                                                     @empty
-                                                    <div class="alert alert-danger">
-                                                        Data Blog belum Tersedia.
-                                                    </div>
                                                     @endforelse
 
                                                 </tbody>
                                             </table>
-
                                         </div>
                                         {{--
                                         <nav aria-label="Page navigation">
                                             <ul class="pagination">
                                                 {{ $collection->links() }}
-                                            </ul>
+                                        </ul>
                                         </nav> --}}
                                     </div>
 
 
-                                    <!-- /Account -->
                                 </div>
 
                             </div>
                         </div>
                     </div>
-                    <!-- / Content -->
-                    <!-- Footer -->
                     @include('layouts.footer')
-                    <!-- / Footer -->
-
                     <div class="content-backdrop fade"></div>
                 </div>
-                <!-- Content wrapper -->
             </div>
-            <!-- / Layout page -->
         </div>
-        <!-- Overlay -->
         <div class="layout-overlay layout-menu-toggle"></div>
     </div>
-    <!-- / Layout wrapper -->
-
-
-    <!-- Core JS -->
-    <!-- build:js {{ asset('assets') }}/vendor/js/core.js -->
     <script src="{{ asset('assets') }}/vendor/libs/jquery/jquery.js"></script>
     <script src="{{ asset('assets') }}/vendor/libs/popper/popper.js"></script>
     <script src="{{ asset('assets') }}/vendor/js/bootstrap.js"></script>
     <script src="{{ asset('assets') }}/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
     <script src="{{ asset('assets') }}/vendor/js/menu.js"></script>
-    <!-- endbuild -->
-
-    <!-- Vendors JS -->
-
-    <!-- Main JS -->
     <script src="{{ asset('assets') }}/js/main.js"></script>
 
-    <!-- Page JS -->
     <script src="{{ asset('assets') }}/js/pages-account-settings-account.js"></script>
 
-    <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Opsi bahasa Indonesia untuk DataTables
+            var indonesianLanguage = {
+                "search": "Cari:",
+                "lengthMenu": "Tampilkan _MENU_ entri",
+                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entSri",
+                "infoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
+                "infoFiltered": "(difilter dari _MAX_ total entri)",
+                "zeroRecords": "Tidak ditemukan data yang sesuai",
+                "emptyTable": "Tidak ada data yang tersedia di tabel",
+                "paginate": {
+                    "first": "Pertama",
+                    "last": "Terakhir",
+                    "next": "Berikutnya",
+                    "previous": "Sebelumnya"
+                }
+            };
+
+            // Inisialisasi Tabel "Aduan"
+            var table = $('#aduanTable').DataTable({
+                "language": indonesianLanguage,
+            });
+
+            // Logika untuk menghubungkan filter kustom Anda ke API DataTables
+            $('#aduanTable .filters th').each(function(i) {
+                var filterControl = $(this).find('input'); // Di tabel ini hanya ada 'input'
+
+                if (filterControl.length > 0) {
+                    // Untuk input teks
+                    filterControl.on('keyup change', function() {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value) // Cari nilai yang 'mengandung'
+                                .draw();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
