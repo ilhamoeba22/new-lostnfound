@@ -97,6 +97,7 @@
                                                         <th>Nama User</th>
                                                         <th>Nama Barang</th>
                                                         <th>Kategori Barang</th>
+                                                        <th>Stasiun</th>
                                                         <th>Tanggal Aduan</th>
                                                         <th>Actions</th>
                                                     </tr>
@@ -112,6 +113,7 @@
                                                         <td>{{ $aduan->user->name }}</td>
                                                         <td>{{ $aduan->namabarang }}</td>
                                                         <td>{{ $aduan->kategori->nama }}</td>
+                                                        <td>{{ $aduan->stasiun->nama}}</td>
                                                         <td>{{ $aduan->created_at }}</td>
 
                                                         <td>
