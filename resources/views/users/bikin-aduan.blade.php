@@ -194,34 +194,19 @@
                                                         </select>
                                                     </div>
                                                     <div class="mb-3 col-md-3">
-                                                        <label for="area_id" class="form-label d-flex align-items-center">
+                                                        <label for="area_id" class="form-label">
                                                             Area Kehilangan
-                                                            <button type="button"
-                                                                class="btn btn-sm btn-link text-primary p-0 ms-2"
-                                                                data-bs-toggle="popover"
-                                                                data-bs-trigger="focus"
-                                                                title="Area Kehilangan"
-                                                                data-bs-content="Pilih area di sekitar stasiun tempat kamu kehilangan barang, misalnya peron, ruang tunggu, atau dalam kereta. Jika tidak ada di daftar, pilih 'Lain-lain' untuk mengetik sendiri.">
-                                                                <i class="bx bx-info-circle fs-5"></i>
-                                                            </button>
                                                         </label>
-
-                                                        <!-- Dropdown Area -->
-                                                        <select required class="form-select" name="area_id" id="area_id">
-                                                            <option selected disabled>Pilih Area</option>
-                                                            @foreach ($areas as $area)
-                                                            <option value="{{ $area->id }}">{{ $area->nama }}</option>
+                                                        <select required class="form-select" name="area_id" id="area_id"
+                                                            aria-label="area_id">
+                                                            <option selected="">Pilih Area</option>
+                                                            @foreach ($areas as $area )
+                                                            <option value="{{ $area->id }}">{{ $area->nama }}
+                                                            </option>
                                                             @endforeach
-                                                            <option value="lain">Lain-lain</option>
+
                                                         </select>
-
-                                                        <!-- Input teks muncul otomatis kalau pilih "Lain-lain" -->
-                                                        <input type="text" id="area_lain" name="area_lain"
-                                                            class="form-control mt-2"
-                                                            placeholder="Tulis area kehilangan lainnya..."
-                                                            style="display: none;" />
                                                     </div>
-
 
                                                     <!-- KETERANGAN LAIN -->
                                                     <div class="mb-3 col-md-8">
@@ -384,25 +369,6 @@
                 })
             });
         </script>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const areaSelect = document.getElementById('area_id');
-                const areaLainInput = document.getElementById('area_lain');
-
-                areaSelect.addEventListener('change', function() {
-                    if (this.value === 'lain') {
-                        areaLainInput.style.display = 'block';
-                        areaLainInput.required = true;
-                    } else {
-                        areaLainInput.style.display = 'none';
-                        areaLainInput.required = false;
-                        areaLainInput.value = ''; // reset teks jika user ganti pilihan
-                    }
-                });
-            });
-        </script>
-
 
 </body>
 
