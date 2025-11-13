@@ -6,22 +6,23 @@
             <script>
                 document.write(new Date().getFullYear());
             </script>
-            Aqsal -
+             -
             <a href="#" target="_blank" class="footer-link fw-bolder">
-                Projectkai
+                Lost&Found
             </a>
         </div>
     </div>
 </footer>
 @if(request()->is('users/*'))
-<a href="https://wa.me/6282140313894" class="whatsapp-float-button" target="_blank">
+<a href="https://wa.me/6281122233121" class="whatsapp-float-button" target="_blank">
     <i class="fa fa-whatsapp"></i>
 </a>
 @endif
 
 @if(!request()->is('admin/*'))
-<a href="https://wa.me/6282140313894" class="whatsapp-float-button" target="_blank">
+<a href="https://wa.me/6281122233121" class="whatsapp-float-button" target="_blank">
     <i class="fa fa-whatsapp"></i>
 </a>
 @endif
 <!-- / Footer -->
+ 

@@ -84,35 +84,37 @@
                                 <x-input-label for="password" class="form-label" :value="__('Password')" />
                                 <div class="input-group input-group-merge">
                                     <x-text-input id="password" class="form-control" type="password" name="password"
-                                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                        aria-describedby="password" required autocomplete="current-password" />
+                                        placeholder="Masukkan password minimal 8 karakter"
+                                        aria-describedby="password" required minlength="8"
+                                        autocomplete="new-password" />
                                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-
                                 </div>
+                                <small class="text-muted">* Password minimal 8 karakter</small>
                                 <x-input-error :messages="$errors->get('password')" class="mt-2" />
                             </div>
-                            <!-- Password -->
+
+                            <!-- Konfirmasi Password -->
                             <div class="mb-3 form-password-toggle">
-                                <x-input-label for="password" class="form-label" :value="__('Password')" />
+                                <x-input-label for="password_confirmation" class="form-label" :value="__('Konfirmasi Password')" />
                                 <div class="input-group input-group-merge">
-                                    <x-text-input id="password" class="form-control" type="password"
-                                        name="password_confirmation"
-                                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                        aria-describedby="password" required autocomplete="current-password" />
+                                    <x-text-input id="password_confirmation" class="form-control" type="password"
+                                        name="password_confirmation" placeholder="Ulangi password di atas"
+                                        aria-describedby="password_confirmation" required minlength="8"
+                                        autocomplete="new-password" />
                                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-
                                 </div>
-                                <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                                <small class="text-muted">* Harus sama dengan password sebelumnya</small>
                             </div>
+
                             <div class="mb-3">
                                 <button class="btn btn-primary d-grid w-100" type="submit">DAFTAR</button>
                             </div>
                         </form>
-                        <div class="divider divider-info">
+                        <!-- <div class="divider divider-info">
                             <div class="divider-text">Daftar dengan</div>
                             <a href="/auth/google" class="btn btn-primary d-grid mt-4">
                                 GOOGLE </a>
-                        </div>
+                        </div> -->
 
 
                         <p class="text-center">

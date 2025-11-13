@@ -94,6 +94,10 @@
                                                 <h6 class="alert-heading fw-bold mb-1">
                                                     Aduan kamu sedang di proses !
                                                 </h6>
+                                                <p class="mb-0 text-dark">
+                                                    Silakan tunggu informasi lebih lanjut. Jika ada pertanyaan,
+                                                    hubungi customer service di bawah.
+                                                </p>
                                             </div>
                                             @elseif ($aduan->status =='1' )
                                             <div class="alert alert-success">
@@ -101,10 +105,13 @@
                                                     Aduan kamu berhasil di terima , berikut kami lampirkan barag yang
                                                     sesuai dengan aduan kamu
                                                 </h6>
+                                                <p class="mb-3 text-gray">
+                                                    Jika barang yang ditampilkan sesuai dengan milikmu, silakan lakukan klaim kepemilikan melalui tombol di bawah.
+                                                </p>
                                             </div>
                                             @else <div class="alert alert-danger">
                                                 <h6 class="alert-heading fw-bold ">
-                                                    yaa.. sseprtinya laporan kamu masih belum sesuai
+                                                    Maaf.. sepertinya laporan kamu masih belum sesuai
                                                 </h6>
                                             </div>
                                             @endif
@@ -192,7 +199,7 @@
                                                     <label for="tanggalkehilangan" class="form-label">
                                                         Tanggal Kehilangan :
                                                     </label>
-                                                    <input class="form-control" value="{{ $aduan->tgl }}" readonly
+                                                    <input class="form-control" value="{{ $aduan->tglketinggalan }}" readonly
                                                         name="tanggalkehilangan" type="date" id="tanggalkehilangan">
                                                 </div>
 
@@ -215,7 +222,7 @@
                                                         keterangan
                                                         lain</label>
                                                     <input class="form-control" type="text" id="namabarang" readonly
-                                                        name="namabarang" value="{{ $aduan->deskripsi_tempat }}" />
+                                                        name="namabarang" value="{{ $aduan->keteranganlain }}" />
                                                 </div>
 
 

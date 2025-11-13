@@ -82,7 +82,7 @@
                         <div class="row">
                             <div class="col-12 col-md-8 col-lg-12">
                                 <div class="row">
-                                    <div class="col-4 mb-4">
+                                    <div class="col-6 mb-4">
                                         <div class="card">
                                             <div class="card-body">
 
@@ -92,7 +92,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-4 mb-4">
+                                    <div class="col-6 mb-4">
                                         <div class="card">
                                             <div class="card-body">
 
@@ -104,7 +104,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-4 mb-4">
+                                    <!-- <div class="col-4 mb-4">
                                         <div class="card">
                                             <div class="card-body">
 
@@ -114,7 +114,7 @@
 
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
 
 
                                 </div>

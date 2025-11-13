@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $kategoris  =    [
-            'Bagasi', 'Elektronik dan gadget', 'Pakaian', 'Aksesoris', 'Dokumen', 'Kantor dan Industri'
+            'Bagasi/Tas', 'Elektronik & gadget', 'Pakaian & Aksesoris', 'Dokumen & Identitas', 'Kantor & Industri', 'Kosmetik & Perawatan', 'Konsumsi & Barang Kecil', 'Barang Bernilai/Dompet', 'Perlengkapan Pribadi/transportasi'
         ];
         foreach ($kategoris as $value) {
             DB::table('kategoris')->insert([

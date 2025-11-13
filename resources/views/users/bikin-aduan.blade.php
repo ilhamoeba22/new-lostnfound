@@ -154,12 +154,23 @@
                                                     </div>
 
                                                     <div class="mb-3 col-md-12">
-                                                        <label class="form-label" for="phoneNumber">
+                                                        <label class="form-label d-flex align-items-center" for="phoneNumber">
                                                             Deskripsi Barang
+                                                            <button type="button"
+                                                                class="btn btn-sm btn-link text-primary p-0 ms-2"
+                                                                data-bs-toggle="popover"
+                                                                data-bs-trigger="focus"
+                                                                title="Informasi Deskripsi Barang"
+                                                                data-bs-content="Tuliskan ciri-ciri khusus dari barang yang hilang, seperti warna, merek, ukuran, atau tanda pengenal lainnya agar memudahkan proses pencarian.">
+                                                                <i class="bx bx-info-circle fs-5"></i>
+                                                            </button>
                                                         </label>
                                                         <textarea required class="form-control" name="deskripsi"
-                                                            id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                            id="exampleFormControlTextarea1"
+                                                            rows="3"
+                                                            placeholder="Contoh: Tas ransel hitam merek Eiger, terdapat gantungan kunci warna merah di resleting utama."></textarea>
                                                     </div>
+
                                                     <div class="mb-3 col-md-4">
                                                         <label for="tglketinggalan" class="form-label">
                                                             Tanggal Kehilangan
@@ -183,25 +194,49 @@
                                                         </select>
                                                     </div>
                                                     <div class="mb-3 col-md-3">
-                                                        <label for="area_id" class="form-label">
+                                                        <label for="area_id" class="form-label d-flex align-items-center">
                                                             Area Kehilangan
+                                                            <button type="button"
+                                                                class="btn btn-sm btn-link text-primary p-0 ms-2"
+                                                                data-bs-toggle="popover"
+                                                                data-bs-trigger="focus"
+                                                                title="Area Kehilangan"
+                                                                data-bs-content="Pilih area di sekitar stasiun tempat kamu kehilangan barang, misalnya peron, ruang tunggu, atau dalam kereta. Jika tidak ada di daftar, pilih 'Lain-lain' untuk mengetik sendiri.">
+                                                                <i class="bx bx-info-circle fs-5"></i>
+                                                            </button>
                                                         </label>
-                                                        <select required class="form-select" name="area_id" id="area_id"
-                                                            aria-label="area_id">
-                                                            <option selected="">Pilih Area</option>
-                                                            @foreach ($areas as $area )
-                                                            <option value="{{ $area->id }}">{{ $area->nama }}
-                                                            </option>
-                                                            @endforeach
 
+                                                        <!-- Dropdown Area -->
+                                                        <select required class="form-select" name="area_id" id="area_id">
+                                                            <option selected disabled>Pilih Area</option>
+                                                            @foreach ($areas as $area)
+                                                            <option value="{{ $area->id }}">{{ $area->nama }}</option>
+                                                            @endforeach
+                                                            <option value="lain">Lain-lain</option>
                                                         </select>
+
+                                                        <!-- Input teks muncul otomatis kalau pilih "Lain-lain" -->
+                                                        <input type="text" id="area_lain" name="area_lain"
+                                                            class="form-control mt-2"
+                                                            placeholder="Tulis area kehilangan lainnya..."
+                                                            style="display: none;" />
                                                     </div>
 
+
+                                                    <!-- KETERANGAN LAIN -->
                                                     <div class="mb-3 col-md-8">
-                                                        <label for="keteranganlain" class="form-label">keterangan
-                                                            lain</label>
-                                                        <textarea required class="form-control" name="keteranganlain"
-                                                            id="keteranganlain" rows="2"></textarea>
+                                                        <label for="keteranganlain" class="form-label d-flex align-items-center">
+                                                            Keterangan Lain
+                                                            <button type="button"
+                                                                class="btn btn-sm btn-link text-primary p-0 ms-2"
+                                                                data-bs-toggle="popover"
+                                                                data-bs-trigger="focus"
+                                                                title="Keterangan Tambahan"
+                                                                data-bs-content="Tambahkan informasi tambahan seperti waktu kehilangan atau bantuan petugas yang sudah dihubungi.">
+                                                                <i class="bx bx-info-circle fs-5"></i>
+                                                            </button>
+                                                        </label>
+                                                        <textarea required class="form-control" name="keteranganlain" id="keteranganlain" rows="2"></textarea>
                                                     </div>
 
                                                     <div class="d-flex align-items-start align-items-sm-center gap-4">
@@ -219,7 +254,7 @@
                                                             </button>
 
                                                             <p class="text-muted mb-0">
-                                                                Sertakan bukti kehilangan (seperti tiket perjalanan atau foto barang)
+                                                                Sertakan bukti kehilangan (seperti tiket perjalanan, foto barang atau dokumen pendukung lainnya)
                                                             </p>
                                                         </div>
                                                         <!-- Preview Gambar -->
@@ -349,6 +384,25 @@
                 })
             });
         </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const areaSelect = document.getElementById('area_id');
+                const areaLainInput = document.getElementById('area_lain');
+
+                areaSelect.addEventListener('change', function() {
+                    if (this.value === 'lain') {
+                        areaLainInput.style.display = 'block';
+                        areaLainInput.required = true;
+                    } else {
+                        areaLainInput.style.display = 'none';
+                        areaLainInput.required = false;
+                        areaLainInput.value = ''; // reset teks jika user ganti pilihan
+                    }
+                });
+            });
+        </script>
+
 
 </body>
 

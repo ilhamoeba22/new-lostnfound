@@ -87,11 +87,11 @@
                                 <button class="btn btn-primary d-grid w-100" type="submit">MASUK</button>
                             </div>
                         </form>
-                        <div class="divider divider-info">
+                        <!-- <div class="divider divider-info">
                             <div class="divider-text">Login Dengan</div>
                             <a href="/auth/google" class="btn btn-primary d-grid mt-4">
                                 AKUN GOOGLE </a>
-                        </div>
+                        </div> -->
 
 
                         <p class="text-center">

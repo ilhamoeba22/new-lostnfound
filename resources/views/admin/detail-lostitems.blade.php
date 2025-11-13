@@ -122,8 +122,10 @@
 
                                             <div class="mb-3 col-md-4">
                                                 <label for="tanggalkehilangan" class="form-label">Tanggal Kehilangan</label>
-                                                <input class="form-control" readonly type="date"
-                                                    value="{{ \Carbon\Carbon::parse($collection->created_at)->format('Y-m-d') }}">
+                                                <input class="form-control" value="{{ $collection->tglketinggalan }}"
+                                                readonly name="tanggalkehilangan" type="date"
+                                                id="tanggalkehilangan">
+                                                    <!-- value="{{ \Carbon\Carbon::parse($collection->created_at)->format('Y-m-d') }}"> -->
                                             </div>
 
                                             <div class="mb-3 col-md-4">
@@ -134,6 +136,11 @@
                                             <div class="mb-3 col-md-4">
                                                 <label class="form-label">Area Kehilangan</label>
                                                 <input class="form-control" type="text" readonly value="{{ $collection->area->nama }}">
+                                            </div>
+
+                                            <div class="mb-3 col-md-12">
+                                                <label class="form-label">Deskripsi Keterangan Lain</label>
+                                                <input class="form-control" type="text" readonly name="keteranganlain" value="{{ $collection->keteranganlain }}">
                                             </div>
 
                                             {{-- FOTO --}}
