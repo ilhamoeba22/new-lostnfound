@@ -210,7 +210,7 @@
                                                         <h6 class="mb-0">Biaya Layanan</h6>
                                                     </div>
                                                     <div class="user-progress">
-                                                        <small class="fw-semibold text-success">Rp. 15.000,00</small>
+                                                        <small class="fw-semibold text-success">Gratis</small>
                                                     </div>
                                                 </div>
                                             </li>

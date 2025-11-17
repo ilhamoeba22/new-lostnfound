@@ -96,7 +96,7 @@
                                                 <tbody class="table-border-bottom-0">
                                                     @forelse ($collection as $aduan)
                                                     <tr
-                                                        class="{{ $aduan->status == '1' ? 'table-success' : 'table-danger' }}">
+                                                        class="{{ $aduan->status == '1' ? 'table-success' : ($aduan->status == '0' ? 'table-warning' : 'table-danger') }}">
                                                         <td>
                                                             <i class="fab fa-angular fa-lg text-danger me-3"></i>
                                                             <strong> {{ $aduan->id }} </strong>
@@ -161,7 +161,7 @@
             var indonesianLanguage = {
                 "search": "Cari:",
                 "lengthMenu": "Tampilkan _MENU_ entri",
-                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entSri",
+                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
                 "infoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
                 "infoFiltered": "(difilter dari _MAX_ total entri)",
                 "zeroRecords": "Tidak ditemukan data yang sesuai",

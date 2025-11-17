@@ -67,7 +67,7 @@
                                         <div class="card">
                                             <div class="card-body">
 
-                                                <span class="d-block mb-1">TOTAL ADUAN</span>
+                                                <span class="d-block mb-1">TOTAL ADUAN DITERIMA</span>
                                                 <h3 class="card-title text-danger text-nowrap mb-2">{{$lostitem}}</h3>
 
                                             </div>
@@ -99,7 +99,7 @@
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link active" id="tab-items" data-bs-toggle="tab"
                                                 data-bs-target="#navs-top-items" type="button" role="tab">
-                                                Barang Hilang (Aduan)
+                                                Barang Hilang (Aduan Diterima)
                                             </button>
                                         </li>
                                         <li class="nav-item" role="presentation">

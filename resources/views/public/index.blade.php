@@ -54,7 +54,7 @@
                 <ul>
                     <li><a class="nav-link scrollto active" href="#hero">Beranda</a></li>
                     <li><a class="nav-link scrollto" href="#about">Tentang</a></li>
-                    <li><a class="nav-link scrollto" href="#services">Layanan</a></li>
+                    <li><a class="nav-link scrollto" href="#services">Alur Layanan</a></li>
                     <li><a class="nav-link scrollto" href="#syaratketentuan">Syarat dan Ketentuan</a></li>
 
                     @if (Auth::user() && Auth::user()->role =='user')
@@ -347,7 +347,7 @@
                             Jl. Lempuyangan No.1<br>
                             Kota Yogyakarta, 55212<br>
                             Indonesia <br><br>
-                            <strong>Phone:</strong> +62 2745 12056<br>
+                            <strong>Phone:</strong> 021-121<br>
                             <strong>Email:</strong> lostandfound@kai.id<br>
                         </p>
                     </div>

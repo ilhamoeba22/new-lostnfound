@@ -151,7 +151,7 @@
                                                     </label>
                                                     <select class="form-select" name="stasiun_id" id="stasiun_id"
                                                         aria-label="stasiun_id">
-                                                        <option selected="">Pilih Kategori Barang</option>
+                                                        <option selected="">Pilih Stasiun</option>
                                                         @foreach ($stasiuns as $stasiun )
                                                         <option value="{{ $stasiun->id }}">{{ $stasiun->nama }}
                                                         </option>
@@ -165,7 +165,7 @@
                                                     </label>
                                                     <select class="form-select" name="area_id" id="area_id"
                                                         aria-label="area_id">
-                                                        <option selected="">Pilih Kategori Barang</option>
+                                                        <option selected="">Pilih Area</option>
                                                         @foreach ($areas as $area )
                                                         <option value="{{ $area->id }}">{{ $area->nama }}
                                                         </option>

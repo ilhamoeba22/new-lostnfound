@@ -36,7 +36,7 @@
                 </li>
                 <li class="menu-item {{ request()->routeIs('bikinaduan') ? 'active ': '' }}">
                     <a href="{{ route('bikinaduan') }}" class="menu-link">
-                        <div data-i18n="Notifications">Bikin Aduan</div>
+                        <div data-i18n="Notifications">Buat Aduan</div>
                     </a>
                 </li>
                 {{-- <li class="menu-item">

@@ -83,7 +83,7 @@ class DatabaseSeeder extends Seeder
             'Layanan Pelanggan (CS)',
             'Lobi Utama',
             'Loket Tiket',
-            'Mesin Penjual Otomatis',
+            'Mesin Penjual Otomatis (Vending Machine)',
             'Minimarket',
             'Musholla',
             'Peron',

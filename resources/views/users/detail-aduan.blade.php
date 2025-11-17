@@ -73,29 +73,35 @@
                                                     Aduan kamu sedang di proses !
                                                 </h6>
                                                 <p class="mb-0 text-dark">
-                                                    Silakan tunggu informasi lebih lanjut. Jika ada pertanyaan,
-                                                    hubungi customer service di bawah.
+                                                    Silakan tunggu informasi lebih lanjut.
+                                                    Jika ada pertanyaan, silakan hubungi <a href="https://wa.me/6281122233121" class="fw-bold text-decoration-none">Customer Service</a>.
                                                 </p>
                                             </div>
                                             @elseif ($aduan->status =='1' )
                                             <div class="alert alert-success">
                                                 <h6 class="alert-heading fw-bold ">
-                                                    Aduan kamu berhasil di terima , berikut kami lampirkan barag yang
-                                                    sesuai dengan aduan kamu
+                                                    Aduan kamu berhasil diterima. Berikut kami tampilkan kategori barang yang sesuai dengan aduan yang kamu kirimkan.
                                                 </h6>
-                                                <p class="mb-3 text-gray">
+                                                <!-- <p class="mb-1 text-gray">
                                                     Jika barang yang ditampilkan sesuai dengan milikmu, silakan lakukan klaim kepemilikan melalui tombol di bawah.
+                                                </p> -->
+                                                <p class="mb-1 text-gray">
+                                                    Jika belum muncul barang yang cocok, mohon tunggu barang kamu masih dalam tahap pencarian oleh tim kami.
+                                                </p>
+                                                <p class="mb-1 text-gray">
+                                                    Apabila ada pertanyaan, silakan hubungi <a href="https://wa.me/6281122233121" class="fw-bold text-decoration-none">Customer Service</a>.
                                                 </p>
                                             </div>
-                                            @else <div class="alert alert-danger">
-                                                <h6 class="alert-heading fw-bold ">
-                                                    Maaf.. sepertinya laporan kamu masih belum sesuai
-                                                </h6>
+                                            @else <div class="alert alert-danger fade show d-flex align-items-start">
+                                                <i class="bi bi-exclamation-triangle-fill me-2 fs-4"></i>
+                                                <div>
+                                                    <h6 class="alert-heading fw-bold">Maaf.. Sepertinya laporan kamu masih belum sesuai</h6>
+                                                    <p class="mb-0 text-gray">
+                                                        Mohon buat aduan kembali yang sesuai atau kunjungi stasiun terkait untuk bantuan lebih lanjut. Jika ada pertanyaan, silakan hubungi <a href="https://wa.me/6281122233121" class="fw-bold text-decoration-none">Customer Service</a>.
+                                                    </p>
+                                                </div>
                                             </div>
                                             @endif
-
-
-
 
                                         </div>
                                     </div>

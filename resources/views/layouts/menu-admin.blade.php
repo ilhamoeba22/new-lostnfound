@@ -32,7 +32,7 @@
             <ul class="menu-sub">
                 <li class="menu-item {{ request()->routeIs('items','tambahitems','edit-item') ? 'active ': '' }}">
                     <a href="{{ route('items') }}" class="menu-link">
-                        <div data-i18n="items">Barang Ditemukan</div>
+                        <div data-i18n="items">Tambah Barang</div>
                     </a>
                 </li>
                 <li class="menu-item {{ request()->routeIs('lostitems','detaillostitems') ? 'active ': '' }}">
