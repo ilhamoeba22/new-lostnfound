@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport"
-        content="width=device-width,  nitial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
     <title>
         Dashboard
@@ -76,147 +76,149 @@
 
                     <!-- Content -->
                     <div class="container-xxl flex-grow-1 container-p-y">
-                        <h4 class="fw-bold py-3 mb-4">
-                            <span class="text-muted fw-light">Aduan ID /</span>
-                            {{ $collection->id }}
-                        </h4>
-
-                        <div class="row mb-3">
-                            <div class="col-12">
-                                <div class="alert alert-dark alert-dismissible mb-0" role="alert">
-                                    Data kamu berhasil di simpan.
-                                    Informasi Pengambilan barang dapat di lihat pada form dibawah ini
-
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
-                                </div>
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div>
+                                <h4 class="fw-bold m-0 text-primary">
+                                    <span class="text-muted fw-light">Klaim Barang /</span> Detail Klaim
+                                </h4>
+                                <small class="text-muted">ID Klaim: #{{ $collection->id }}</small>
                             </div>
+                            <a href="{{ route('aduan') }}" class="btn btn-outline-secondary rounded-pill">
+                                <i class='bx bx-arrow-back me-1'></i> Kembali
+                            </a>
                         </div>
 
-                        <div class="row flex-grow-1">
+                        <div class="row g-4">
+                            <!-- Left Column: Images -->
+                            <div class="col-md-5">
+                                <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
+                                    <div id="claimImageCarousel" class="carousel slide h-100" data-bs-ride="carousel">
+                                        {{-- Prepare Images Collection --}}
+                                        @php
+                                            $allImages = collect([]);
 
-                            <div class="col-md-8 order-1">
-                                <div class="card mb-4">
+                                            // 1. Claim Images (Priority)
+                                            if($collection->images && $collection->images->isNotEmpty()) {
+                                                foreach($collection->images as $img) {
+                                                    $allImages->push(asset('storage/assets/img/claim/' . $img->image_path));
+                                                }
+                                            } elseif ($collection->foto) {
+                                                $allImages->push(asset('assets/img/claim/' . $collection->foto));
+                                            }
 
-                                    <div class="card-body">
-                                        <h3>Data Diri</h3>
-                                        <form method="POST" action="{{ route('postclaim') }}"
-                                            enctype="multipart/form-data">
-                                            @csrf
-                                            <div class="row mb-3">
-                                                <label class="col-sm-2 col-form-label" for="basic-default-name">
-                                                    Nama Lengkap
-                                                </label>
-                                                <div class="col-sm-10">
-                                                    <input readonly value="{{ $collection->nama }}" type="text"
-                                                        class="form-control" name="nama" id="basic-default-name"
-                                                        placeholder="masukan nama lengkap" />
-                                                </div>
-                                            </div>
-                                            <div class="row mb-3">
-                                                <label class="col-sm-2 col-form-label" for="basic-default-company">
-                                                    Alamat
-                                                </label>
-                                                <div class="col-sm-10">
-                                                    <input readonly value="{{ $collection->alamat }}" type="text"
-                                                        class="form-control" name="alamat" id="basic-default-company"
-                                                        placeholder="Tempat tinggal sesuai KTP" />
-                                                </div>
-                                            </div>
+                                            // 2. Barang Images (Found Item)
+                                            if($collection->barang) {
+                                                if($collection->barang->images && $collection->barang->images->isNotEmpty()) {
+                                                    foreach($collection->barang->images as $img) {
+                                                        $allImages->push(asset('storage/assets/img/items/' . $img->image_path));
+                                                    }
+                                                } elseif ($collection->barang->foto) {
+                                                    $allImages->push(asset('assets/img/items/' . $collection->barang->foto));
+                                                }
+                                            }
 
-                                            <div class="row mb-3">
-                                                <label class="col-sm-2 col-form-label" for="basic-default-message">
-                                                    Pesan
-                                                </label>
-                                                <div class="col-sm-10">
-                                                    <textarea readonly id="basic-default-message" name="catatan"
-                                                        class="form-control" placeholder="....."
-                                                        aria-describedby="basic-icon-default-message2">{{ $collection->catatan }}</textarea>
-                                                </div>
-                                            </div>
-                                            <div class="mb-3 col-12 mb-0">
-                                                <div class="d-flex align-items-start align-items-sm-center gap-4">
-                                                    <a href="" data-bs-toggle="modal" data-bs-target="#modalToggle">
-                                                        <img src="{{ Storage::url('public/assets/img/claim/').$collection->foto }}"
-                                                            alt="bukti-foto-barang" class="d-block rounded"
-                                                            id="uploadedAvatar" width="100" height="100">
-                                                    </a>
-                                                </div>
-                                            </div>
+                                            // 3. Aduan Images (Lost Item - if linked)
+                                            if($collection->aduan) {
+                                                if($collection->aduan->images && $collection->aduan->images->isNotEmpty()) {
+                                                    foreach($collection->aduan->images as $img) {
+                                                        $allImages->push(asset('storage/assets/img/aduan/' . $img->image_path));
+                                                    }
+                                                } elseif ($collection->aduan->foto) {
+                                                    $allImages->push(asset('assets/img/aduan/' . $collection->aduan->foto));
+                                                }
+                                            }
+                                            
+                                            $allImages = $allImages->unique(); // Avoid duplicates if any
+                                        @endphp
 
-                                            <div class="modal fade" id="modalToggle" aria-labelledby="modalToggleLabel"
-                                                tabindex="-1" style="display: none" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered">
-                                                    <div class="modal-content">
-                                                        <div class="modal-body">
-                                                            <img src="{{ Storage::url('public/assets/img/claim/').$collection->foto }}"
-                                                                alt="bukti-foto-barang" class="d-block rounded w-100"
-                                                                id="uploadedAvatar">
+                                        <div class="carousel-inner bg-light rounded-4 overflow-hidden" style="height: 500px;">
+                                            @if($allImages->isNotEmpty())
+                                                @foreach($allImages as $key => $imageSrc)
+                                                    <div class="carousel-item {{ $key == 0 ? 'active' : '' }} h-100">
+                                                        <div class="d-flex align-items-center justify-content-center w-100 h-100 bg-light">
+                                                            <img src="{{ $imageSrc }}" class="d-block" 
+                                                                 style="max-width: 100%; max-height: 100%; object-fit: contain;" 
+                                                                 alt="Foto Bukti {{ $key + 1 }}">
                                                         </div>
                                                     </div>
+                                                @endforeach
+                                            @else
+                                                <div class="carousel-item active h-100 d-flex align-items-center justify-content-center bg-secondary text-white">
+                                                    <div class="text-center p-5">
+                                                        <i class="bx bx-image-alt fs-1 mb-2"></i>
+                                                        <p class="mb-0">Tidak ada foto bukti</p>
+                                                    </div>
                                                 </div>
-                                            </div>
-
-
-
-                                        </form>
+                                            @endif
+                                        </div>
+                                        
+                                        @if($allImages->count() > 1)
+                                            <button class="carousel-control-prev" type="button" data-bs-target="#claimImageCarousel" data-bs-slide="prev">
+                                                <span class="carousel-control-prev-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Previous</span>
+                                            </button>
+                                            <button class="carousel-control-next" type="button" data-bs-target="#claimImageCarousel" data-bs-slide="next">
+                                                <span class="carousel-control-next-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Next</span>
+                                            </button>
+                                        @endif
                                     </div>
-
-                                    <!-- /Account -->
                                 </div>
                             </div>
 
-                            <div class="col-md-4 ">
-                                <div class="card">
-
-                                    <div class="card-body">
-                                        <div class=" text-center mb-3">
-                                            <span> {!!
-                                                QrCode::size(220)->generate(Request::url('http://localhost:8000/postclaimdetail/453703'));
-                                                !!}</span>
-
-                                        </div>
-                                        <ul class="p-0 m-0">
-
-                                            <li class="d-flex mb-2 pb-1">
-                                                <div
-                                                    class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                                    <div class="me-2">
-                                                        <h6 class="mb-0">Kode Barang</h6>
-                                                    </div>
-                                                    <div class="user-progress">
-                                                        <small class="fw-semibold">{{ $collection->aduan_id
-                                                            }}</small>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                            <li class="d-flex mb-2 pb-1">
-                                                <div
-                                                    class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                                    <div class="me-2">
-                                                        <h6 class="mb-0">Stasiun</h6>
-                                                    </div>
-                                                    <div class="user-progress">
-                                                        <small class="fw-semibold">{{ $collection->barang->stasiun->nama
-                                                            }}</small>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="d-flex mb-2 pb-1">
-                                                <div
-                                                    class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                                    <div class="me-2">
-                                                        <h6 class="mb-0">Biaya Layanan</h6>
-                                                    </div>
-                                                    <div class="user-progress">
-                                                        <small class="fw-semibold text-success">Rp. 15.000,00</small>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
+                            <!-- Right Column: Details -->
+                            <div class="col-md-7">
+                                <div class="card border-0 shadow-sm rounded-4 h-100">
+                                    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom">
+                                        <h5 class="fw-bold m-0 text-dark"><i class='bx bx-file me-2 text-primary'></i>Informasi Klaim</h5>
+                                        <!-- Status Badge (Placeholder logic since generic Status column isn't standardized in previous context, check aduan table or claim table) -->
+                                        <!-- Assuming simple status based on approved/rejected or verification status if distinct column exists. For now, showing 'Menunggu Verifikasi' style or based on logic -->
+                                        <span class="badge bg-label-info rounded-pill px-3">Menunggu Verifikasi Admin</span>
                                     </div>
+                                    <div class="card-body p-4">
+                                        <!-- User Info -->
+                                        <h6 class="fw-bold text-muted text-uppercase small mb-3">Identitas Pengklaim</h6>
+                                        <div class="row g-3 mb-4">
+                                            <div class="col-md-6">
+                                                <label class="form-label text-muted small mb-1">Nama Lengkap</label>
+                                                <p class="fw-semibold fs-6 text-dark mb-0">{{ $collection->nama }}</p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label text-muted small mb-1">Alamat</label>
+                                                <p class="fw-semibold fs-6 text-dark mb-0">{{ $collection->alamat }}</p>
+                                            </div>
+                                        </div>
 
+                                        <!-- Claim Message -->
+                                        <h6 class="fw-bold text-muted text-uppercase small mb-3">Pesan / Alasan Klaim</h6>
+                                        <div class="p-3 bg-light rounded-3 mb-4 border-start border-4 border-primary">
+                                            <p class="mb-0 text-secondary fst-italic">"{{ $collection->catatan }}"</p>
+                                        </div>
+
+                                        <!-- Item Info -->
+                                        <h6 class="fw-bold text-muted text-uppercase small mb-3">Detail Barang yang Diklaim</h6>
+                                        <div class="d-flex align-items-center p-3 border rounded-3 bg-white hover-shadow-sm transition-all">
+                                            <div class="avatar avatar-lg me-3">
+                                                <span class="avatar-initial rounded-circle bg-label-primary"><i class='bx bx-box fs-4'></i></span>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <h6 class="mb-1 text-dark fw-bold">Kode Barang: {{ $collection->barang_id }}</h6> <!-- Assuming barang_id is the reference, verify if relation works -->
+                                                <small class="text-muted d-block">Stasiun: {{ $collection->barang->stasiun->nama ?? '-' }}</small>
+                                            </div>
+                                            <!-- QR Code Small -->
+                                            <div class="ms-3 text-end">
+                                               {!! QrCode::size(120)->generate(Request::url('postclaimdetail/'.$collection->id)); !!}
+                                            </div>
+                                        </div>
+
+                                        <!-- Alert Info -->
+                                        <div class="alert alert-primary d-flex align-items-center mt-4 mb-0 rounded-3" role="alert">
+                                            <i class="bx bx-info-circle me-2 fs-4"></i>
+                                            <div>
+                                                Klaim ini sedang ditinjau. Jika disetujui, Anda akan mendapatkan notifikasi untuk pengambilan barang.
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

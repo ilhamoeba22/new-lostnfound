@@ -112,170 +112,136 @@
 
 
                                 <div class="col-md-12">
-                                    <div class="card mb-4">
-
+                                    <div class="card mb-4 border-0 shadow-sm rounded-4 overlay-hidden">
+                                        <div class="card-header bg-white py-3 border-bottom-0">
+                                            <h5 class="fw-bold mb-0 text-dark">Formulir Laporan Kehilangan</h5>
+                                            <p class="text-muted small mb-0">Isi detail barang yang hilang berikut ini.</p>
+                                        </div>
                                         <hr class="my-0" />
-                                        <div class="card-body">
-                                            <form action="{{ route('bikinaduan') }}" method="POST"
-                                                enctype="multipart/form-data">
+                                        <div class="card-body p-4">
+                                            <form action="{{ route('bikinaduan') }}" method="POST" enctype="multipart/form-data">
                                                 @csrf
 
-                                                <div class="row">
-                                                    <div class="mb-3 col-md-6">
-                                                        <label for="namabarang" class="form-label">
-                                                            Nama Barang
-                                                        </label>
-                                                        <input required class="form-control" type="text" id="namabarang"
-                                                            name="namabarang" placeholder="masukan nama barang"
-                                                            autofocus />
-                                                    </div>
+                                                <div class="row g-4">
+                                                    <!-- Section: Informasi Barang -->
+                                                    <div class="col-12">
+                                                        <h6 class="fw-bold text-primary mb-3"><i class='bx bx-package me-1'></i> Informasi Barang</h6>
+                                                        <div class="bg-light p-3 rounded-3">
+                                                            <div class="row g-3">
+                                                                <div class="col-md-6">
+                                                                    <label for="namabarang" class="form-label fw-semibold small text-uppercase text-muted">Nama Barang</label>
+                                                                    <input required class="form-control form-control-lg border-0 bg-white shadow-sm" type="text" id="namabarang"
+                                                                        name="namabarang" placeholder="Contoh: Laptop Asus ROG" autofocus />
+                                                                </div>
 
-                                                    <div class="mb-3 col-md-6">
-                                                        <label for="kategori_id" class="form-label d-flex align-items-center">
-                                                            Kategori
-                                                            <!-- Ikon Info -->
-                                                            <button type="button"
-                                                                class="btn btn-sm btn-link text-primary p-0 ms-2"
-                                                                data-bs-toggle="popover"
-                                                                data-bs-trigger="focus"
-                                                                title="Informasi Kategori Barang"
-                                                                data-bs-content="Pilih kategori barang yang sesuai, karena data ini akan digunakan untuk mencocokkan laporan kehilangan dengan informasi dari pengguna PT KAI berdasarkan kategori barang yang sama.">
-                                                                <i class="bx bx-info-circle fs-5"></i>
-                                                            </button>
-                                                        </label>
+                                                                <div class="col-md-6">
+                                                                    <label for="kategori_id" class="form-label fw-semibold small text-uppercase text-muted d-flex align-items-center">
+                                                                        Kategori
+                                                                        <i class="bx bx-info-circle ms-1 text-primary" data-bs-toggle="tooltip" title="Pilih kategori yang paling sesuai"></i>
+                                                                    </label>
+                                                                    <select required class="form-select form-select-lg border-0 bg-white shadow-sm" name="kategori_id" id="kategori_id">
+                                                                        <option selected disabled value="">Pilih Kategori Barang</option>
+                                                                        @foreach ($kategoris as $kategori)
+                                                                            <option value="{{ $kategori->id }}">{{ $kategori->nama }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
 
-                                                        <select required class="form-select" name="kategori_id"
-                                                            id="kategori_id" aria-label="kategori_id">
-                                                            <option selected disabled>Pilih Kategori Barang</option>
-                                                            @foreach ($kategoris as $kategori)
-                                                            <option value="{{ $kategori->id }}">{{ $kategori->nama }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="mb-3 col-md-12">
-                                                        <label class="form-label d-flex align-items-center" for="phoneNumber">
-                                                            Deskripsi Barang
-                                                            <button type="button"
-                                                                class="btn btn-sm btn-link text-primary p-0 ms-2"
-                                                                data-bs-toggle="popover"
-                                                                data-bs-trigger="focus"
-                                                                title="Informasi Deskripsi Barang"
-                                                                data-bs-content="Tuliskan ciri-ciri khusus dari barang yang hilang, seperti warna, merek, ukuran, atau tanda pengenal lainnya agar memudahkan proses pencarian.">
-                                                                <i class="bx bx-info-circle fs-5"></i>
-                                                            </button>
-                                                        </label>
-                                                        <textarea required class="form-control" name="deskripsi"
-                                                            id="exampleFormControlTextarea1"
-                                                            rows="3"
-                                                            placeholder="Contoh: Tas ransel hitam merek Eiger, terdapat gantungan kunci warna merah di resleting utama."></textarea>
-                                                    </div>
-
-                                                    <div class="mb-3 col-md-4">
-                                                        <label for="tglketinggalan" class="form-label">
-                                                            Tanggal Kehilangan
-                                                        </label>
-                                                        <input required class="form-control" name="tglketinggalan"
-                                                            type="date" id="tglketinggalan">
-                                                    </div>
-
-                                                    <div class="mb-3 col-md-4">
-                                                        <label for="stasiun_id" class="form-label">
-                                                            Stasiun Kehilangan
-                                                        </label>
-                                                        <select required class="form-select" name="stasiun_id"
-                                                            id="stasiun_id" aria-label="stasiun_id">
-                                                            <option selected="">Pilih Stasiun</option>
-                                                            @foreach ($stasiuns as $stasiun )
-                                                            <option value="{{ $stasiun->id }}">{{ $stasiun->nama }}
-                                                            </option>
-                                                            @endforeach
-
-                                                        </select>
-                                                    </div>
-                                                    <div class="mb-3 col-md-3">
-                                                        <label for="area_id" class="form-label">
-                                                            Area Kehilangan
-                                                        </label>
-                                                        <select required class="form-select" name="area_id" id="area_id"
-                                                            aria-label="area_id">
-                                                            <option selected="">Pilih Area</option>
-                                                            @foreach ($areas as $area )
-                                                            <option value="{{ $area->id }}">{{ $area->nama }}
-                                                            </option>
-                                                            @endforeach
-
-                                                        </select>
-                                                    </div>
-
-                                                    <!-- KETERANGAN LAIN -->
-                                                    <div class="mb-3 col-md-8">
-                                                        <label for="keteranganlain" class="form-label d-flex align-items-center">
-                                                            Keterangan Lain
-                                                            <button type="button"
-                                                                class="btn btn-sm btn-link text-primary p-0 ms-2"
-                                                                data-bs-toggle="popover"
-                                                                data-bs-trigger="focus"
-                                                                title="Keterangan Tambahan"
-                                                                data-bs-content="Tambahkan informasi tambahan seperti waktu kehilangan atau bantuan petugas yang sudah dihubungi.">
-                                                                <i class="bx bx-info-circle fs-5"></i>
-                                                            </button>
-                                                        </label>
-                                                        <textarea required class="form-control" name="keteranganlain" id="keteranganlain" rows="2"></textarea>
-                                                    </div>
-
-                                                    <div class="d-flex align-items-start align-items-sm-center gap-4">
-                                                        <div class="button-wrapper">
-                                                            <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
-                                                                <span class="d-none d-sm-block">Tambahkan Bukti Foto</span>
-                                                                <i class="bx bx-upload d-block d-sm-none"></i>
-                                                                <input type="file" name="foto" id="upload" class="account-file-input" hidden
-                                                                    accept="image/png, image/jpeg" required />
-                                                            </label>
-
-                                                            <button type="button" class="btn btn-outline-secondary account-image-reset mb-4" id="resetImage">
-                                                                <i class="bx bx-reset d-block d-sm-none"></i>
-                                                                <span class="d-none d-sm-block">Reset</span>
-                                                            </button>
-
-                                                            <p class="text-muted mb-0">
-                                                                Sertakan bukti kehilangan (seperti tiket perjalanan, foto barang atau dokumen pendukung lainnya)
-                                                            </p>
+                                                                <div class="col-12">
+                                                                    <label class="form-label fw-semibold small text-uppercase text-muted" for="deskripsi">Deskripsi Detail</label>
+                                                                    <textarea required class="form-control border-0 bg-white shadow-sm" name="deskripsi" id="deskripsi" rows="3"
+                                                                        placeholder="Jelaskan ciri-ciri khusus (warna, merk, goresan, stiker, isi, dll)..."></textarea>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <!-- Preview Gambar -->
-                                                        <div style="width: 150px; height: 150px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid #ccc; border-radius: 8px;">
-                                                            <img src="" alt="Foto Barang" id="uploadedAvatar"
-                                                                style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;"
-                                                                data-bs-toggle="modal" data-bs-target="#imageModal" />
-                                                        </div>
-
                                                     </div>
 
-                                                    <!-- Modal Bootstrap -->
-                                                    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
-                                                        <div class="modal-dialog modal-dialog-centered modal-lg">
-                                                            <div class="modal-content bg-transparent border-0 shadow-none d-flex justify-content-center align-items-center">
-                                                                <img id="modalImage" src="" class="img-fluid rounded shadow" alt="Preview Foto" style="max-height: 80vh; object-fit: contain;" />
+                                                    <!-- Section: Lokasi & Waktu -->
+                                                    <div class="col-12">
+                                                        <h6 class="fw-bold text-primary mb-3 mt-2"><i class='bx bx-map-pin me-1'></i> Lokasi & Waktu</h6>
+                                                        <div class="bg-light p-3 rounded-3">
+                                                            <div class="row g-3">
+                                                                <div class="col-md-4">
+                                                                    <label for="tglketinggalan" class="form-label fw-semibold small text-uppercase text-muted">Tanggal Kehilangan</label>
+                                                                    <input required class="form-control form-control-lg border-0 bg-white shadow-sm" name="tglketinggalan" type="date" id="tglketinggalan">
+                                                                </div>
+
+                                                                <div class="col-md-4">
+                                                                    <label for="stasiun_id" class="form-label fw-semibold small text-uppercase text-muted">Stasiun</label>
+                                                                    <select required class="form-select form-select-lg border-0 bg-white shadow-sm" name="stasiun_id" id="stasiun_id">
+                                                                        <option selected disabled value="">Pilih Stasiun</option>
+                                                                        @foreach ($stasiuns as $stasiun)
+                                                                            <option value="{{ $stasiun->id }}">{{ $stasiun->nama }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <label for="area_id" class="form-label fw-semibold small text-uppercase text-muted">Area Spesifik</label>
+                                                                    <select required class="form-select form-select-lg border-0 bg-white shadow-sm" name="area_id" id="area_id">
+                                                                        <option selected disabled value="">Pilih Area</option>
+                                                                        @foreach ($areas as $area)
+                                                                            <option value="{{ $area->id }}">{{ $area->nama }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <label class="form-label fw-semibold small text-uppercase text-muted" for="keteranganlain">Keterangan Tambahan (Opsional)</label>
+                                                                    <textarea class="form-control border-0 bg-white shadow-sm" name="keteranganlain" id="keteranganlain" rows="2" placeholder="Informasi tambahan lain yang relevan..."></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Section: Bukti Foto -->
+                                                    <div class="col-12">
+                                                        <h6 class="fw-bold text-primary mb-3 mt-2"><i class='bx bx-images me-1'></i> Bukti Foto</h6>
+                                                        <div class="bg-light p-3 rounded-3">
+                                                            <div class="d-flex flex-column flex-md-row gap-4 align-items-start">
+                                                                <div class="button-wrapper">
+                                                                    <label for="upload" class="btn btn-primary btn-lg rounded-pill shadow-sm me-2 mb-3" tabindex="0">
+                                                                        <i class="bx bx-upload me-1"></i>
+                                                                        <span class="d-none d-sm-inline-block">Pilih Foto</span>
+                                                                        <input type="file" name="foto[]" id="upload" class="account-file-input" hidden accept="image/png, image/jpeg" multiple required />
+                                                                    </label>
+                                                                    <button type="button" class="btn btn-outline-danger btn-lg rounded-pill shadow-sm account-image-reset mb-3" id="resetImage">
+                                                                        <i class="bx bx-reset me-1"></i> Reset
+                                                                    </button>
+                                                                    <div class="text-muted small">
+                                                                        <i class='bx bx-info-circle me-1'></i> Upload max 3 foto (JPG/PNG).
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Preview Container -->
+                                                                <div id="preview-container" class="d-flex flex-wrap gap-2"></div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <div class="form-check mb-3 mt-3">
-                                                    <input class="form-check-input checked" type="checkbox"
-                                                        name="checked" id="checked" />
-                                                    <label class="form-check-label" for="checked">
-                                                        Saya telah menyetujui <a href="/#syaratketentuan">Syarat</a> dan
-                                                        <a href="/#syaratketentuan">Ketentuan</a>
+                                                <div class="form-check mt-4 mb-4">
+                                                    <input class="form-check-input checked" type="checkbox" name="checked" id="checked" required />
+                                                    <label class="form-check-label text-muted" for="checked">
+                                                        Saya menyatakan bahwa data yang saya isi adalah benar dan menyetujui <a href="#">Syarat & Ketentuan</a>.
                                                     </label>
                                                 </div>
 
-                                                <button type="submit" class="btn btn-danger buat-aduan ">
-                                                    Buat Aduan
-                                                </button>
-
+                                                <div class="d-grid gap-2">
+                                                    <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow-lg hover-scale buat-aduan">
+                                                        <i class='bx bx-send me-1'></i> Kirim Laporan Kehilangan
+                                                    </button>
+                                                </div>
                                             </form>
+
+                                            <!-- Zoom Modal -->
+                                            <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                    <div class="modal-content bg-transparent border-0 shadow-none text-center">
+                                                        <img id="modalImage" src="" class="img-fluid rounded-3 shadow-lg" style="max-height: 80vh;" alt="Zoom">
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </div>
+                                    </div>
                                         <!-- /Account -->
                                     </div>
 
@@ -331,28 +297,60 @@
         <!-- Script Preview + Reset + Pop-up -->
         <script>
             const uploadInput = document.getElementById('upload');
-            const previewImg = document.getElementById('uploadedAvatar');
+            const previewContainer = document.getElementById('preview-container');
             const modalImage = document.getElementById('modalImage');
             const resetBtn = document.getElementById('resetImage');
 
             // Preview gambar saat upload
             uploadInput.addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        previewImg.src = event.target.result;
-                        modalImage.src = event.target.result;
-                    };
-                    reader.readAsDataURL(file);
+                const files = e.target.files;
+                previewContainer.innerHTML = ''; // Clear previous previews
+
+                if (files.length > 3) {
+                    alert("Maksimal hanya 3 foto!");
+                    uploadInput.value = '';
+                    return;
+                }
+
+                if (files) {
+                    Array.from(files).forEach(file => {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            const imgContainer = document.createElement('div');
+                            imgContainer.style.width = '150px';
+                            imgContainer.style.height = '150px';
+                            imgContainer.style.overflow = 'hidden';
+                            imgContainer.style.display = 'flex';
+                            imgContainer.style.alignItems = 'center';
+                            imgContainer.style.justifyContent = 'center';
+                            imgContainer.style.border = '1px solid #ccc';
+                            imgContainer.style.borderRadius = '8px';
+                            
+                            const img = document.createElement('img');
+                            img.src = event.target.result;
+                            img.style.maxWidth = '100%';
+                            img.style.maxHeight = '100%';
+                            img.style.objectFit = 'contain';
+                            img.style.cursor = 'pointer';
+                            img.setAttribute('data-bs-toggle', 'modal');
+                            img.setAttribute('data-bs-target', '#imageModal');
+                            
+                            img.addEventListener('click', function() {
+                                modalImage.src = event.target.result;
+                            });
+
+                            imgContainer.appendChild(img);
+                            previewContainer.appendChild(imgContainer);
+                        };
+                        reader.readAsDataURL(file);
+                    });
                 }
             });
 
             // Reset gambar
             resetBtn.addEventListener('click', function() {
                 uploadInput.value = '';
-                previewImg.src = '';
-                modalImage.src = '';
+                previewContainer.innerHTML = '';
             });
         </script>
 

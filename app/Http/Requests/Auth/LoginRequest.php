@@ -27,8 +27,22 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
+            'email' => ['required', 'string', 'email:rfc,dns', 'regex:/^.+@.+\..+$/i'],
             'password' => ['required', 'string'],
+        ];
+    }
+    
+    /**
+     * Get the validation messages.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.regex' => 'Email harus memiliki format yang benar (contoh: nama@domain.com).',
         ];
     }
 

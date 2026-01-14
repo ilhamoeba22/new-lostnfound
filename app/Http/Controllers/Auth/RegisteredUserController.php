@@ -33,8 +33,15 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
+            'email' => ['required', 'string', 'email:rfc,dns', 'regex:/^.+@.+\..+$/i', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ], [
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.regex' => 'Email harus memiliki format yang benar (contoh: nama@domain.com).',
+            'email.unique' => 'Email ini sudah terdaftar.',
+            'password.required' => 'Password wajib diisi.',
+            'password.confirmed' => 'Konfirmasi password tidak sesuai.',
         ]);
 
         $user = User::create([

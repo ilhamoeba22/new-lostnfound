@@ -108,14 +108,19 @@ class LostItemController extends Controller
         //
         $id = $request->id;
 
+        $request->validate([
+            'alasan_penolakan' => 'required|string|max:255',
+        ]);
+
         $aduan = Aduan::find($id);
         $aduan->status = '2';
+        $aduan->alasan_penolakan = $request->alasan_penolakan;
         $aduan->save();
 
 
         if ($aduan) {
             //redirect dengan pesan sukses
-            return redirect()->route('lostitems')->with(['success' => 'Data Berhasil Diupdate!']);
+            return redirect()->route('lostitems')->with(['success' => 'Data Berhasil Ditolak!']);
         } else {
             //redirect dengan pesan error
             return redirect()->route('lostitems')->with(['error' => 'Data Gagal Diupdate!']);

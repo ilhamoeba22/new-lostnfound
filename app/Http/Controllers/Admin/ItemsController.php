@@ -42,12 +42,21 @@ class ItemsController extends Controller
      */
     public function store(Request $request)
     {
+        // Validasi input
+        $request->validate([
+            'foto' => 'required',
+            'foto.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
 
-        //upload image
-        $image = $request->file('foto');
-        $image->storeAs('public/assets/img/items', $image->hashName());
+        if($request->hasfile('foto'))
+        {
+            if (count($request->file('foto')) > 3) {
+                 return back()->withErrors(['foto' => 'Maksimal upload 3 foto.']);
+            }
+        }
 
-        $aduan = Barang::create([
+        // Create Barang
+        $barang = Barang::create([
             'id' => rand(0, 999999),
             'namabarang' => $request->namabarang,
             'kategori_id' => $request->kategori_id,
@@ -55,15 +64,35 @@ class ItemsController extends Controller
             'tglditemukan' => $request->tglditemukan,
             'stasiun_id' => $request->stasiun_id,
             'area_id' => $request->area_id,
-            'foto' => $image->hashName(),
+            'foto' => 'default.png', // Placeholder
         ]);
 
+        // Process Images
+        if($request->hasfile('foto'))
+        {
+            $firstImage = true;
+            foreach($request->file('foto') as $file)
+            {
+                $name = $file->hashName();
+                $file->storeAs('public/assets/img/items', $name);  
 
-        if ($aduan) {
-            //redirect dengan pesan sukses
+                // Set first image as thumbnail
+                if ($firstImage) {
+                     $barang->update(['foto' => $name]);
+                     $firstImage = false;
+                }
+
+                // Save to barang_images
+                \App\Models\BarangImage::create([
+                    'barang_id' => $barang->id,
+                    'image_path' => $name,
+                ]);
+            }
+        }
+
+        if ($barang) {
             return redirect()->route('items');
         } else {
-            //redirect dengan pesan error
             return redirect()->route('tambahitems');
         }
     }
@@ -104,44 +133,61 @@ class ItemsController extends Controller
      */
     public function update(Request $request)
     {
-
-
-
-
         $barang = Barang::findOrFail($request->id);
 
-        if ($request->file('foto') == "") {
+        $request->validate([
+            'foto.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
 
-            $barang = Barang::findOrFail($barang->id);
+        if ($request->hasFile('foto')) {
+            if (count($request->file('foto')) > 3) {
+                 return back()->withErrors(['foto' => 'Maksimal upload 3 foto.']);
+            }
+        }
 
-            $barang->update([
+        // Update Text Data
+        $barang->update([
                 'namabarang' => $request->namabarang,
                 'kategori_id' => $request->kategori_id,
                 'deskripsi' => $request->deskripsi,
                 'tglditemukan' => $request->tglditemukan,
                 'stasiun_id' => $request->stasiun_id,
                 'area_id' => $request->area_id,
-            ]);
-        } else {
+        ]);
 
+        // Process New Images if Uploaded
+        if ($request->hasFile('foto')) {
+            
+            // Delete old images from DB and Storage (Optional, but cleaner)
+            // Note: Keeping it simple, we just add new ones or replace logic.
+            // Decision: Replace all images logic if user uploads new ones
+            
+            // 1. Delete old images files
+            foreach($barang->images as $oldImage) {
+                Storage::delete('public/assets/img/items/' . $oldImage->image_path);
+                $oldImage->delete();
+            }
+            // Also delete the main thumbnail from storage if it differs? 
+            // Actually relying on barang_images is better, but main foto column is separate.
+            // Let's just overwrite everything.
 
+            $firstImage = true;
+            foreach($request->file('foto') as $file)
+            {
+                $name = $file->hashName();
+                $file->storeAs('public/assets/img/items', $name);
 
-            $image = $request->file('foto');
-            $image->storeAs('public/assets/img/items', $image->hashName());
+                // Update thumbnail
+                if ($firstImage) {
+                     $barang->update(['foto' => $name]);
+                     $firstImage = false;
+                }
 
-            //hapus old image
-            Storage::disk('local')->delete('public/assets/img/items/' . $barang->foto);
-
-
-            $barang->update([
-                'namabarang' => $request->namabarang,
-                'kategori_id' => $request->kategori_id,
-                'deskripsi' => $request->deskripsi,
-                'tglditemukan' => $request->tglditemukan,
-                'stasiun_id' => $request->stasiun_id,
-                'area_id' => $request->area_id,
-                'foto'     => $image->hashName(),
-            ]);
+                \App\Models\BarangImage::create([
+                    'barang_id' => $barang->id,
+                    'image_path' => $name,
+                ]);
+            }
         }
 
         if ($barang) {

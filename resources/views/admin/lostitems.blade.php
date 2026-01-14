@@ -68,68 +68,82 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="card mb-4">
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-
-                                            <table id="aduanTable" class="table table-striped table-bordered align-middle">
-                                                <thead class="table-light">
-                                                    <tr>
-                                                        <th>ADUAN ID</th>
-                                                        <th>Nama User</th>
-                                                        <th>Nama Barang</th>
-                                                        <th>Kategori Barang</th>
-                                                        <th>Stasiun</th>
-                                                        <th>Tanggal Aduan</th>
-                                                        <th>Actions</th>
-                                                    </tr>
-                                                    <tr class="filters">
-                                                        <th><input type="text" class="form-control form-control-sm" placeholder="Cari ID" /></th>
-                                                        <th><input type="text" class="form-control form-control-sm" placeholder="Cari User" /></th>
-                                                        <th><input type="text" class="form-control form-control-sm" placeholder="Cari Barang" /></th>
-                                                        <th><input type="text" class="form-control form-control-sm" placeholder="Cari Kategori" /></th>
-                                                        <th><input type="text" class="form-control form-control-sm" placeholder="Cari Stasiun" /></th>
-                                                        <th><input type="text" class="form-control form-control-sm" placeholder="Cari Tanggal" /></th>
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody class="table-border-bottom-0">
-                                                    @forelse ($collection as $aduan)
-                                                    <tr
-                                                        class="{{ $aduan->status == '1' ? 'table-success' : 'table-danger' }}">
-                                                        <td>
-                                                            <i class="fab fa-angular fa-lg text-danger me-3"></i>
-                                                            <strong> {{ $aduan->id }} </strong>
-                                                        </td>
-                                                        <td>{{ $aduan->user->name }}</td>
-                                                        <td>{{ $aduan->namabarang }}</td>
-                                                        <td>{{ $aduan->kategori->nama }}</td>
-                                                        <td>{{ $aduan->stasiun->nama}}</td>
-                                                        <td>{{ $aduan->created_at }}</td>
-                                                        <td>
-                                                            <a class="btn btn-sm btn-primary"
-                                                                href="{{ route('detaillostitems',['id'=>$aduan->id]) }}">
-                                                                <i class="bx bx-envelope-open me-1"></i>
-                                                                Lihat Detail
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                    @empty
-                                                    @endforelse
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        {{--
-                                        <nav aria-label="Page navigation">
-                                            <ul class="pagination">
-                                                {{ $collection->links() }}
-                                        </ul>
-                                        </nav> --}}
-                                    </div>
-
-
+                        <div class="card border-0 shadow-sm rounded-4 overlay-hidden">
+                            <div class="card-header bg-white py-3">
+                                <h5 class="fw-bold mb-0 text-primary">Daftar Aduan Barang Hilang</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive text-nowrap">
+                                    <table id="aduanTable" class="table table-hover align-middle">
+                                        <thead class="bg-light">
+                                            <tr>
+                                                <th class="fw-bold text-uppercase small text-muted">ID</th>
+                                                <th class="fw-bold text-uppercase small text-muted">Foto</th>
+                                                <th class="fw-bold text-uppercase small text-muted">Pelapor</th>
+                                                <th class="fw-bold text-uppercase small text-muted">Barang</th>
+                                                <th class="fw-bold text-uppercase small text-muted">Kategori</th>
+                                                <th class="fw-bold text-uppercase small text-muted">Stasiun</th>
+                                                <th class="fw-bold text-uppercase small text-muted">Tanggal</th>
+                                                <th class="fw-bold text-uppercase small text-muted">Status</th>
+                                                <th class="fw-bold text-uppercase small text-muted">Aksi</th>
+                                            </tr>
+                                            <tr class="filters">
+                                                <th><input type="text" class="form-control form-control-sm border-0 bg-light" placeholder="Filter ID" /></th>
+                                                <th></th>
+                                                <th><input type="text" class="form-control form-control-sm border-0 bg-light" placeholder="Filter Nama" /></th>
+                                                <th><input type="text" class="form-control form-control-sm border-0 bg-light" placeholder="Filter Barang" /></th>
+                                                <th><input type="text" class="form-control form-control-sm border-0 bg-light" placeholder="Filter Kat." /></th>
+                                                <th><input type="text" class="form-control form-control-sm border-0 bg-light" placeholder="Filter Sta." /></th>
+                                                <th><input type="text" class="form-control form-control-sm border-0 bg-light" placeholder="Filter Tgl." /></th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse ($collection as $aduan)
+                                            <tr>
+                                                <td>
+                                                    <span class="fw-semibold text-dark">#{{ $aduan->id }}</span>
+                                                </td>
+                                                <td>
+                                                    <img src="{{ Storage::url('public/assets/img/aduan/').$aduan->foto }}" 
+                                                         alt="Avatar" class="rounded-3 shadow-sm" width="50" height="50" 
+                                                         style="object-fit: cover; cursor: pointer;"
+                                                         onclick="window.open(this.src)">
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex flex-column">
+                                                        <span class="fw-semibold text-dark">{{ $aduan->user->name }}</span>
+                                                        <small class="text-muted" style="font-size: 0.75rem;">{{ $aduan->user->email ?? '-' }}</small>
+                                                    </div>
+                                                </td>
+                                                <td class="fw-medium">{{ $aduan->namabarang }}</td>
+                                                <td><span class="badge bg-label-secondary rounded-pill">{{ $aduan->kategori->nama }}</span></td>
+                                                <td>{{ $aduan->stasiun->nama}}</td>
+                                                <td>{{ \Carbon\Carbon::parse($aduan->created_at)->format('d M Y') }}</td>
+                                                <td>
+                                                    @if($aduan->status == '1')
+                                                        <span class="badge bg-success rounded-pill px-3">Diterima</span>
+                                                    @elseif($aduan->status == '2')
+                                                        <span class="badge bg-danger rounded-pill px-3">Ditolak</span>
+                                                    @else
+                                                        <span class="badge bg-warning rounded-pill px-3">Menunggu</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-sm btn-primary rounded-pill px-3 shadow-sm"
+                                                        href="{{ route('detaillostitems',['id'=>$aduan->id]) }}">
+                                                        <i class="bx bx-show me-1"></i> Detail
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            @empty
+                                            @endforelse
+                                        </tbody>
+                                    </table>
                                 </div>
+                            </div>
+                        </div>
 
                             </div>
                         </div>

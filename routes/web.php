@@ -49,7 +49,7 @@ Route::get('/aduan', [AduanController::class, 'index'])->name('aduan');
 Route::get('/detail-aduan/{id}', [AduanController::class, 'show'])->name('detailaduan');
 
 
-Route::post('/claimaduan', [AduanController::class, 'claim'])->middleware(['auth', 'verified', 'checkRole:user,admin'])->name('claimaduan');
+Route::match(['get', 'post'], '/claimaduan', [AduanController::class, 'claim'])->middleware(['auth', 'verified', 'checkRole:user,admin'])->name('claimaduan');
 Route::post('/postclaim', [AduanController::class, 'postclaim'])->middleware(['auth', 'verified', 'checkRole:user,admin'])->name('postclaim');
 Route::get('/postclaimdetail/{id}', [AduanController::class, 'postclaimdetail'])->middleware(['auth', 'verified', 'checkRole:user,admin'])->name('postclaimdetail');
 Route::get('/bikin-aduan', [AduanController::class, 'create'])->middleware(['auth', 'verified', 'checkRole:user,admin'])->name('bikinaduan');
@@ -73,12 +73,11 @@ Route::get('admin/dashboard', function (Request $request) {
         ->latest()
         ->get();
 
-    // Ambil daftar stasiun unik yang muncul di aduan
     $stasiuns = $aduan
-        ->pluck('stasiun')   // ambil relasi stasiun
-        ->filter()           // hapus null
-        ->unique('id')       // hanya ambil yang unik
-        ->values();          // reset index array
+        ->pluck('stasiun')
+        ->filter()
+        ->unique('id')
+        ->values();
 
     // Kembalikan ke view
     return view('admin.dashboard', [

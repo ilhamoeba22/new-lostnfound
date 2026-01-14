@@ -78,140 +78,224 @@
                     <!-- Content -->
 
                     <div class="container-xxl flex-grow-1 container-p-y">
-                        <h4 class="fw-bold py-3 mb-4">
-                            <span class="text-muted fw-light">LOST ITEMS /</span>
-                            {{$collection->id}}
-                        </h4>
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="fw-bold m-0 text-primary">
+                                <span class="text-muted fw-light">Data Aduan /</span> Detail #{{ $collection->id }}
+                            </h4>
+                            <a href="{{ route('lostitems') }}" class="btn btn-outline-secondary rounded-pill">
+                                <i class='bx bx-arrow-back me-1'></i> Kembali
+                            </a>
+                        </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-body">
-
-                                        {{-- STATUS --}}
-                                        @if ($collection->status == '1')
-                                        <div class="alert alert-success mt-3">
-                                            <h6 class="alert-heading fw-bold">STATUS DITERIMA</h6>
-                                        </div>
-                                        @elseif ($collection->status == '2')
-                                        <div class="alert alert-danger mt-3">
-                                            <h6 class="alert-heading fw-bold">STATUS DITOLAK</h6>
-                                        </div>
+                        <div class="row g-4">
+                            {{-- LEFT COLUMN: IMAGES --}}
+                            <div class="col-lg-5">
+                                <div class="card border-0 shadow-sm rounded-4 h-100 overflow-hidden position-relative bg-light">
+                                    <div class="card-header bg-transparent border-bottom-0 pb-0">
+                                        <h5 class="fw-bold mb-0">Foto Barang</h5>
+                                    </div>
+                                    <div class="card-body p-0 d-flex align-items-center justify-content-center" style="min-height: 400px;">
+                                        @if($collection->images && $collection->images->count() > 0)
+                                            <div id="aduanCarousel" class="carousel slide w-100 h-100" data-bs-ride="carousel">
+                                                <div class="carousel-inner h-100">
+                                                    @foreach($collection->images as $key => $image)
+                                                        <div class="carousel-item {{ $key == 0 ? 'active' : '' }} h-100 text-center">
+                                                            <div class="d-flex align-items-center justify-content-center h-100 bg-light p-3">
+                                                                <img src="{{ Storage::url('public/assets/img/aduan/' . $image->image_path) }}"
+                                                                     class="img-fluid rounded shadow-sm" alt="Foto Barang"
+                                                                     style="max-height: 350px; object-fit: contain; cursor: zoom-in;"
+                                                                     onclick="openZoomModal(this.src)">
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                                @if($collection->images->count() > 1)
+                                                    <button class="carousel-control-prev" type="button" data-bs-target="#aduanCarousel" data-bs-slide="prev">
+                                                        <span class="carousel-control-prev-icon bg-dark rounded-circle p-2" aria-hidden="true" style="background-size: 50%;"></span>
+                                                    </button>
+                                                    <button class="carousel-control-next" type="button" data-bs-target="#aduanCarousel" data-bs-slide="next">
+                                                        <span class="carousel-control-next-icon bg-dark rounded-circle p-2" aria-hidden="true" style="background-size: 50%;"></span>
+                                                    </button>
+                                                @endif
+                                            </div>
                                         @else
-                                        <div class="alert alert-warning mt-3">
-                                            <h6 class="alert-heading fw-bold">MENUNGGU KONFIRMASI</h6>
-                                        </div>
-                                        @endif
-
-                                        {{-- DETAIL DATA --}}
-                                        <div class="row">
-                                            <div class="mb-3 col-md-6">
-                                                <label for="namabarang" class="form-label">Nama Barang</label>
-                                                <input class="form-control" type="text" readonly value="{{ $collection->namabarang }}">
-                                            </div>
-
-                                            <div class="mb-3 col-md-6">
-                                                <label for="kategori" class="form-label">Kategori</label>
-                                                <input class="form-control" type="text" readonly value="{{ $collection->kategori->nama }}">
-                                            </div>
-
-                                            <div class="mb-3 col-md-12">
-                                                <label class="form-label">Deskripsi Barang</label>
-                                                <textarea readonly class="form-control" rows="3">{{ $collection->deskripsi }}</textarea>
-                                            </div>
-
-                                            <div class="mb-3 col-md-4">
-                                                <label for="tanggalkehilangan" class="form-label">Tanggal Kehilangan</label>
-                                                <input class="form-control" value="{{ $collection->tglketinggalan }}"
-                                                readonly name="tanggalkehilangan" type="date"
-                                                id="tanggalkehilangan">
-                                                    <!-- value="{{ \Carbon\Carbon::parse($collection->created_at)->format('Y-m-d') }}"> -->
-                                            </div>
-
-                                            <div class="mb-3 col-md-4">
-                                                <label class="form-label">Stasiun Kehilangan</label>
-                                                <input class="form-control" type="text" readonly value="{{ $collection->stasiun->nama }}">
-                                            </div>
-
-                                            <div class="mb-3 col-md-4">
-                                                <label class="form-label">Area Kehilangan</label>
-                                                <input class="form-control" type="text" readonly value="{{ $collection->area->nama }}">
-                                            </div>
-
-                                            <div class="mb-3 col-md-12">
-                                                <label class="form-label">Deskripsi Keterangan Lain</label>
-                                                <input class="form-control" type="text" readonly name="keteranganlain" value="{{ $collection->keteranganlain }}">
-                                            </div>
-
-                                            {{-- FOTO --}}
-                                            <div class="d-flex align-items-start align-items-sm-center gap-4 mt-3">
+                                            <div class="p-4 w-100 h-100 d-flex align-items-center justify-content-center">
                                                 <img src="{{ Storage::url('public/assets/img/aduan/' . $collection->foto) }}"
-                                                    alt="Foto Barang"
-                                                    class="rounded shadow-sm"
-                                                    id="fotoBarang"
-                                                    style="max-width: 200px; height: auto; cursor: zoom-in; object-fit: contain;"
-                                                    onclick="openZoomModal(this.src)">
+                                                     alt="Foto Barang" class="img-fluid rounded shadow-sm"
+                                                     style="max-height: 350px; object-fit: contain; cursor: zoom-in;"
+                                                     onclick="openZoomModal(this.src)">
                                             </div>
-                                        </div>
+                                        @endif
+                                    </div>
+                                    <div class="card-footer bg-transparent border-top-0 text-center pb-4">
+                                        <small class="text-muted"><i class='bx bx-zoom-in'></i> Klik gambar untuk memperbesar</small>
+                                    </div>
+                                </div>
+                            </div>
 
-                                        {{-- MODAL ZOOM GAMBAR (TRANSPARAN) --}}
-                                        <div class="modal fade" id="zoomModal" tabindex="-1" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered modal-fullscreen">
-                                                <div class="modal-content border-0 shadow-none bg-transparent d-flex justify-content-center align-items-center"
-                                                    onclick="closeZoomModal(event)">
-                                                    <img id="zoomedImage" src="" alt="Zoomed Image"
-                                                        class="img-fluid rounded shadow"
-                                                        style="max-height: 95vh; object-fit: contain; cursor: zoom-out;">
+                            {{-- RIGHT COLUMN: DETAILS --}}
+                            <div class="col-lg-7">
+                                <div class="card border-0 shadow-sm rounded-4 h-100">
+                                    <div class="card-header bg-white border-bottom-0 py-4 d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h5 class="fw-bold mb-1">Informasi Laporan</h5>
+                                            <small class="text-muted">Diajukan pada {{ \Carbon\Carbon::parse($collection->created_at)->translatedFormat('d F Y, H:i') }}</small>
+                                        </div>
+                                        <div>
+                                            @if ($collection->status == '1')
+                                                <span class="badge bg-success rounded-pill px-3 py-2 fs-6">Diterima</span>
+                                            @elseif ($collection->status == '2')
+                                                <span class="badge bg-danger rounded-pill px-3 py-2 fs-6">Ditolak</span>
+                                            @else
+                                                <span class="badge bg-warning rounded-pill px-3 py-2 fs-6 text-dark">Menunggu Konfirmasi</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        
+                                        <div class="row g-4">
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control bg-light border-0 fw-bold" id="namaUser" value="{{ $collection->user->name ?? 'User Tidak Dikenal' }}" readonly>
+                                                    <label for="namaUser">Nama Pelapor</label>
                                                 </div>
                                             </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <input type="email" class="form-control bg-light border-0" id="emailUser" value="{{ $collection->user->email ?? '-' }}" readonly>
+                                                    <label for="emailUser">Email Pelapor</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12"><hr class="text-muted my-1"></div>
+
+                                            <div class="col-md-7">
+                                                <label class="form-label small text-uppercase text-muted fw-bold">Nama Barang</label>
+                                                <p class="fs-5 fw-bold text-dark mb-0">{{ $collection->namabarang }}</p>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <label class="form-label small text-uppercase text-muted fw-bold">Kategori</label>
+                                                <p class="fs-5 fw-semibold text-dark mb-0">{{ $collection->kategori->nama }}</p>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <label class="form-label small text-uppercase text-muted fw-bold">Deskripsi</label>
+                                                <div class="p-3 bg-light rounded-3">
+                                                    <p class="mb-0 text-dark" style="white-space: pre-line;">{{ $collection->deskripsi }}</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="p-3 border rounded-3 h-100">
+                                                    <label class="form-label small text-muted mb-1"><i class='bx bx-calendar'></i> Tanggal Hilang</label>
+                                                    <p class="fw-semibold mb-0">{{ \Carbon\Carbon::parse($collection->tglketinggalan)->translatedFormat('d F Y') }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="p-3 border rounded-3 h-100">
+                                                    <label class="form-label small text-muted mb-1"><i class='bx bx-map'></i> Lokasi</label>
+                                                    <p class="fw-semibold mb-0">{{ $collection->stasiun->nama }} <span class="text-muted fw-normal">({{ $collection->area->nama }})</span></p>
+                                                </div>
+                                            </div>
+
+                                            @if($collection->keteranganlain)
+                                            <div class="col-12">
+                                                <div class="alert alert-secondary border-0 d-flex align-items-center mb-0">
+                                                    <i class='bx bx-info-circle me-3 fs-4'></i>
+                                                    <div>
+                                                        <small class="fw-bold d-block text-uppercase">Keterangan Lain</small>
+                                                        <span>{{ $collection->keteranganlain }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @endif
+                                            
+                                            {{-- REJECTION REASON DISPLAY IF REJECTED --}}
+                                            @if($collection->status == '2' && $collection->alasan_penolakan)
+                                            <div class="col-12">
+                                                <div class="alert alert-danger border-0 d-flex align-items-start mb-0">
+                                                    <i class='bx bx-x-circle me-3 fs-4 mt-1'></i>
+                                                    <div>
+                                                        <small class="fw-bold d-block text-uppercase">Alasan Penolakan</small>
+                                                        <span>{{ $collection->alasan_penolakan }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @endif
                                         </div>
 
-                                        <script>
-                                            function openZoomModal(src) {
-                                                const zoomedImage = document.getElementById('zoomedImage');
-                                                zoomedImage.src = src;
-                                                const zoomModal = new bootstrap.Modal(document.getElementById('zoomModal'), {
-                                                    backdrop: false // tidak pakai overlay gelap bawaan
-                                                });
-                                                zoomModal.show();
-                                            }
-
-                                            function closeZoomModal(event) {
-                                                if (event.target.id === 'zoomModal' || event.target.classList.contains('modal-content')) {
-                                                    const zoomModalEl = document.getElementById('zoomModal');
-                                                    const modalInstance = bootstrap.Modal.getInstance(zoomModalEl);
-                                                    modalInstance.hide();
-                                                }
-                                            }
-                                        </script>
-
-                                        {{-- TOMBOL KONFIRMASI / TOLAK --}}
-                                        @if ($collection->status == 0)
-                                        <div class="d-flex align-items-start align-items-sm-center gap-4 mt-5">
+                                    </div>
+                                    
+                                    {{-- ACTION BUTTONS --}}
+                                    @if ($collection->status == 0)
+                                    <div class="card-footer bg-white border-top-0 pt-0 pb-4">
+                                        <hr class="mb-4">
+                                        <div class="d-flex gap-2 justify-content-end">
+                                            <button type="button" class="btn btn-outline-danger btn-lg rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#tolakModal">
+                                                <i class='bx bx-x me-1'></i> Tolak
+                                            </button>
+                                            
                                             <form method="POST" action="{{ route('konfirmasi-aduan') }}">
                                                 @csrf
                                                 @method('PUT')
                                                 <input type="hidden" name="id" value="{{ $collection->id }}">
-                                                <button type="submit" class="btn btn-success">
-                                                    Terima Aduan
-                                                </button>
-                                            </form>
-
-                                            <form method="POST" action="{{ route('tolak-aduan') }}">
-                                                @csrf
-                                                @method('PUT')
-                                                <input type="hidden" name="id" value="{{ $collection->id }}">
-                                                <button type="submit" class="btn btn-danger">
-                                                    Tolak Aduan
+                                                <button type="submit" class="btn btn-success btn-lg rounded-pill px-5 shadow-sm fw-bold">
+                                                    <i class='bx bx-check me-1'></i> Terima Aduan
                                                 </button>
                                             </form>
                                         </div>
-                                        @endif
+                                    </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
 
+                        {{-- MODAL ZOOM GAMBAR --}}
+                        <div class="modal fade" id="zoomModal" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content bg-transparent border-0 shadow-none">
+                                    <div class="modal-body text-center p-0">
+                                        <img id="zoomedImage" src="" class="img-fluid rounded shadow-lg" style="max-height: 90vh;">
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        {{-- MODAL TOLAK --}}
+                        <div class="modal fade" id="tolakModal" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content border-0 shadow-lg rounded-4">
+                                    <div class="modal-header bg-danger text-white rounded-top-4">
+                                        <h5 class="modal-title text-white fw-bold"><i class='bx bx-message-alt-x me-2'></i>Tolak Aduan</h5>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form method="POST" action="{{ route('tolak-aduan') }}">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="modal-body p-4">
+                                            <input type="hidden" name="id" value="{{ $collection->id }}">
+                                            <div class="mb-3">
+                                                <label for="alasan_penolakan" class="form-label fw-bold">Alasan Penolakan</label>
+                                                <textarea class="form-control" name="alasan_penolakan" id="alasan_penolakan" rows="4" required placeholder="Jelaskan kepada user kenapa laporan ini ditolak..."></textarea>
+                                                <small class="text-muted">Pesan ini akan muncul di dashboard user.</small>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer bg-light rounded-bottom-4 border-top-0">
+                                            <button type="button" class="btn btn-link text-secondary text-decoration-none fw-bold" data-bs-dismiss="modal">Batal</button>
+                                            <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm">Kirim Penolakan</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                            function openZoomModal(src) {
+                                var modal = new bootstrap.Modal(document.getElementById('zoomModal'));
+                                document.getElementById('zoomedImage').src = src;
+                                modal.show();
+                            }
+                        </script>
                     </div>
                     <!-- / Content -->
                     <!-- Footer -->

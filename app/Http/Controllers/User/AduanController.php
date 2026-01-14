@@ -59,12 +59,20 @@ class AduanController extends Controller
      */
     public function store(Request $request)
     {
+        // Validasi input
+        $request->validate([
+            'foto' => 'required',
+            'foto.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
 
+        if($request->hasfile('foto'))
+        {
+            if (count($request->file('foto')) > 3) {
+                 return back()->withErrors(['foto' => 'Maksimal upload 3 foto.']);
+            }
+        }
 
-        //upload image
-        $image = $request->file('foto');
-        $image->storeAs('public/assets/img/aduan', $image->hashName());
-
+        // Simpan data aduan
         $aduan = Aduan::create([
             'id' => rand(0, 999999),
             'user_id'  => Auth::user()->id,
@@ -75,13 +83,35 @@ class AduanController extends Controller
             'stasiun_id' => $request->stasiun_id,
             'area_id' => $request->area_id,
             'keteranganlain' => $request->keteranganlain,
-            'foto' => $image->hashName(),
+            'foto' => 'default.png', // Placeholder, atau ambil foto pertama nanti
         ]);
+
+        // Proses upload multiple image
+        if($request->hasfile('foto'))
+        {
+            $firstImage = true;
+            foreach($request->file('foto') as $file)
+            {
+                $name = $file->hashName();
+                $file->storeAs('public/assets/img/aduan', $name);  
+
+                // Jika ini foto pertama, jadikan sebagai thumbnail di tabel aduans
+                if ($firstImage) {
+                     $aduan->update(['foto' => $name]);
+                     $firstImage = false;
+                }
+
+                // Simpan ke tabel aduan_images
+                \App\Models\AduanImage::create([
+                    'aduan_id' => $aduan->id,
+                    'image_path' => $name,
+                ]);
+            }
+        }
+
         if ($aduan) {
-            //redirect dengan pesan sukses
             return redirect()->route('aduan');
         } else {
-            //redirect dengan pesan error
             return redirect()->route('bikinaduan');
         }
     }
@@ -137,14 +167,23 @@ class AduanController extends Controller
     }
     public function postclaim(Request $request)
     {
+        // Validasi
+        $request->validate([
+            'foto' => 'required',
+            'foto.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
 
+        if($request->hasfile('foto'))
+        {
+            if (count($request->file('foto')) > 3) {
+                 return back()->withErrors(['foto' => 'Maksimal upload 3 foto.']);
+            }
+        }
 
-        // dd($request);
+        // Placeholder untuk foto utama
+        $primaryImageName = 'default.png';
 
-        //upload image
-        $image = $request->file('foto');
-        $image->storeAs('public/assets/img/claim', $image->hashName());
-
+        // Simpan Data Claim
         $aduan = Claim::create([
             'id' => rand(0, 999999),
             'user_id'  => Auth::user()->id,
@@ -153,14 +192,35 @@ class AduanController extends Controller
             'catatan' => $request->catatan,
             'barang_id' => $request->barang_id,
             'aduan_id' => $request->aduan_id,
-            'foto' => $image->hashName(),
+            'foto' => $primaryImageName,
         ]);
 
+        // Proses multiple image
+        if($request->hasfile('foto'))
+        {
+            $firstImage = true;
+            foreach($request->file('foto') as $file)
+            {
+                $name = $file->hashName();
+                $file->storeAs('public/assets/img/claim', $name);  
+
+                // Set foto pertama sebagai thumbnail utama
+                if ($firstImage) {
+                     $aduan->update(['foto' => $name]);
+                     $firstImage = false;
+                }
+
+                // Simpan ke detail images
+                \App\Models\ClaimImage::create([
+                    'claim_id' => $aduan->id,
+                    'image_path' => $name,
+                ]);
+            }
+        }
 
         if ($aduan) {
             return redirect('postclaimdetail/' . $aduan->id);
         } else {
-            //redirect dengan pesan error
             return redirect()->back();
         }
     }
@@ -170,7 +230,7 @@ class AduanController extends Controller
 
         // dd($request->id);
 
-        $collection = Claim::find($request->id);
+        $collection = Claim::with(['images', 'barang.images', 'aduan.images'])->find($request->id);
         return view('users.claim-aduan-detail', compact('collection'));
     }
 

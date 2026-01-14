@@ -77,240 +77,186 @@
                     <!-- Content -->
 
                     <div class="container-xxl flex-grow-1 container-p-y">
-                        {{-- <div class="row">
-                            <div class="col-lg-8 mb-4 order-0">
-                                <div class="card">
-                                    <div class="d-flex align-items-end row">
-                                        <div class="col-sm-7">
-                                            <div class="card-body">
-                                                <h5 class="card-title text-primary">
-                                                    Congratulations John! 🎉
-                                                </h5>
-                                                <p class="mb-4">
-                                                    You have done
-                                                    <span class="fw-bold">72%</span>
-                                                    more sales today. Check your new badge in your
-                                                    profile.
-                                                </p>
-
-                                                <a href="javascript:;" class="btn btn-sm btn-outline-primary">
-                                                    View Badges
-                                                </a>
+                        
+                        <!-- Welcome Header -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="card bg-primary text-white overflow-hidden border-0 shadow-sm rounded-4 position-relative">
+                                    <div class="card-body p-4 p-md-5">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="z-1">
+                                                <h2 class="text-white fw-bold mb-2">Selamat Datang, {{ auth::user()->name }}! 👋</h2>
+                                                <p class="mb-0 opacity-75 fs-6">Senang melihatmu kembali. Pantau laporan kehilangan dan temuan barangmu di sini.</p>
+                                            </div>
+                                            <div class="d-none d-md-block position-absolute end-0 bottom-0 me-4 mb-3">
+                                                <i class='bx bx-party' style="font-size: 8rem; opacity: 0.2;"></i>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-8 col-lg-4 order-3 order-md-2">
-                                <div class="row">
-                                    <div class="col-6 mb-4">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div
-                                                    class="card-title d-flex align-items-start justify-content-between">
-                                                    <div class="avatar flex-shrink-0">
-                                                        <img src="../assets/img/icons/unicons/paypal.png"
-                                                            alt="Credit Card" class="rounded" />
-                                                    </div>
-                                                    <div class="dropdown">
-                                                        <button class="btn p-0" type="button" id="cardOpt4"
-                                                            data-bs-toggle="dropdown" aria-haspopup="true"
-                                                            aria-expanded="false">
-                                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                                        </button>
-                                                        <div class="dropdown-menu dropdown-menu-end"
-                                                            aria-labelledby="cardOpt4">
-                                                            <a class="dropdown-item" href="javascript:void(0);">
-                                                                View More
-                                                            </a>
-                                                            <a class="dropdown-item" href="javascript:void(0);">
-                                                                Delete
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <span class="d-block mb-1">Payments</span>
-                                                <h3 class="card-title text-nowrap mb-2">$2,456</h3>
-                                                <small class="text-danger fw-semibold">
-                                                    <i class="bx bx-down-arrow-alt"></i>
-                                                    -14.82%
-                                                </small>
-                                            </div>
+                        </div>
+
+                        <!-- Main Content Grid -->
+                        <div class="row g-4">
+                            <!-- Left: Profile Card -->
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm rounded-4 h-100">
+                                    <div class="card-body text-center p-4">
+                                        <div class="mb-3 position-relative d-inline-block">
+                                            <img src="{{ 'https://ui-avatars.com/api/?name='.urlencode(auth::user()->name).'&background=377DFF&color=fff&size=128' }}" 
+                                                 alt="user-avatar" class="rounded-circle shadow-sm border border-4 border-white" width="100" height="100">
+                                            <span class="position-absolute bottom-0 end-0 p-2 bg-success border border-white rounded-circle">
+                                                <span class="visually-hidden">Online</span>
+                                            </span>
                                         </div>
-                                    </div>
-                                    <div class="col-6 mb-4">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div
-                                                    class="card-title d-flex align-items-start justify-content-between">
-                                                    <div class="avatar flex-shrink-0">
-                                                        <img src="../assets/img/icons/unicons/cc-primary.png"
-                                                            alt="Credit Card" class="rounded" />
-                                                    </div>
-                                                    <div class="dropdown">
-                                                        <button class="btn p-0" type="button" id="cardOpt1"
-                                                            data-bs-toggle="dropdown" aria-haspopup="true"
-                                                            aria-expanded="false">
-                                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                                        </button>
-                                                        <div class="dropdown-menu" aria-labelledby="cardOpt1">
-                                                            <a class="dropdown-item" href="javascript:void(0);">
-                                                                View More
-                                                            </a>
-                                                            <a class="dropdown-item" href="javascript:void(0);">
-                                                                Delete
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <span class="fw-semibold d-block mb-1">
-                                                    Transactions
-                                                </span>
-                                                <h3 class="card-title mb-2">$14,857</h3>
-                                                <small class="text-success fw-semibold">
-                                                    <i class="bx bx-up-arrow-alt"></i>
-                                                    +28.14%
-                                                </small>
-                                            </div>
+                                        <h5 class="fw-bold text-dark mb-1">{{ auth::user()->name }}</h5>
+                                        <p class="text-muted small mb-3">{{ auth::user()->email }}</p>
+                                        <div class="d-flex justify-content-center gap-2 mb-4">
+                                            <span class="badge bg-label-primary rounded-pill px-3">User</span>
+                                            <span class="badge bg-label-success rounded-pill px-3">Verified</span>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> --}}
-                        <div class="row">
-                            {{-- @include('profile.partials.update-profile-information-form') --}}
 
-                            <!-- Expense Overview -->
-                            <div class="col-md-12 col-lg-12 order-1 mb-4">
-                                <h6 class="text-muted">Laporan</h6>
+                                        <hr class="my-4">
 
-                                <div class="nav-align-top mb-4">
-                                    <ul class="nav nav-tabs" role="tablist">
-
-                                        <li class="nav-item">
-                                            <button type="button" class="nav-link active" role="tab"
-                                                data-bs-toggle="tab" data-bs-target="#navs-top-profile"
-                                                aria-controls="navs-top-profile" aria-selected="false">
-                                                Profile
-                                            </button>
-                                        </li>
-                                        <li class="nav-item">
-                                            <button type="button" class="nav-link " role="tab" data-bs-toggle="tab"
-                                                data-bs-target="#navs-top-messages" aria-controls="navs-top-messages"
-                                                aria-selected="true">
-                                                Pesan
-                                            </button>
-                                        </li>
-                                    </ul>
-                                    <div class="tab-content">
-
-                                        <div class="tab-pane fade active show" id="navs-top-profile" role="tabpanel">
-                                            <!-- Account -->
+                                        <!-- Profile Form (Simplified) -->
+                                        <div class="text-start">
+                                            <h6 class="text-uppercase text-muted small fw-bold mb-3">Informasi Akun</h6>
+                                            <form method="post" action="{{ route('profile.update') }}">
+                                                @csrf
+                                                @method('patch')
+                                                <div class="mb-3">
+                                                    <label class="form-label small">Nama Lengkap</label>
+                                                    <input type="text" name="name" class="form-control" value="{{ old('name', $user->name) }}">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label small">Email</label>
+                                                    <input type="email" name="email" class="form-control" value="{{ old('email', $user->email) }}">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label small">Nomor Telepon</label>
+                                                    <input type="text" name="phonenumber" class="form-control" value="{{ old('phonenumber', $user->phonenumber) }}">
+                                                </div>
+                                                <button type="submit" class="btn btn-primary w-100 rounded-pill">Simpan Perubahan</button>
+                                            </form>
+                                            
                                             @if (session('status') === 'profile-updated')
-                                            <p>
-                                            <div class="alert alert-primary alert-dismissible" role="alert">
-                                                Data kamu berhasil di simpan
-                                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            </p>
+                                                <div class="alert alert-success mt-3 mb-0 py-2 small" role="alert">
+                                                    <i class='bx bx-check-circle me-1'></i> Profil berhasil diperbarui!
+                                                </div>
                                             @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                                            <div class="card-body">
-                                                <form method="post" action="{{ route('profile.update') }}">
-                                                    @csrf
-                                                    @method('patch')
-                                                    <div class="row">
-                                                        <div class="mb-3 col-md-6">
-                                                            <label for="firstName" class="form-label">
-                                                                Nama Lengkap
-                                                            </label>
-                                                            <input class="form-control" type="text" id="name"
-                                                                name="name" value="{{ old('name', $user->name) }}"
-                                                                autofocus />
-                                                        </div>
+                            <!-- Right: Statistics & Activities -->
+                            <div class="col-md-8">
+                                
+                                <!-- Quick Stats -->
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-4">
+                                        <div class="card border-0 shadow-sm rounded-4 bg-label-primary">
+                                            <div class="card-body p-3 d-flex align-items-center">
+                                                <div class="avatar avatar-md bg-white rounded-3 p-2 me-3">
+                                                    <i class='bx bx-file text-primary fs-3'></i>
+                                                </div>
+                                                <div>
+                                                    <small class="text-muted d-block fw-bold display-6" style="line-height: 1.2;">{{ $aduans ? $aduans->count() : 0 }}</small>
+                                                    <span class="small text-primary fw-semibold">Total Laporan</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card border-0 shadow-sm rounded-4 bg-label-warning">
+                                            <div class="card-body p-3 d-flex align-items-center">
+                                                <div class="avatar avatar-md bg-white rounded-3 p-2 me-3">
+                                                    <i class='bx bx-loader-alt text-warning fs-3'></i>
+                                                </div>
+                                                <div>
+                                                    <small class="text-muted d-block fw-bold display-6" style="line-height: 1.2;">
+                                                        {{ $aduans ? $aduans->where('status', '0')->count() : 0 }}
+                                                    </small>
+                                                    <span class="small text-warning fw-semibold">Sedang Diproses</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card border-0 shadow-sm rounded-4 bg-label-success">
+                                            <div class="card-body p-3 d-flex align-items-center">
+                                                <div class="avatar avatar-md bg-white rounded-3 p-2 me-3">
+                                                    <i class='bx bx-check-circle text-success fs-3'></i>
+                                                </div>
+                                                <div>
+                                                    <small class="text-muted d-block fw-bold display-6" style="line-height: 1.2;">
+                                                        {{ $aduans ? $aduans->where('status', '1')->count() : 0 }}
+                                                    </small>
+                                                    <span class="small text-success fw-semibold">Selesai/Ditemukan</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                                        <div class="mb-3 col-md-6">
-                                                            <label for="email" class="form-label">E-mail</label>
-                                                            <input class="form-control" type="text" id="email"
-                                                                name="email"
-                                                                value="{{ old('email', $user->email)  }}" />
-                                                        </div>
-
-                                                        <div class="mb-3 col-md-6">
-                                                            <label class="form-label" for="phonenumber">
-                                                                Phone Number
-                                                            </label>
-                                                            <div class="input-group input-group-merge">
-                                                                <span class="input-group-text">ID (+62)</span>
-                                                                <input type="text" id="phonenumber" name="phonenumber"
-                                                                    class="form-control"
-                                                                    value="{{ old('phonenumber', $user->phonenumber)  }}" />
+                                <!-- Recent Activities -->
+                                <div class="card border-0 shadow-sm rounded-4 h-100">
+                                    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom">
+                                        <h5 class="fw-bold m-0 text-dark"><i class='bx bx-time-five me-2 text-primary'></i>Aktivitas Terkini</h5>
+                                        <a href="{{ route('bikinaduan') }}" class="btn btn-primary btn-sm rounded-pill">
+                                            <i class='bx bx-plus me-1'></i> Buat Laporan Baru
+                                        </a>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div class="list-group list-group-flush rounded-bottom-4">
+                                            @if ($aduans && $aduans->count() > 0)
+                                                @foreach ($aduans as $aduan)
+                                                    <div class="list-group-item p-3 border-bottom-0 border-top">
+                                                        <div class="d-flex w-100 justify-content-between align-items-center">
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="avatar bg-light rounded p-2 me-3 d-flex align-items-center justify-content-center">
+                                                                    <i class='bx {{ $aduan->status == "1" ? "bx-check text-success" : ($aduan->status == "2" ? "bx-x text-danger" : "bx-loader-alt text-warning") }} fs-4'></i>
+                                                                </div>
+                                                                <div>
+                                                                    <h6 class="mb-1 fw-bold text-dark">Laporan ID #{{ $aduan->id }}</h6>
+                                                                    <p class="mb-0 text-muted small">
+                                                                        {{-- Placeholder for date if not available in this view's query, relying on ID or generic text for now --}}
+                                                                        Laporan barang hilang anda.
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="text-end">
+                                                                @if ($aduan->status == '0')
+                                                                    <span class="badge bg-label-warning rounded-pill">Sedang Diproses</span>
+                                                                @elseif ($aduan->status == '1')
+                                                                    <span class="badge bg-label-success rounded-pill">Ditemukan</span>
+                                                                @else
+                                                                    <span class="badge bg-label-danger rounded-pill">Ditolak</span>
+                                                                @endif
+                                                                <a href="{{ route('detailaduan', $aduan->id) }}" class="btn btn-icon btn-sm btn-label-secondary ms-2 rounded-circle">
+                                                                    <i class='bx bx-chevron-right'></i>
+                                                                </a>
                                                             </div>
                                                         </div>
-
-
                                                     </div>
-                                                    <div class="mt-2">
-                                                        <button type="submit" class="btn btn-primary me-2">
-                                                            Simpan Perubahan
-                                                        </button>
-                                                        <button type="reset" class="btn btn-outline-secondary">
-                                                            Batal
-                                                        </button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <!-- /Account -->
-                                        </div>
-                                        <div class="tab-pane fade" id="navs-top-messages" role="tabpanel">
-                                            <div class="card">
-                                                <div class="d-flex align-items-end row">
-                                                    <div class="col-sm-7">
-                                                        <div class="card-body">
-
-                                                            @if ($aduans)
-
-                                                            <h5 class="card-title text-primary">
-                                                                Selamat {{ auth::user()->name }} 🎉
-                                                            </h5>
-
-                                                            @foreach ($aduans as $aduan)
-
-                                                            <p class="mb-4">
-                                                                Laporan kamu dengan aduan ID
-                                                                <span class="fw-bold"> {{ $aduan->id }}</span>
-                                                                @if ($aduan->status =='0' )
-                                                                <span class="fw-bold alert-warning"> Aduan kamu sedang
-                                                                    di proses !</span>
-
-                                                                @elseif ($aduan->status =='1' )
-                                                                <span class="fw-bold alert-success"> Aduan kamu berhasil
-                                                                    di terima</span>
-
-                                                                @else
-
-                                                                <span class="fw-bold alert-danger"> Laporan kamu masih
-                                                                    belum sesuai</span>
-                                                                @endif
-
-                                                            </p>
-
-                                                            @endforeach
-                                                            @endif
-
-
-
-                                                        </div>
-                                                    </div>
+                                                @endforeach
+                                            @else
+                                                <div class="text-center p-5">
+                                                    <img src="{{ asset('assets/img/illustrations/girl-doing-yoga-light.png') }}" alt="No Data" width="150" class="mb-3">
+                                                    <h6 class="text-muted fw-bold">Belum ada aktivitas</h6>
+                                                    <p class="text-muted small">Mulai dengan membuat laporan kehilangan barang.</p>
+                                                    <a href="{{ route('bikinaduan') }}" class="btn btn-outline-primary btn-sm rounded-pill mt-2">Buat Laporan Sekarang</a>
                                                 </div>
-                                            </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
-                            <!--/ Expense Overview -->
                         </div>
+
                     </div>
                     <!-- / Content -->
 

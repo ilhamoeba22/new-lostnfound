@@ -84,85 +84,99 @@
 
 
                         <div class="row">
-                            <div class="col-md-8">
+                            <div class="col-md-12">
                                 <div class="card mb-4">
 
 
-                                    <div class="card-body">
-                                        <h3>Data Diri</h3>
-                                        <form method="POST" action="{{ route('postclaim') }}"
-                                            enctype="multipart/form-data">
-                                            @csrf
+                                    <div class="card-body p-4">
+                                        <h4 class="fw-bold text-primary mb-4">Formulir Klaim Barang</h4>
+                                        <div class="alert alert-info rounded-3 mb-4 d-flex align-items-center">
+                                            <i class="bx bx-info-circle fs-4 me-2"></i>
+                                            <div>Harap isi data dengan benar. Data yang Anda kirim akan diverifikasi oleh Admin.</div>
+                                        </div>
 
+                                        <form method="POST" action="{{ route('postclaim') }}" enctype="multipart/form-data">
+                                            @csrf
                                             <input type="hidden" name="aduan_id" value="{{ $aduan }}">
                                             <input type="hidden" name="barang_id" value="{{ $items }}">
-                                            <div class="row mb-3">
-                                                <label class="col-sm-2 col-form-label" for="basic-default-name">
-                                                    Nama Lengkap
-                                                </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" class="form-control" name="nama"
-                                                        id="basic-default-name" placeholder="masukan nama lengkap" />
-                                                </div>
-                                            </div>
-                                            <div class="row mb-3">
-                                                <label class="col-sm-2 col-form-label" for="basic-default-company">
-                                                    Alamat
-                                                </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" class="form-control" name="alamat"
-                                                        id="basic-default-company"
-                                                        placeholder="Tempat tinggal sesuai KTP" />
-                                                </div>
-                                            </div>
 
-                                            <div class="row mb-3">
-                                                <label class="col-sm-2 col-form-label" for="basic-default-message">
-                                                    Pesan
-                                                </label>
-                                                <div class="col-sm-10">
-                                                    <textarea id="basic-default-message" name="catatan"
-                                                        class="form-control" placeholder="....."
-                                                        aria-describedby="basic-icon-default-message2"></textarea>
+                                            <div class="row g-4">
+                                                <div class="col-12">
+                                                    <h6 class="fw-bold text-dark mb-3"><i class='bx bx-user me-1'></i> Identitas Pengklaim</h6>
+                                                    <div class="bg-light p-3 rounded-3">
+                                                        <div class="row g-3">
+                                                            <div class="col-md-6">
+                                                                <label class="form-label fw-semibold small text-uppercase text-muted" for="basic-default-name">Nama Lengkap</label>
+                                                                <input type="text" class="form-control form-control-lg border-0 bg-white shadow-sm" name="nama"
+                                                                    id="basic-default-name" placeholder="Masukan nama lengkap Anda" required />
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label class="form-label fw-semibold small text-uppercase text-muted" for="basic-default-company">Alamat</label>
+                                                                <input type="text" class="form-control form-control-lg border-0 bg-white shadow-sm" name="alamat"
+                                                                    id="basic-default-company" placeholder="Alamat sesuai KTP" required />
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="mb-3 col-12 mb-0">
-                                                <div class="d-flex align-items-start align-items-sm-center gap-4">
-                                                    <img src="" alt="bukti-foto-barang" class="d-block rounded"
-                                                        id="uploadedAvatar" width="100" height="100">
-                                                    <div class="button-wrapper">
-                                                        <label for="upload" class="btn btn-primary me-2 mb-4"
-                                                            tabindex="0">
-                                                            <span class="d-none d-sm-block">
-                                                                Tambahkan Bukti Foto
-                                                            </span>
-                                                            <i class="bx bx-upload d-block d-sm-none"></i>
-                                                            <input type="file" id="upload" name="foto"
-                                                                class="account-file-input"
-                                                                accept="image/png, image/jpeg" hidden="">
+
+                                                <div class="col-12">
+                                                    <h6 class="fw-bold text-dark mb-3 mt-2"><i class='bx bx-message-detail me-1'></i> Detail Klaim</h6>
+                                                    <div class="bg-light p-3 rounded-3">
+                                                        <div class="mb-3">
+                                                            <label class="form-label fw-semibold small text-uppercase text-muted" for="basic-default-message">Pesan / Alasan Klaim</label>
+                                                            <textarea id="basic-default-message" name="catatan" class="form-control border-0 bg-white shadow-sm" 
+                                                                rows="3" placeholder="Jelaskan kenapa barang ini milik Anda (ciri khusus, isi, dll)..." required></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <h6 class="fw-bold text-dark mb-3 mt-2"><i class='bx bx-images me-1'></i> Bukti Kepemilikan</h6>
+                                                    <div class="bg-light p-3 rounded-3">
+                                                        <div class="d-flex flex-column flex-md-row gap-4 align-items-start">
+                                                            <div class="button-wrapper">
+                                                                <label for="upload" class="btn btn-primary btn-lg rounded-pill shadow-sm me-2 mb-3" tabindex="0">
+                                                                    <i class="bx bx-upload me-1"></i>
+                                                                    <span class="d-none d-sm-inline-block">Pilih Bukti Foto</span>
+                                                                    <input type="file" id="upload" name="foto[]" class="account-file-input" hidden accept="image/png, image/jpeg" multiple required>
+                                                                </label>
+                                                                <button type="button" class="btn btn-outline-danger btn-lg rounded-pill shadow-sm account-image-reset mb-3" id="resetImage">
+                                                                    <i class="bx bx-reset me-1"></i> Reset
+                                                                </button>
+                                                                <div class="text-muted small">
+                                                                    <i class='bx bx-info-circle me-1'></i> Upload max 3 foto (KTP, Bukti beli, dll).
+                                                                </div>
+                                                            </div>
+                                                            <!-- Preview Container -->
+                                                            <div id="preview-container" class="d-flex flex-wrap gap-2"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12 mt-4">
+                                                    <div class="form-check mb-3">
+                                                        <input class="form-check-input" type="checkbox" name="accountActivation" id="accountActivation" required>
+                                                        <label class="form-check-label text-muted" for="accountActivation">
+                                                            Saya menyatakan bahwa data di atas benar dan saya bersedia bertanggung jawab secara hukum jika melakukan klaim palsu.
                                                         </label>
-                                                        <button type="button"
-                                                            class="btn btn-outline-secondary account-image-reset mb-4">
-                                                            <i class="bx bx-reset d-block d-sm-none"></i>
-                                                            <span class="d-none d-sm-block">Reset</span>
+                                                    </div>
+                                                    <div class="d-grid">
+                                                        <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow-lg hover-scale">
+                                                            <i class='bx bx-check-shield me-1'></i> Ajukan Klaim Barang
                                                         </button>
-
-                                                        <p class="text-muted mb-0">
-                                                            Sertakan bukti kepemilikan barang
-                                                        </p>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-check mb-3">
-                                                <input class="form-check-input" type="checkbox" name="accountActivation"
-                                                    id="accountActivation">
-                                                <label class="form-check-label" for="accountActivation">
-                                                    Saya menyetujui Kebijakan dan Privasi</label>
-                                            </div>
-                                            <button type="submit" class="btn btn-danger deactivate-account">Klaim
-                                                Barang</button>
-
                                         </form>
+
+                                        <!-- Zoom Modal -->
+                                        <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                <div class="modal-content bg-transparent border-0 shadow-none text-center">
+                                                    <img id="modalImage" src="" class="img-fluid rounded-3 shadow-lg" style="max-height: 80vh;" alt="Zoom">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <!-- /Account -->
@@ -212,6 +226,67 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- Script Preview + Reset + Pop-up -->
+    <script>
+        const uploadInput = document.getElementById('upload');
+        const previewContainer = document.getElementById('preview-container');
+        const modalImage = document.getElementById('modalImage');
+        const resetBtn = document.getElementById('resetImage');
+
+        // Preview gambar saat upload
+        uploadInput.addEventListener('change', function(e) {
+            const files = e.target.files;
+            previewContainer.innerHTML = ''; // Clear previous previews
+
+            if (files.length > 3) {
+                alert("Maksimal hanya 3 foto!");
+                uploadInput.value = '';
+                return;
+            }
+
+            if (files) {
+                Array.from(files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const imgContainer = document.createElement('div');
+                        imgContainer.style.width = '100px';
+                        imgContainer.style.height = '100px';
+                        imgContainer.style.overflow = 'hidden';
+                        imgContainer.style.display = 'flex';
+                        imgContainer.style.alignItems = 'center';
+                        imgContainer.style.justifyContent = 'center';
+                        imgContainer.style.border = '1px solid #dee2e6'; // Bootstrap gray-300
+                        imgContainer.style.borderRadius = '0.375rem'; // rounded-3
+                        imgContainer.style.backgroundColor = '#f8f9fa'; // bg-light
+                        
+                        const img = document.createElement('img');
+                        img.src = event.target.result;
+                        img.style.maxWidth = '100%';
+                        img.style.maxHeight = '100%';
+                        img.style.objectFit = 'contain';
+                        img.style.cursor = 'pointer';
+                        img.setAttribute('data-bs-toggle', 'modal');
+                        img.setAttribute('data-bs-target', '#imageModal');
+                        
+                        img.addEventListener('click', function() {
+                            modalImage.src = event.target.result;
+                        });
+
+                        imgContainer.appendChild(img);
+                        previewContainer.appendChild(imgContainer);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+        });
+
+        // Reset gambar
+        resetBtn.addEventListener('click', function() {
+            uploadInput.value = '';
+            previewContainer.innerHTML = '';
+        });
+    </script>
 </body>
 
 </html>

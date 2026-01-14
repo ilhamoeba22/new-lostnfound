@@ -56,70 +56,79 @@
 
                 <div class="content-wrapper">
                     <div class="container-xxl flex-grow-1 container-p-y">
-                        <h4 class="fw-bold py-3 mb-4">
-                            <span class="text-muted fw-light">Akun /</span>
-                            {{ Auth::user()->name }}
-                        </h4>
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="fw-bold m-0 text-primary">
+                                <span class="text-muted fw-light">Akun /</span> Riwayat Aduan Saya
+                            </h4>
+                            <a href="{{ route('bikinaduan') }}" class="btn btn-primary rounded-pill shadow-sm">
+                                <i class='bx bx-plus me-1'></i> Buat Aduan Baru
+                            </a>
+                        </div>
 
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="card mb-4">
+                                <div class="card border-0 shadow-sm rounded-4 overlay-hidden">
+                                    <div class="card-header bg-white py-3 border-bottom-0">
+                                        <h5 class="fw-bold mb-0 text-dark">Daftar Laporan Kehilangan</h5>
+                                    </div>
                                     <div class="card-body">
-                                        <div class="table-responsive">
-
-                                            <table id="aduanUserTable" class="table table-striped table-bordered align-middle">
-                                                <thead class="table-light">
+                                        <div class="table-responsive text-nowrap">
+                                            <table id="aduanUserTable" class="table table-hover align-middle">
+                                                <thead class="bg-light">
                                                     <tr>
-                                                        <th>ADUAN ID</th>
-                                                        <th>Nama Barang</th>
-                                                        <th>Tanggal Aduan</th>
-                                                        <th>Status</th>
-                                                        <th>Actions</th>
+                                                        <th class="fw-bold text-uppercase small text-muted">ID</th>
+                                                        <th class="fw-bold text-uppercase small text-muted">Foto</th>
+                                                        <th class="fw-bold text-uppercase small text-muted">Barang</th>
+                                                        <th class="fw-bold text-uppercase small text-muted">Tanggal</th>
+                                                        <th class="fw-bold text-uppercase small text-muted">Status</th>
+                                                        <th class="fw-bold text-uppercase small text-muted text-center">Aksi</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody class="table-border-bottom-0">
+                                                <tbody>
                                                     @forelse ($aduans as $aduan)
                                                     <tr>
+                                                        <td><span class="fw-semibold text-dark">#{{ $aduan->id }}</span></td>
                                                         <td>
-                                                            <i class="fab fa-angular fa-lg text-danger me-3"></i>
-                                                            <strong> {{ $aduan->id }} </strong>
+                                                            <div class="avatar avatar-md">
+                                                                <img src="{{ Storage::url('public/assets/img/aduan/').$aduan->foto }}" 
+                                                                     alt="Foto Barang" class="rounded-3 shadow-sm h-100 w-100" 
+                                                                     style="object-fit: cover;">
+                                                            </div>
                                                         </td>
-                                                        <td>{{ $aduan->namabarang }}</td>
-
-                                                        <td>{{ \Carbon\Carbon::parse($aduan->created_at)->format('Y-m-d H:i') }}</td>
+                                                        <td><span class="fw-medium">{{ $aduan->namabarang }}</span></td>
+                                                        <td>{{ \Carbon\Carbon::parse($aduan->created_at)->translatedFormat('d M Y, H:i') }}</td>
                                                         <td>
                                                             @if ($aduan->status =='0')
-                                                            <span class="badge bg-label-warning me-1">
-                                                                Pengajuan
-                                                            </span>
+                                                                <span class="badge bg-label-warning rounded-pill px-3">Menunggu Verifikasi</span>
                                                             @elseif ($aduan->status =='1')
-                                                            <span class="badge bg-label-success me-1">
-                                                                Diterima
-                                                            </span>
+                                                                <span class="badge bg-success rounded-pill px-3">Diterima</span>
                                                             @else
-                                                            <span class="badge bg-label-danger me-1">
-                                                                Ditolak
-                                                            </span>
+                                                                <span class="badge bg-danger rounded-pill px-3">Ditolak</span>
                                                             @endif
                                                         </td>
-                                                        <td>
-                                                            <a class="btn btn-sm btn-primary"
+                                                        <td class="text-center">
+                                                            <a class="btn btn-sm btn-outline-primary rounded-pill px-3"
                                                                 href="{{ route('detailaduan',['id'=>$aduan->id]) }}">
-                                                                <i class="bx bx-envelope-open me-1"></i>
-                                                                Lihat Detail
+                                                                <i class="bx bx-show me-1"></i> Detail
                                                             </a>
                                                         </td>
                                                     </tr>
                                                     @empty
+                                                    <tr>
+                                                        <td colspan="6" class="text-center py-5">
+                                                            <div class="d-flex flex-column align-items-center justify-content-center">
+                                                                <img src="{{ asset('assets/img/illustrations/girl-doing-yoga-light.png') }}" width="150" class="mb-3" alt="No data">
+                                                                <h6 class="text-muted fw-bold">Belum ada aduan yang dibuat</h6>
+                                                                <a href="{{ route('bikinaduan') }}" class="btn btn-sm btn-primary mt-2">Buat Sekarang</a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
                                                     @endforelse
-
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
-
                                 </div>
-
                             </div>
                         </div>
                     </div>

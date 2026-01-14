@@ -104,6 +104,7 @@
                                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                                 </div>
                                 <small class="text-muted">* Harus sama dengan password sebelumnya</small>
+                                <x-input-error :messages="$errors->get('password')" class="mt-2" />
                             </div>
 
                             <div class="mb-3">

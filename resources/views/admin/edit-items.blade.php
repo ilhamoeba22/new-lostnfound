@@ -76,37 +76,85 @@
                 <!-- Content wrapper -->
                 <div class="content-wrapper">
                     <!-- Content -->
-
                     <div class="container-xxl flex-grow-1 container-p-y">
-                        <h4 class="fw-bold py-3 mb-4">
-                            <span class="text-muted fw-light">Data barang /</span>
-                            {{$collection->id}}
-                        </h4>
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="fw-bold m-0 text-primary">
+                                <span class="text-muted fw-light">Data Barang /</span> Edit Item #{{ $collection->id }}
+                            </h4>
+                            <a href="{{ route('items') }}" class="btn btn-outline-secondary rounded-pill">
+                                <i class='bx bx-arrow-back me-1'></i> Kembali
+                            </a>
+                        </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card mb-4">
-                                    <!-- Account -->
-                                    {{-- <div class="card-body">
+                        <form action="{{ route('editItems', ['id'=>$collection->id]) }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
 
-                                    </div>
-                                    <hr class="my-0" /> --}}
-                                    <hr class="my-0" />
-                                    <div class="card-body">
-                                        <form action="{{ route('editItems', ['id'=>$collection->id]) }}" method="POST" enctype="multipart/form-data">
-                                            @csrf
-                                            @method('PUT')
-
-                                            <div class="row">
-                                                <div class="mb-3 col-md-6">
-                                                    <label for="namabarang" class="form-label">Nama Barang</label>
-                                                    <input class="form-control" type="text" id="namabarang" name="namabarang" value="{{ $collection->namabarang }}" />
+                            <div class="row g-4">
+                                {{-- LEFT COLUMN: IMAGES --}}
+                                <div class="col-lg-5">
+                                    <div class="card border-0 shadow-sm rounded-4 h-100">
+                                        <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
+                                            <h5 class="fw-bold mb-0">Foto Barang</h5>
+                                            <small class="text-muted">Kelola gambar untuk barang ini</small>
+                                        </div>
+                                        <div class="card-body pt-4">
+                                            {{-- Current Images Preview (Carousel/Grid) --}}
+                                            <div class="bg-light rounded-4 overflow-hidden mb-4 position-relative d-flex align-items-center justify-content-center" style="min-height: 250px;">
+                                                <div id="preview-container" class="d-flex flex-wrap gap-2 justify-content-center p-3 w-100 h-100">
+                                                    @if($collection->images && $collection->images->count() > 0)
+                                                        @foreach($collection->images as $img)
+                                                            <div class="position-relative">
+                                                                <img src="{{ Storage::url('public/assets/img/items/').$img->image_path }}"
+                                                                     class="rounded-3 shadow-sm old-image"
+                                                                     style="width: 100px; height: 100px; object-fit: cover; cursor: pointer;"
+                                                                     onclick="openZoomModal(this.src)">
+                                                            </div>
+                                                        @endforeach
+                                                    @else
+                                                        <img src="{{ Storage::url('public/assets/img/items/').$collection->foto }}"
+                                                             class="rounded-3 shadow-sm old-image"
+                                                             style="width: 100%; height: 250px; object-fit: contain; cursor: pointer;"
+                                                             onclick="openZoomModal(this.src)">
+                                                    @endif
                                                 </div>
+                                            </div>
 
-                                                <div class="mb-3 col-md-6">
-                                                    <label for="kategori_id" class="form-label">Kategori</label>
-                                                    <select class="form-select" name="kategori_id" id="kategori_id">
-                                                        <option disabled>Pilih Kategori Barang</option>
+                                            <div class="d-grid gap-2">
+                                                <label for="upload" class="btn btn-primary rounded-pill py-2">
+                                                    <i class='bx bx-upload me-1'></i> Ganti / Tambah Foto
+                                                </label>
+                                                <input type="file" name="foto[]" id="upload" hidden multiple accept="image/png, image/jpeg, image/jpg" />
+                                                
+                                                <button type="button" class="btn btn-light rounded-pill py-2 text-muted" id="resetImage">
+                                                    <i class='bx bx-refresh me-1'></i> Reset Pilihan
+                                                </button>
+                                            </div>
+                                            <div class="alert alert-info border-0 bg-light-info text-info mt-3 small mb-0 fs-tiny">
+                                                <i class='bx bx-info-circle me-1'></i> Upload foto baru akan <strong>mengganti semua</strong> foto yg ada saat ini (Max 3).
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- RIGHT COLUMN: FORM --}}
+                                <div class="col-lg-7">
+                                    <div class="card border-0 shadow-sm rounded-4 h-100">
+                                        <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
+                                            <h5 class="fw-bold mb-0">Informasi Detail</h5>
+                                            <small class="text-muted">Perbarui data barang temuan</small>
+                                        </div>
+                                        <div class="card-body pt-4">
+                                            
+                                            <div class="row g-3">
+                                                <div class="col-md-7">
+                                                    <label class="form-label fw-semibold small text-uppercase text-muted">Nama Barang</label>
+                                                    <input type="text" class="form-control form-control-lg bg-light border-0" name="namabarang" value="{{ $collection->namabarang }}" placeholder="Contoh: Dompet Hitam" required />
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <label class="form-label fw-semibold small text-uppercase text-muted">Kategori</label>
+                                                    <select class="form-select form-select-lg bg-light border-0" name="kategori_id" required>
+                                                        <option disabled>Pilih Kategori</option>
                                                         @foreach ($kategoris as $kategori)
                                                         <option value="{{ $kategori->id }}" {{ ($kategori->id == $collection->kategori_id) ? 'selected' : '' }}>
                                                             {{ $kategori->nama }}
@@ -115,95 +163,64 @@
                                                     </select>
                                                 </div>
 
-                                                <div class="mb-3 col-md-12">
-                                                    <label class="form-label" for="deskripsi">Deskripsi Barang</label>
-                                                    <textarea class="form-control" name="deskripsi" id="deskripsi" rows="1">{{ $collection->deskripsi }}</textarea>
+                                                <div class="col-12">
+                                                    <label class="form-label fw-semibold small text-uppercase text-muted">Deskripsi</label>
+                                                    <textarea class="form-control bg-light border-0" name="deskripsi" rows="4" placeholder="Jelaskan ciri-ciri barang...">{{ $collection->deskripsi }}</textarea>
                                                 </div>
 
-                                                <div class="mb-3 col-md-3">
-                                                    <label for="tglditemukan" class="form-label">Tanggal ditemukan</label>
-                                                    <input class="form-control" value="{{ $collection->tglditemukan }}" name="tglditemukan" type="date" id="tglditemukan">
-                                                </div>
-
-                                                <div class="mb-3 col-md-4">
-                                                    <label for="stasiun_id" class="form-label">Stasiun</label>
-                                                    <select class="form-select" name="stasiun_id" id="stasiun_id">
-                                                        <option disabled>Pilih Stasiun</option>
-                                                        @foreach ($stasiuns as $stasiun)
-                                                        <option value="{{ $stasiun->id }}" {{ ($stasiun->id == $collection->stasiun_id) ? 'selected' : '' }}>
-                                                            {{ $stasiun->nama }}
-                                                        </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-
-                                                <div class="mb-3 col-md-3">
-                                                    <label for="area_id" class="form-label">Area ditemukan</label>
-                                                    <select class="form-select" name="area_id" id="area_id">
-                                                        <option disabled>Pilih Area</option>
-                                                        @foreach ($areas as $area)
-                                                        <option value="{{ $area->id }}" {{ ($area->id == $collection->area_id) ? 'selected' : '' }}>
-                                                            {{ $area->nama }}
-                                                        </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-
-                                                {{-- Upload Gambar --}}
-                                                <div class="d-flex align-items-start align-items-sm-center gap-4">
-                                                    <div class="button-wrapper">
-                                                        <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
-                                                            <span class="d-none d-sm-block">Edit Foto</span>
-                                                            <i class="bx bx-upload d-block d-sm-none"></i>
-                                                            <input type="file" name="foto" id="upload" class="account-file-input" hidden accept="image/png, image/jpeg" />
-                                                        </label>
-
-                                                        <button type="button" class="btn btn-outline-secondary account-image-reset mb-4" id="resetImage">
-                                                            <i class="bx bx-reset d-block d-sm-none"></i>
-                                                            <span class="d-none d-sm-block">Reset</span>
-                                                        </button>
-
-                                                        <p class="text-muted mb-0">Unggah foto baru untuk mengganti gambar barang.</p>
-                                                    </div>
-
-                                                    {{-- Preview Thumbnail --}}
-                                                    <img
-                                                        id="previewImage"
-                                                        src="{{ Storage::url('public/assets/img/items/').$collection->foto }}"
-                                                        alt="foto-barang"
-                                                        class="d-block rounded border"
-                                                        height="180"
-                                                        width="180"
-                                                        style="object-fit: cover; cursor: pointer;"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#imagePreviewModal" />
-                                                </div>
-                                            </div>
-
-                                            <button type="submit" class="btn btn-danger mt-4">Simpan Perubahan</button>
-                                        </form>
-
-                                        {{-- Modal Zoom Preview --}}
-                                        <div class="modal fade" id="imagePreviewModal" tabindex="-1" aria-labelledby="imagePreviewLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered modal-lg">
-                                                <div class="modal-content bg-transparent border-0 shadow-none">
-                                                    <div class="modal-body text-center p-0">
-                                                        <img
-                                                            id="modalImage"
-                                                            src="{{ Storage::url('public/assets/img/items/').$collection->foto }}"
-                                                            alt="Preview"
-                                                            class="img-fluid rounded"
-                                                            style="max-height: 90vh;">
+                                                <div class="col-12">
+                                                    <div class="p-3 border rounded-3 bg-light-subtle">
+                                                        <h6 class="fw-bold mb-3 small text-primary"><i class='bx bx-map-pin me-1'></i> Lokasi & Waktu</h6>
+                                                        <div class="row g-3">
+                                                            <div class="col-md-4">
+                                                                <label class="form-label small text-muted">Tgl Ditemukan</label>
+                                                                <input class="form-control border-0 bg-white" name="tglditemukan" type="date" value="{{ $collection->tglditemukan }}">
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label class="form-label small text-muted">Stasiun</label>
+                                                                <select class="form-select border-0 bg-white" name="stasiun_id">
+                                                                    @foreach ($stasiuns as $stasiun)
+                                                                    <option value="{{ $stasiun->id }}" {{ ($stasiun->id == $collection->stasiun_id) ? 'selected' : '' }}>{{ $stasiun->nama }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label class="form-label small text-muted">Area</label>
+                                                                <select class="form-select border-0 bg-white" name="area_id">
+                                                                    @foreach ($areas as $area)
+                                                                    <option value="{{ $area->id }}" {{ ($area->id == $collection->area_id) ? 'selected' : '' }}>{{ $area->nama }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <div class="mt-4 d-flex justify-content-end gap-2">
+                                                <button type="reset" class="btn btn-light rounded-pill px-4">Batal</button>
+                                                <button type="submit" class="btn btn-primary rounded-pill px-5 fw-bold shadow-sm">
+                                                    Simpan Perubahan
+                                                </button>
+                                            </div>
+
                                         </div>
                                     </div>
-                                    <!-- /Account -->
                                 </div>
+                            </div>
+                        </form>
 
+                        {{-- Modal Zoom --}}
+                        <div class="modal fade" id="imagePreviewModal" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content bg-transparent border-0 shadow-none">
+                                    <div class="modal-body text-center p-0">
+                                        <img id="modalImage" src="" class="img-fluid rounded shadow-lg" style="max-height: 90vh;">
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
                     </div>
                     <!-- / Content -->
 
@@ -244,27 +261,58 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const uploadInput = document.getElementById('upload');
-            const previewImage = document.getElementById('previewImage');
+            const previewContainer = document.getElementById('preview-container');
             const modalImage = document.getElementById('modalImage');
             const resetButton = document.getElementById('resetImage');
+            const imagePreviewModal = new bootstrap.Modal(document.getElementById('imagePreviewModal'));
 
-            const oldImageUrl = "{{ Storage::url('public/assets/img/items/').$collection->foto }}";
+            // Store initial/old HTML content to restore on reset
+            const oldContent = previewContainer.innerHTML;
+
+            // Global function for zoom
+            window.openZoomModal = function(src) {
+                modalImage.src = src;
+                imagePreviewModal.show();
+            }
 
             // Saat pilih gambar baru
             uploadInput.addEventListener('change', function(event) {
-                const file = event.target.files[0];
-                if (file) {
-                    const imageUrl = URL.createObjectURL(file);
-                    previewImage.src = imageUrl;
-                    modalImage.src = imageUrl;
+                const files = event.target.files;
+
+                 if (files.length > 3) {
+                    alert('Maksimal upload 3 foto.');
+                    uploadInput.value = ''; 
+                    previewContainer.innerHTML = oldContent; 
+                    return;
+                }
+
+                if (files.length > 0) {
+                    previewContainer.innerHTML = ''; // Clear old images
+                    
+                    Array.from(files).forEach(file => {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                             const img = document.createElement('img');
+                             img.src = e.target.result;
+                             img.classList.add('d-block', 'rounded', 'border');
+                             img.style.width = '150px';
+                             img.style.height = '150px';
+                             img.style.objectFit = 'cover';
+                             img.style.cursor = 'zoom-in';
+                             img.onclick = function() { window.openZoomModal(this.src); };
+                             previewContainer.appendChild(img);
+                        }
+                        reader.readAsDataURL(file);
+                    });
+                } else {
+                     previewContainer.innerHTML = oldContent;
                 }
             });
 
             // Tombol Reset -> Kembalikan ke gambar lama
             resetButton.addEventListener('click', function() {
                 uploadInput.value = "";
-                previewImage.src = oldImageUrl;
-                modalImage.src = oldImageUrl;
+                previewContainer.innerHTML = oldContent;
             });
         });
     </script>

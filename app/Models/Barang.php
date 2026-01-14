@@ -33,4 +33,9 @@ class Barang extends Model
     {
         return $this->belongsTo(Area::class);
     }
+
+    public function images()
+    {
+        return $this->hasMany(BarangImage::class);
+    }
 }

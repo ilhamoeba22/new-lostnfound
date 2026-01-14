@@ -23,4 +23,14 @@ class Claim extends Model
     {
         return $this->belongsTo(Barang::class);
     }
+
+    public function images()
+    {
+        return $this->hasMany(ClaimImage::class);
+    }
+
+    public function aduan()
+    {
+        return $this->belongsTo(Aduan::class);
+    }
 }

@@ -83,6 +83,15 @@
                                 </div>
                                 <x-input-error :messages="$errors->get('password')" class="mt-2" />
                             </div>
+                            <div class="mb-3 d-flex justify-content-between">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="remember-me" name="remember">
+                                    <label class="form-check-label" for="remember-me"> Ingat Saya </label>
+                                </div>
+                                <a href="{{ route('password.request') }}">
+                                    <small>Lupa Password?</small>
+                                </a>
+                            </div>
                             <div class="mb-3">
                                 <button class="btn btn-primary d-grid w-100" type="submit">MASUK</button>
                             </div>

@@ -22,6 +22,7 @@ class Aduan extends Model
         'area_id',
         'keteranganlain',
         'foto',
+        'alasan_penolakan',
     ];
 
     public function user()
@@ -40,5 +41,10 @@ class Aduan extends Model
     public function stasiun()
     {
         return $this->belongsTo(Statiun::class, 'stasiun_id');
+    }
+
+    public function images()
+    {
+        return $this->hasMany(AduanImage::class);
     }
 }

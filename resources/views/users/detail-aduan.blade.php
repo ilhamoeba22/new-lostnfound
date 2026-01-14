@@ -60,167 +60,240 @@
 
                         <div class="row">
 
+                        <div class="row">
                             <div class="col-md-12 mb-4">
-                                <div class="card">
-                                    <h4 class="card-header fw-bold py-3 mb-3">
-                                        <span class="text-muted fw-light">ADUAN ID :</span> {{ $aduan->id }}
-                                    </h4>
-                                    <div class="card-body">
-                                        <div class="mb-2 col-12 mb-0">
-                                            @if ($aduan->status =='0' )
-                                            <div class="alert alert-warning">
-                                                <h6 class="alert-heading fw-bold mb-1">
-                                                    Aduan kamu sedang di proses !
-                                                </h6>
-                                                <p class="mb-0 text-dark">
-                                                    Silakan tunggu informasi lebih lanjut. Jika ada pertanyaan,
-                                                    hubungi customer service di bawah.
-                                                </p>
-                                            </div>
-                                            @elseif ($aduan->status =='1' )
-                                            <div class="alert alert-success">
-                                                <h6 class="alert-heading fw-bold ">
-                                                    Aduan kamu berhasil di terima , berikut kami lampirkan barag yang
-                                                    sesuai dengan aduan kamu
-                                                </h6>
-                                                <p class="mb-3 text-gray">
-                                                    Jika barang yang ditampilkan sesuai dengan milikmu, silakan lakukan klaim kepemilikan melalui tombol di bawah.
-                                                </p>
-                                            </div>
-                                            @else <div class="alert alert-danger">
-                                                <h6 class="alert-heading fw-bold ">
-                                                    Maaf.. sepertinya laporan kamu masih belum sesuai
-                                                </h6>
-                                            </div>
+                                <div class="card border-0 shadow-sm rounded-4">
+                                    <div class="card-header bg-transparent py-4 border-bottom-0 d-flex justify-content-between align-items-center">
+                                        <h4 class="fw-bold mb-0 text-primary">
+                                            <i class='bx bx-file-find me-2'></i> Detail Aduan #{{ $aduan->id }}
+                                        </h4>
+                                        <div>
+                                            @if ($aduan->status == '0')
+                                                <span class="badge bg-warning rounded-pill px-3 py-2">
+                                                    <i class='bx bx-time-five me-1'></i> Diproses
+                                                </span>
+                                            @elseif ($aduan->status == '1')
+                                                <span class="badge bg-success rounded-pill px-3 py-2">
+                                                    <i class='bx bx-check-circle me-1'></i> Diterima
+                                                </span>
+                                            @elseif ($aduan->status == '2')
+                                                <span class="badge bg-danger rounded-pill px-3 py-2">
+                                                    <i class='bx bx-x-circle me-1'></i> Ditolak
+                                                </span>
                                             @endif
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="card-body px-4 pb-5">
+                                        {{-- STATUS ALERTS --}}
+                                        @if ($aduan->status =='0' )
+                                        <div class="alert alert-soft-warning border-0 rounded-3 mb-4 d-flex align-items-center" role="alert">
+                                            <i class='bx bx-loader-alt bx-spin me-3 fs-3 text-warning'></i>
+                                            <div>
+                                                <h6 class="alert-heading fw-bold mb-1 text-warning">Aduan sedang ditinjau</h6>
+                                                <p class="mb-0 text-secondary small">
+                                                    Mohon menunggu validasi dari admin. Kami akan memberitahu Anda segera.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        @elseif ($aduan->status == '2')
+                                        <div class="alert alert-soft-danger border-0 rounded-3 mb-4" role="alert">
+                                            <div class="d-flex align-items-start">
+                                                <i class='bx bx-error-circle me-3 fs-3 text-danger'></i>
+                                                <div>
+                                                    <h6 class="alert-heading fw-bold mb-1 text-danger">Aduan Ditolak</h6>
+                                                    @if($aduan->alasan_penolakan)
+                                                        <p class="mb-0 text-secondary small mt-1">
+                                                            <strong>Alasan:</strong> {{ $aduan->alasan_penolakan }}
+                                                        </p>
+                                                    @else
+                                                        <p class="mb-0 text-secondary small">Maaf, laporan Anda tidak dapat kami proses saat ini.</p>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @elseif ($aduan->status =='1' )
+                                        <div class="alert alert-soft-success border-0 rounded-3 mb-4 d-flex align-items-center" role="alert">
+                                            <i class='bx bx-check-shield me-3 fs-3 text-success'></i>
+                                            <div>
+                                                <h6 class="alert-heading fw-bold mb-1 text-success">Laporan Diterima!</h6>
+                                                <p class="mb-0 text-secondary small">
+                                                    Kami menemukan barang yang mungkin sesuai dengan laporan Anda. Cek daftar di bawah.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        @endif
 
+                                        {{-- MAIN CONTENT SPLIT --}}
+                                        <div class="row g-4">
+                                            {{-- LEFT: IMAGES --}}
+                                            <div class="col-lg-5">
+                                                <div class="card border-0 bg-light rounded-4 h-100 overflow-hidden position-relative">
+                                                    @if($aduan->images && $aduan->images->count() > 0)
+                                                        <div id="aduanCarousel" class="carousel slide h-100" data-bs-ride="carousel">
+                                                            <div class="carousel-inner h-100 d-flex align-items-center bg-light">
+                                                                @foreach($aduan->images as $key => $image)
+                                                                    <div class="carousel-item {{ $key == 0 ? 'active' : '' }} h-100">
+                                                                        <img src="{{ Storage::url('public/assets/img/aduan/').$image->image_path }}"
+                                                                            class="d-block w-100 h-100" alt="Foto Barang" 
+                                                                            style="object-fit: contain; min-height: 300px; max-height: 400px;"
+                                                                            onclick="openZoomModal(this.src)" role="button">
+                                                                    </div>
+                                                                @endforeach
+                                                            </div>
+                                                            @if($aduan->images->count() > 1)
+                                                                <button class="carousel-control-prev" type="button" data-bs-target="#aduanCarousel" data-bs-slide="prev">
+                                                                    <span class="carousel-control-prev-icon bg-dark rounded-circle p-3" aria-hidden="true" style="background-size: 50%;"></span>
+                                                                </button>
+                                                                <button class="carousel-control-next" type="button" data-bs-target="#aduanCarousel" data-bs-slide="next">
+                                                                    <span class="carousel-control-next-icon bg-dark rounded-circle p-3" aria-hidden="true" style="background-size: 50%;"></span>
+                                                                </button>
+                                                            @endif
+                                                        </div>
+                                                    @else
+                                                        <div class="d-flex align-items-center justify-content-center h-100 bg-light" style="min-height: 300px;">
+                                                            <img src="{{ Storage::url('public/assets/img/aduan/').$aduan->foto }}"
+                                                                alt="Foto Barang" class="img-fluid rounded shadow-sm"
+                                                                style="max-height: 300px; object-fit: contain;"
+                                                                onclick="openZoomModal(this.src)" role="button" />
+                                                        </div>
+                                                    @endif
+                                                    <p class="text-center mt-2 small text-muted fst-italic"><i class='bx bx-search-alt'></i> Klik gambar untuk memperbesar</p>
+                                                </div>
+                                            </div>
 
+                                            {{-- RIGHT: DETAILS --}}
+                                            <div class="col-lg-7">
+                                                <div class="row g-4">
+                                                    <div class="col-sm-6">
+                                                        <div class="p-3 bg-light rounded-3 h-100">
+                                                            <label class="small text-muted text-uppercase fw-bold mb-1">Nama Barang</label>
+                                                            <p class="fs-5 fw-semibold text-dark mb-0">{{ $aduan->namabarang }}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="p-3 bg-light rounded-3 h-100">
+                                                            <label class="small text-muted text-uppercase fw-bold mb-1">Kategori</label>
+                                                            <p class="fs-5 fw-semibold text-dark mb-0">{{ $aduan->kategori?->nama ?? '-' }}</p>
+                                                        </div>
+                                                    </div>
 
+                                                    <div class="col-12">
+                                                        <div class="p-3 bg-light rounded-3 h-100">
+                                                            <label class="small text-muted text-uppercase fw-bold mb-1">Deskripsi</label>
+                                                            <p class="text-dark mb-0" style="line-height: 1.6;">{{ $aduan->deskripsi }}</p>
+                                                        </div>
+                                                    </div>
 
+                                                    <div class="col-sm-6">
+                                                        <div class="p-3 bg-light rounded-3 h-100">
+                                                            <label class="small text-muted text-uppercase fw-bold mb-1">Tanggal Hilang</label>
+                                                            <p class="fs-6 fw-semibold text-dark mb-0">
+                                                                <i class='bx bx-calendar me-2 text-primary'></i> {{ \Carbon\Carbon::parse($aduan->tglketinggalan)->translatedFormat('d F Y') }}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="p-3 bg-light rounded-3 h-100">
+                                                            <label class="small text-muted text-uppercase fw-bold mb-1">Lokasi</label>
+                                                            <p class="fs-6 fw-semibold text-dark mb-0">
+                                                                <i class='bx bx-map me-2 text-danger'></i> Stasiun {{ $aduan->stasiun?->nama ?? '-' }}
+                                                            </p>
+                                                            <small class="text-muted ps-4">{{ $aduan->area?->nama ?? '' }}</small>
+                                                        </div>
+                                                    </div>
+
+                                                    @if($aduan->keteranganlain)
+                                                    <div class="col-12">
+                                                        <div class="p-3 border border-dashed rounded-3">
+                                                            <label class="small text-muted text-uppercase fw-bold mb-1">Info Tambahan</label>
+                                                            <p class="text-secondary mb-0 small fst-italic">"{{ $aduan->keteranganlain }}"</p>
+                                                        </div>
+                                                    </div>
+                                                    @endif
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
-
-
-
                         </div>
 
-                        {{-- items --}}
+                        {{-- MATCHING ITEMS SECTION --}}
                         @if ($aduan->status =='1' )
-                        <div class="row">
+                        <div class="row mt-5">
+                            <div class="col-12 mb-4 text-center">
+                                <h3 class="fw-bold text-primary">Barang Temuan Yang Cocok</h3>
+                                <p class="text-muted">Berikut adalah barang yang mungkin adalah milik Anda.</p>
+                            </div>
+                            
                             @foreach ($items as $item )
-                            <div class="col-md-3 col-lg-3 mb-3">
-                                <div class="card h-100">
-                                    <img class="card-img-top" style="height:200px"
-                                        src="{{ Storage::url('public/assets/img/items/').$item->foto }}"
-                                        alt="Card image cap">
-                                    <div class="card-body">
+                            <div class="col-md-4 col-lg-3 mb-4">
+                                <div class="card h-100 border-0 shadow-sm rounded-4 position-relative overflow-hidden hover-card">
+                                    <div class="position-relative">
+                                        <img class="card-img-top object-fit-cover" style="height:220px"
+                                            src="{{ Storage::url('public/assets/img/items/').$item->foto }}"
+                                            alt="Item Image">
+                                        <div class="badge bg-white text-dark position-absolute top-0 end-0 m-3 shadow-sm rounded-pill px-3 py-1 fw-bold">
+                                            #{{ $item->id }}
+                                        </div>
+                                    </div>
+                                    <div class="card-body p-4 d-flex flex-column">
+                                        <h5 class="card-title fw-bold text-truncate mb-1">{{ $item->namabarang }}</h5>
+                                        <p class="text-muted small mb-3">{{ $item->kategori?->nama ?? 'Umum' }}</p>
+                                        
+                                        <div class="mb-4 small">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <i class='bx bx-map-pin me-2 text-secondary'></i>
+                                                <span class="text-truncate">{{ $item->stasiun?->nama ?? 'N/A' }}</span>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <i class='bx bx-time me-2 text-secondary'></i>
+                                                <span>{{ \Carbon\Carbon::parse($item->tglditemukan)->translatedFormat('d M Y') }}</span>
+                                            </div>
+                                        </div>
 
-                                        <span class="card-title d-block">Nama Barang : {{ $item->namabarang }}</span>
-                                        <span class="card-title d-block">Kategori : {{ $item->kategori?->nama ?? 'N/A' }}</span>
-                                        <span class="card-title d-block">Lokasi : {{ $item->stasiun?->nama ?? 'N/A' }}</span>
-                                        @if ($aduan->status =='1')
-                                        <form action="{{ route('claimaduan') }}" method="POST">
+                                        <form action="{{ route('claimaduan') }}" method="POST" class="mt-auto">
                                             @csrf
                                             <input type="hidden" name="aduan_id" value="{{ $aduan->id }}">
                                             <input type="hidden" name="barang_id" value="{{ $item->id }}">
-                                            <button type="submit" href="{{ route('claimaduan') }}"
-                                                class="btn btn-danger">
-                                                Claim Kepemilikan
+                                            <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fw-semibold shadow-sm section-btn">
+                                                <i class='bx bx-check-double me-1'></i> Klaim Ini
                                             </button>
                                         </form>
-                                        @endif
                                     </div>
                                 </div>
                             </div>
                             @endforeach
                         </div>
-
                         @endif
-                        {{-- /items --}}
 
-                        {{-- form aduan --}}
-                        @if ($aduan->status =='0' )
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card mb-4">
-                                    <hr class="my-0" />
-                                    <div class="card-body">
-                                        {{-- Form tidak perlu action karena semua field readonly --}}
-                                        <form>
-                                            <div class="row">
-                                                <div class="mb-3 col-md-6">
-                                                    <label for="namabarang" class="form-label">
-                                                        Nama Barang :
-                                                    </label>
-                                                    <input class="form-control" type="text" id="namabarang" readonly
-                                                        name="namabarang" value="{{ $aduan->namabarang }}" />
-                                                </div>
-                                                <div class="mb-3 col-md-6">
-                                                    <label for="kategori" class="form-label">Kategori :</label>
-
-                                                    <input class="form-control" type="text" id="kategori" readonly
-                                                        value="{{ $aduan->kategori?->nama ?? 'N/A' }}" />
-                                                </div>
-
-                                                <div class="mb-3 col-md-12">
-                                                    <label class="form-label" for="phoneNumber">
-                                                        Deskripsi Barang :
-                                                    </label>
-                                                    <textarea readonly class="form-control" name="deskripsi"
-                                                        id="exampleFormControlTextarea1"
-                                                        rows="3">{{ $aduan->deskripsi }}</textarea>
-                                                </div>
-                                                <div class="mb-3 col-md-4">
-                                                    <label for="tanggalkehilangan" class="form-label">
-                                                        Tanggal Kehilangan :
-                                                    </label>
-                                                    <input class="form-control" value="{{ $aduan->tglketinggalan }}" readonly
-                                                        name="tanggalkehilangan" type="date" id="tanggalkehilangan">
-                                                </div>
-
-                                                <div class="mb-3 col-md-3">
-                                                    <label for="stasiun" class="form-label">
-                                                        Stasiun Kehilangan
-                                                    </label>
-
-                                                    <input class="form-control" type="text" id="stasiun" readonly
-                                                        value="{{ $aduan->stasiun?->nama ?? 'N/A' }}" />
-                                                </div>
-                                                <div class="mb-3 col-md-3">
-                                                    <label for="area" class="form-label">
-                                                        Area
-                                                    </label>
-
-                                                    <input class="form-control" type="text" id="area" readonly
-                                                        value="{{ $aduan->area?->nama ?? 'N/A' }}" />
-                                                </div>
-                                                <div class="mb-3 col-md-12">
-                                                    <label for="keteranganlain" class="form-label">Deskipsi
-                                                        keterangan
-                                                        lain</label>
-                                                    <input class="form-control" type="text" id="keteranganlain" readonly
-                                                        value="{{ $aduan->keteranganlain }}" />
-                                                </div>
-
-
-
-                                                <div class="d-flex align-items-start align-items-sm-center gap-4">
-                                                    <img src="{{ Storage::url('public/assets/img/aduan/').$aduan->foto }}"
-                                                        alt="" class="d-block rounded" height="100" width="100"
-                                                        id="uploadedAvatar" />
-
-                                                </div>
-                                            </div>
-                                        </form>
+                        {{-- Modal Zoom Image --}}
+                        <div class="modal fade" id="zoomModal" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content bg-transparent border-0 shadow-none">
+                                    <div class="modal-body text-center p-0">
+                                        <img id="zoomedImage" src="" class="img-fluid rounded shadow-lg" style="max-height: 90vh;">
                                     </div>
                                 </div>
-
                             </div>
                         </div>
-                        @endif
+
+                        <script>
+                            function openZoomModal(src) {
+                                var modal = new bootstrap.Modal(document.getElementById('zoomModal'));
+                                document.getElementById('zoomedImage').src = src;
+                                modal.show();
+                            }
+                        </script>
+
+                        <style>
+                            .alert-soft-warning { background-color: #fff3cd; border-color: #ffeeba; }
+                            .alert-soft-danger { background-color: #f8d7da; border-color: #f5c6cb; }
+                            .alert-soft-success { background-color: #d1e7dd; border-color: #badbcc; }
+                            .hover-card:hover { transform: translateY(-5px); transition: all 0.3s ease; box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important; }
+                            .section-btn:hover { transform: scale(1.02); }
+                        </style>
                         {{-- end form aduan --}}
 
                     </div>
