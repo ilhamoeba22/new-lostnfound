@@ -84,6 +84,7 @@
                                                 <th class="fw-bold text-uppercase small text-muted">Kategori</th>
                                                 <th class="fw-bold text-uppercase small text-muted">Stasiun</th>
                                                 <th class="fw-bold text-uppercase small text-muted">Tanggal</th>
+                                                <th class="fw-bold text-uppercase small text-muted">Kode Booking</th>
                                                 <th class="fw-bold text-uppercase small text-muted">Status</th>
                                                 <th class="fw-bold text-uppercase small text-muted">Aksi</th>
                                             </tr>
@@ -95,6 +96,7 @@
                                                 <th><input type="text" class="form-control form-control-sm border-0 bg-light" placeholder="Filter Kat." /></th>
                                                 <th><input type="text" class="form-control form-control-sm border-0 bg-light" placeholder="Filter Sta." /></th>
                                                 <th><input type="text" class="form-control form-control-sm border-0 bg-light" placeholder="Filter Tgl." /></th>
+                                                <th><input type="text" class="form-control form-control-sm border-0 bg-light" placeholder="Filter Kode" /></th>
                                                 <th></th>
                                                 <th></th>
                                             </tr>
@@ -121,6 +123,13 @@
                                                 <td><span class="badge bg-label-secondary rounded-pill">{{ $aduan->kategori->nama }}</span></td>
                                                 <td>{{ $aduan->stasiun->nama}}</td>
                                                 <td>{{ \Carbon\Carbon::parse($aduan->created_at)->format('d M Y') }}</td>
+                                                <td>
+                                                    @if($aduan->kode_booking)
+                                                        <span class="badge bg-label-info rounded-pill">{{ $aduan->kode_booking }}</span>
+                                                    @else
+                                                        <span class="text-muted">-</span>
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     @if($aduan->status == '1')
                                                         <span class="badge bg-success rounded-pill px-3">Diterima</span>

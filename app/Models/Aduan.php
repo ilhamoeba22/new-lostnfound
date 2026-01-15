@@ -23,6 +23,7 @@ class Aduan extends Model
         'keteranganlain',
         'foto',
         'alasan_penolakan',
+        'kode_booking',
     ];
 
     public function user()

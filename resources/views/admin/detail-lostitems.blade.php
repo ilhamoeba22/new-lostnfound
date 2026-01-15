@@ -209,6 +209,18 @@
                                                 </div>
                                             </div>
                                             @endif
+
+                                            <div class="col-12">
+                                                <div class="p-3 border rounded-3 h-100" style="{{ $collection->kode_booking ? 'background-color: #e7f1ff; border-color: #b3d7ff !important;' : 'background-color: #f8f9fa;' }}">
+                                                    <label class="form-label small text-uppercase text-muted fw-bold mb-1"><i class='bx bx-receipt text-primary me-1'></i> Kode Booking</label>
+                                                    <p class="fs-5 fw-bold {{ $collection->kode_booking ? 'text-primary' : 'text-muted' }} mb-0" style="letter-spacing: 1px;">
+                                                        {{ $collection->kode_booking ?? 'Tidak ada kode booking' }}
+                                                    </p>
+                                                    @if($collection->kode_booking)
+                                                        <small class="text-muted"><i class='bx bx-train'></i> Perjalanan via KAI/KRL</small>
+                                                    @endif
+                                                </div>
+                                            </div>
                                             
                                             {{-- REJECTION REASON DISPLAY IF REJECTED --}}
                                             @if($collection->status == '2' && $collection->alasan_penolakan)

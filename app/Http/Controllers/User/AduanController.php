@@ -83,6 +83,7 @@ class AduanController extends Controller
             'stasiun_id' => $request->stasiun_id,
             'area_id' => $request->area_id,
             'keteranganlain' => $request->keteranganlain,
+            'kode_booking' => $request->kode_booking,
             'foto' => 'default.png', // Placeholder, atau ambil foto pertama nanti
         ]);
 

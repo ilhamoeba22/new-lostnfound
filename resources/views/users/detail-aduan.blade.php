@@ -203,6 +203,15 @@
                                                         </div>
                                                     </div>
 
+                                                    <div class="col-12">
+                                                        <div class="p-3 bg-light rounded-3 h-100 border {{ $aduan->kode_booking ? 'border-primary border-opacity-25' : '' }}" style="{{ $aduan->kode_booking ? 'background-color: #f0f7ff !important;' : '' }}">
+                                                            <label class="small text-muted text-uppercase fw-bold mb-1"><i class='bx bx-receipt text-primary me-1'></i> Kode Booking KAI</label>
+                                                            <p class="fs-5 fw-bold {{ $aduan->kode_booking ? 'text-primary' : 'text-muted' }} mb-0" style="letter-spacing: 1px;">
+                                                                {{ $aduan->kode_booking ?? 'Tidak ada kode booking' }}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
                                                     @if($aduan->keteranganlain)
                                                     <div class="col-12">
                                                         <div class="p-3 border border-dashed rounded-3">

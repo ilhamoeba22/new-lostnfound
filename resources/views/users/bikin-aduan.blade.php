@@ -188,6 +188,11 @@
                                                                     <label class="form-label fw-semibold small text-uppercase text-muted" for="keteranganlain">Keterangan Tambahan (Opsional)</label>
                                                                     <textarea class="form-control border-0 bg-white shadow-sm" name="keteranganlain" id="keteranganlain" rows="2" placeholder="Informasi tambahan lain yang relevan..."></textarea>
                                                                 </div>
+                                                                <div class="col-12 mt-2">
+                                                                    <label class="form-label fw-semibold small text-uppercase text-muted" for="kode_booking">Kode Booking (Opsional)</label>
+                                                                    <input class="form-control form-control-lg border-0 bg-white shadow-sm" type="text" id="kode_booking" name="kode_booking" placeholder="Masukan Kode Booking tiket KAI anda jika ada..." />
+                                                                    <small class="text-muted"><i class="bx bx-info-circle me-1"></i>Hanya diisi jika anda melakukan perjalanan menggunakan kereta atau KRL.</small>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>

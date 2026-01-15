@@ -187,6 +187,14 @@
                                                 <label class="form-label text-muted small mb-1">Alamat</label>
                                                 <p class="fw-semibold fs-6 text-dark mb-0">{{ $collection->alamat }}</p>
                                             </div>
+                                            <div class="col-12 mt-3">
+                                                 <div class="p-3 bg-light rounded-3 border {{ $collection->aduan && $collection->aduan->kode_booking ? 'border-primary border-opacity-25' : '' }}" style="{{ $collection->aduan && $collection->aduan->kode_booking ? 'background-color: #f0f7ff !important;' : '' }}">
+                                                    <label class="form-label text-muted small mb-1 fw-bold"><i class='bx bx-receipt text-primary me-1'></i> Kode Booking KAI</label>
+                                                    <p class="fw-bold {{ $collection->aduan && $collection->aduan->kode_booking ? 'text-primary' : 'text-muted' }} mb-0" style="letter-spacing: 1px;">
+                                                        {{ $collection->aduan->kode_booking ?? 'Tidak ada kode booking' }}
+                                                    </p>
+                                                 </div>
+                                            </div>
                                         </div>
 
                                         <!-- Claim Message -->
