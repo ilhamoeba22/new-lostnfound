@@ -115,13 +115,13 @@
                                                 </td>
                                                 <td>
                                                     <div class="d-flex flex-column">
-                                                        <span class="fw-semibold text-dark">{{ $aduan->user->name }}</span>
+                                                        <span class="fw-semibold text-dark">{{ $aduan->user->name ?? 'User Tidak Dikenal' }}</span>
                                                         <small class="text-muted" style="font-size: 0.75rem;">{{ $aduan->user->email ?? '-' }}</small>
                                                     </div>
                                                 </td>
                                                 <td class="fw-medium">{{ $aduan->namabarang }}</td>
-                                                <td><span class="badge bg-label-secondary rounded-pill">{{ $aduan->kategori->nama }}</span></td>
-                                                <td>{{ $aduan->stasiun->nama}}</td>
+                                                <td><span class="badge bg-label-secondary rounded-pill">{{ $aduan->kategori->nama ?? '-' }}</span></td>
+                                                <td>{{ $aduan->stasiun->nama ?? '-'}}</td>
                                                 <td>{{ \Carbon\Carbon::parse($aduan->created_at)->format('d M Y') }}</td>
                                                 <td>
                                                     @if($aduan->kode_booking)
