@@ -131,7 +131,7 @@
                                                                 <div class="col-md-6">
                                                                     <label for="namabarang" class="form-label fw-semibold small text-uppercase text-muted">Nama Barang</label>
                                                                     <input required class="form-control form-control-lg border-0 bg-white shadow-sm" type="text" id="namabarang"
-                                                                        name="namabarang" placeholder="Contoh: Laptop Asus ROG" autofocus />
+                                                                        name="namabarang" placeholder="Contoh: Laptop Asus ROG" autofocus value="{{ old('namabarang') }}" />
                                                                 </div>
 
                                                                 <div class="col-md-6">
@@ -142,7 +142,7 @@
                                                                     <select required class="form-select form-select-lg border-0 bg-white shadow-sm" name="kategori_id" id="kategori_id">
                                                                         <option selected disabled value="">Pilih Kategori Barang</option>
                                                                         @foreach ($kategoris as $kategori)
-                                                                            <option value="{{ $kategori->id }}">{{ $kategori->nama }}</option>
+                                                                            <option value="{{ $kategori->id }}" {{ old('kategori_id') == $kategori->id ? 'selected' : '' }}>{{ $kategori->nama }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -150,7 +150,7 @@
                                                                 <div class="col-12">
                                                                     <label class="form-label fw-semibold small text-uppercase text-muted" for="deskripsi">Deskripsi Detail</label>
                                                                     <textarea required class="form-control border-0 bg-white shadow-sm" name="deskripsi" id="deskripsi" rows="3"
-                                                                        placeholder="Jelaskan ciri-ciri khusus (warna, merk, goresan, stiker, isi, dll)..."></textarea>
+                                                                        placeholder="Jelaskan ciri-ciri khusus (warna, merk, goresan, stiker, isi, dll)...">{{ old('deskripsi') }}</textarea>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -163,7 +163,7 @@
                                                             <div class="row g-3">
                                                                 <div class="col-md-4">
                                                                     <label for="tglketinggalan" class="form-label fw-semibold small text-uppercase text-muted">Tanggal Kehilangan</label>
-                                                                    <input required class="form-control form-control-lg border-0 bg-white shadow-sm" name="tglketinggalan" type="date" id="tglketinggalan">
+                                                                    <input required class="form-control form-control-lg border-0 bg-white shadow-sm" name="tglketinggalan" type="date" id="tglketinggalan" value="{{ old('tglketinggalan') }}">
                                                                 </div>
 
                                                                 <div class="col-md-4">
@@ -171,7 +171,7 @@
                                                                     <select required class="form-select form-select-lg border-0 bg-white shadow-sm" name="stasiun_id" id="stasiun_id">
                                                                         <option selected disabled value="">Pilih Stasiun</option>
                                                                         @foreach ($stasiuns as $stasiun)
-                                                                            <option value="{{ $stasiun->id }}">{{ $stasiun->nama }}</option>
+                                                                            <option value="{{ $stasiun->id }}" {{ old('stasiun_id') == $stasiun->id ? 'selected' : '' }}>{{ $stasiun->nama }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -180,17 +180,22 @@
                                                                     <select required class="form-select form-select-lg border-0 bg-white shadow-sm" name="area_id" id="area_id">
                                                                         <option selected disabled value="">Pilih Area</option>
                                                                         @foreach ($areas as $area)
-                                                                            <option value="{{ $area->id }}">{{ $area->nama }}</option>
+                                                                            <option value="{{ $area->id }}" {{ old('area_id') == $area->id ? 'selected' : '' }}>{{ $area->nama }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
                                                                 <div class="col-12">
                                                                     <label class="form-label fw-semibold small text-uppercase text-muted" for="keteranganlain">Keterangan Tambahan (Opsional)</label>
-                                                                    <textarea class="form-control border-0 bg-white shadow-sm" name="keteranganlain" id="keteranganlain" rows="2" placeholder="Informasi tambahan lain yang relevan..."></textarea>
+                                                                    <textarea class="form-control border-0 bg-white shadow-sm" name="keteranganlain" id="keteranganlain" rows="2" placeholder="Informasi tambahan lain yang relevan...">{{ old('keteranganlain') }}</textarea>
                                                                 </div>
                                                                 <div class="col-12 mt-2">
                                                                     <label class="form-label fw-semibold small text-uppercase text-muted" for="kode_booking">Kode Booking (Opsional)</label>
-                                                                    <input class="form-control form-control-lg border-0 bg-white shadow-sm" type="text" id="kode_booking" name="kode_booking" placeholder="Masukan Kode Booking tiket KAI anda jika ada..." />
+                                                                    <input class="form-control form-control-lg border-0 bg-white shadow-sm @error('kode_booking') is-invalid @enderror" type="text" id="kode_booking" name="kode_booking" placeholder="Masukan Kode Booking tiket KAI anda jika ada..." value="{{ old('kode_booking') }}" />
+                                                                    @error('kode_booking')
+                                                                        <div class="invalid-feedback">
+                                                                            {{ $message }}
+                                                                        </div>
+                                                                    @enderror
                                                                     <small class="text-muted"><i class="bx bx-info-circle me-1"></i>Hanya diisi jika anda melakukan perjalanan menggunakan kereta atau KRL.</small>
                                                                 </div>
                                                             </div>

@@ -62,7 +62,10 @@ class AduanController extends Controller
         // Validasi input
         $request->validate([
             'foto' => 'required',
-            'foto.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'foto.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'kode_booking' => 'nullable|unique:aduans,kode_booking',
+        ], [
+            'kode_booking.unique' => 'Kode Booking ini sudah pernah digunakan sebelumnya.',
         ]);
 
         if($request->hasfile('foto'))
